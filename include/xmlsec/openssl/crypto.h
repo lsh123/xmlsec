@@ -28,14 +28,14 @@
 
 /* \cond Exclude from Doxygen */
 
-#include <openssl/opensslv.h>
-#include <openssl/bio.h>
 
 /******************************************************************************
  *
  * What flavor and version of the OpenSSL API do we have? (also see configure.ac)
  *
  *****************************************************************************/
+#include <openssl/opensslv.h>
+
 #if defined(LIBRESSL_VERSION_NUMBER)
 /* LibreSSL is based on OpenSSL 1.1 API. */
 #define XMLSEC_OPENSSL_IS_LIBRESSL      1
@@ -79,13 +79,17 @@
  * what is supported and what is not.
  *
 *****************************************************************************/
-#if defined(XMLSEC_OPENSSL_IS_BORINGSSL) || defined(XMLSEC_OPENSSL_IS_AWSLC)
-/*
- * BoringSSL and AWS-LC do not provide a usable opensslconf.h, so the
- * OPENSSL_NO_* capability mappings below are not available for them and the
- * missing features have to be listed here explicitly (these builds do not
- * support RSA-OAEP, DH, DSA, SHA3, Camellia, ChaCha20, GOST, GOST2012 and RIPEMD160).
- */
+#if defined(XMLSEC_OPENSSL_IS_AWSLC)
+#define XMLSEC_NO_RSA_OAEP              1
+#define XMLSEC_NO_DH                    1
+#define XMLSEC_NO_DSA                   1
+#define XMLSEC_NO_CAMELLIA              1
+#define XMLSEC_NO_CHACHA20              1
+#define XMLSEC_NO_GOST                  1
+#define XMLSEC_NO_GOST2012              1
+#endif /* defined(XMLSEC_OPENSSL_IS_AWSLC) */
+
+#if defined(XMLSEC_OPENSSL_IS_BORINGSSL)
 #define XMLSEC_NO_RSA_OAEP              1
 #define XMLSEC_NO_DH                    1
 #define XMLSEC_NO_DSA                   1
@@ -95,7 +99,7 @@
 #define XMLSEC_NO_GOST                  1
 #define XMLSEC_NO_GOST2012              1
 #define XMLSEC_NO_RIPEMD160             1
-#endif /* defined(XMLSEC_OPENSSL_IS_BORINGSSL) || defined(XMLSEC_OPENSSL_IS_AWSLC) */
+#endif /* defined(XMLSEC_OPENSSL_IS_BORINGSSL) */
 
 #if defined(XMLSEC_OPENSSL_IS_LIBRESSL)
 #define XMLSEC_NO_DH                    1
@@ -121,14 +125,109 @@
 
 /******************************************************************************
  *
- * Include OpenSSL headers for various algorithms and data types.
+ * What is supported by the OpenSSL build?
  *
  *****************************************************************************/
-#include <openssl/err.h>
-#if !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC)
 #include <openssl/opensslconf.h>
-#endif /* !defined(XMLSEC_OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_IS_AWSLC) */
 
+#ifdef OPENSSL_NO_AES
+#define XMLSEC_NO_AES           1
+#endif /* OPENSSL_NO_AES */
+
+#ifdef OPENSSL_NO_CAMELLIA
+#define XMLSEC_NO_CAMELLIA      1
+#endif /* OPENSSL_NO_CAMELLIA */
+
+#ifdef OPENSSL_NO_CHACHA
+#define XMLSEC_NO_CHACHA20      1
+#endif /* OPENSSL_NO_CHACHA */
+
+#ifdef OPENSSL_NO_KDF
+#define XMLSEC_NO_CONCATKDF     1
+#define XMLSEC_NO_PBKDF2        1
+#define XMLSEC_NO_HKDF          1
+#endif /* OPENSSL_NO_KDF */
+
+#ifdef OPENSSL_NO_DES
+#define XMLSEC_NO_DES           1
+#endif /* OPENSSL_NO_DES */
+
+#ifdef OPENSSL_NO_DH
+#define XMLSEC_NO_DH            1
+#endif /* OPENSSL_NO_DH */
+
+#ifdef OPENSSL_NO_DSA
+#define XMLSEC_NO_DSA           1
+#endif /* OPENSSL_NO_DSA */
+
+#ifdef OPENSSL_NO_EC
+#define XMLSEC_NO_EC            1
+#endif /* OPENSSL_NO_EC */
+
+#ifdef OPENSSL_NO_GOST
+#define XMLSEC_NO_GOST          1
+#define XMLSEC_NO_GOST2012      1
+#endif /* OPENSSL_NO_GOST */
+
+#ifdef OPENSSL_NO_HMAC
+#define XMLSEC_NO_HMAC          1
+#endif /* OPENSSL_NO_HMAC */
+
+#ifdef OPENSSL_NO_MD5
+#define XMLSEC_NO_MD5           1
+#endif /* OPENSSL_NO_MD5 */
+
+#ifdef OPENSSL_NO_RMD160
+#define XMLSEC_NO_RIPEMD160     1
+#endif /* OPENSSL_NO_RMD160 */
+
+#ifdef OPENSSL_NO_RSA
+#define XMLSEC_NO_RSA           1
+#endif /* OPENSSL_NO_RSA */
+
+#ifdef OPENSSL_NO_ML_DSA
+#define XMLSEC_NO_MLDSA         1
+#endif /* OPENSSL_NO_ML_DSA */
+
+#ifdef OPENSSL_NO_ML_KEM
+#define XMLSEC_NO_MLKEM         1
+#endif /* OPENSSL_NO_ML_KEM */
+
+#ifdef OPENSSL_NO_SLH_DSA
+#define XMLSEC_NO_SLHDSA        1
+#endif /* OPENSSL_NO_SLH_DSA */
+
+#ifdef OPENSSL_NO_ECX
+#define XMLSEC_NO_EDDSA         1
+#define XMLSEC_NO_XDH           1
+#endif /* OPENSSL_NO_ECX */
+
+#ifdef OPENSSL_NO_SHA1
+#define XMLSEC_NO_SHA1          1
+#endif /* OPENSSL_NO_SHA1 */
+
+#ifdef OPENSSL_NO_SHA256
+#define XMLSEC_NO_SHA256        1
+#define XMLSEC_NO_SHA224        1
+#endif /* OPENSSL_NO_SHA256 */
+
+#ifdef OPENSSL_NO_SHA512
+#define XMLSEC_NO_SHA384        1
+#define XMLSEC_NO_SHA512        1
+#endif /* OPENSSL_NO_SHA512 */
+
+#ifdef OPENSSL_NO_X509
+#define XMLSEC_NO_X509          1
+#endif /* OPENSSL_NO_X509 */
+
+
+/******************************************************************************
+ *
+ * Additional includes as needed
+ *
+ *****************************************************************************/
+#include <openssl/bio.h>
+#include <openssl/err.h>
 
 #ifndef XMLSEC_NO_DSA
 #include <openssl/dsa.h>
@@ -174,8 +273,6 @@
 extern "C" {
 #endif /* __cplusplus */
 
-
-
 /******************************************************************************
  *
  * Common functions
@@ -194,8 +291,8 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLSetDefaultTrustedCertsFolde
 XMLSEC_CRYPTO_EXPORT const xmlChar*     xmlSecOpenSSLGetDefaultTrustedCertsFolder(void);
 
 #if !defined(XMLSEC_OPENSSL_API_111)
-XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLSetLibCtx(OSSL_LIB_CTX* libctx);
-XMLSEC_CRYPTO_EXPORT OSSL_LIB_CTX*      xmlSecOpenSSLGetLibCtx(void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLSetLibCtx          (OSSL_LIB_CTX* libctx);
+XMLSEC_CRYPTO_EXPORT OSSL_LIB_CTX*      xmlSecOpenSSLGetLibCtx          (void);
 #endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
 /******************************************************************************
@@ -203,105 +300,10 @@ XMLSEC_CRYPTO_EXPORT OSSL_LIB_CTX*      xmlSecOpenSSLGetLibCtx(void);
  * BIO helpers
  *
  *****************************************************************************/
-XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateMemBio      (void);
-XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateMemBufBio   (const xmlSecByte* buf,
-                                                                        xmlSecSize bufSize);
-XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const char* path);
-/******************************************************************************
- *
- * What is supported by the OpenSSL build?
- *
- *****************************************************************************/
-#ifdef OPENSSL_NO_AES
-#define XMLSEC_NO_AES       1
-#endif /* OPENSSL_NO_AES */
-
-#ifdef OPENSSL_NO_CAMELLIA
-#define XMLSEC_NO_CAMELLIA  1
-#endif /* OPENSSL_NO_CAMELLIA */
-
-#ifdef OPENSSL_NO_CHACHA
-#define XMLSEC_NO_CHACHA20  1
-#endif /* OPENSSL_NO_CHACHA */
-
-#ifdef OPENSSL_NO_KDF
-#define XMLSEC_NO_CONCATKDF  1
-#define XMLSEC_NO_PBKDF2     1
-#define XMLSEC_NO_HKDF       1
-#endif /* OPENSSL_NO_KDF */
-
-#ifdef OPENSSL_NO_DES
-#define XMLSEC_NO_DES       1
-#endif /* OPENSSL_NO_DES */
-
-#ifdef OPENSSL_NO_DH
-#define XMLSEC_NO_DH        1
-#endif /* OPENSSL_NO_DH */
-
-#ifdef OPENSSL_NO_DSA
-#define XMLSEC_NO_DSA       1
-#endif /* OPENSSL_NO_DSA */
-
-#ifdef OPENSSL_NO_EC
-#define XMLSEC_NO_EC        1
-#endif /* OPENSSL_NO_EC */
-
-#ifdef OPENSSL_NO_GOST
-#define XMLSEC_NO_GOST      1
-#define XMLSEC_NO_GOST2012  1
-#endif /* OPENSSL_NO_GOST */
-
-#ifdef OPENSSL_NO_HMAC
-#define XMLSEC_NO_HMAC      1
-#endif /* OPENSSL_NO_HMAC */
-
-#ifdef OPENSSL_NO_MD5
-#define XMLSEC_NO_MD5       1
-#endif /* OPENSSL_NO_MD5 */
-
-#ifdef OPENSSL_NO_RMD160
-#define XMLSEC_NO_RIPEMD160 1
-#endif /* OPENSSL_NO_RMD160 */
-
-#ifdef OPENSSL_NO_RSA
-#define XMLSEC_NO_RSA       1
-#endif /* OPENSSL_NO_RSA */
-
-#ifdef OPENSSL_NO_ML_DSA
-#define XMLSEC_NO_MLDSA      1
-#endif /* OPENSSL_NO_ML_DSA */
-
-#ifdef OPENSSL_NO_ML_KEM
-#define XMLSEC_NO_MLKEM      1
-#endif /* OPENSSL_NO_ML_KEM */
-
-#ifdef OPENSSL_NO_SLH_DSA
-#define XMLSEC_NO_SLHDSA    1
-#endif /* OPENSSL_NO_SLH_DSA */
-
-#ifdef OPENSSL_NO_ECX
-#define XMLSEC_NO_EDDSA       1
-#define XMLSEC_NO_XDH         1
-#endif /* OPENSSL_NO_ECX */
-
-#ifdef OPENSSL_NO_SHA1
-#define XMLSEC_NO_SHA1      1
-#endif /* OPENSSL_NO_SHA1 */
-
-#ifdef OPENSSL_NO_SHA256
-#define XMLSEC_NO_SHA256    1
-#define XMLSEC_NO_SHA224    1
-#endif /* OPENSSL_NO_SHA256 */
-
-#ifdef OPENSSL_NO_SHA512
-#define XMLSEC_NO_SHA384    1
-#define XMLSEC_NO_SHA512    1
-#endif /* OPENSSL_NO_SHA512 */
-
-#ifdef OPENSSL_NO_X509
-#define XMLSEC_NO_X509      1
-#endif /* OPENSSL_NO_X509 */
-
+XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateMemBio       (void);
+XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateMemBufBio    (const xmlSecByte* buf,
+                                                                         xmlSecSize bufSize);
+XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio  (const char* path);
 
 /******************************************************************************
  *

@@ -67,6 +67,7 @@ int main(int argc, const char **argv) {
 
 #if defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC)
     _CrtMemState memStateAtStart;
+    int memStateAtStartSet = 0;
 #endif /* defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
 
     /* Init LibXML2 */
@@ -115,6 +116,7 @@ int main(int argc, const char **argv) {
     }
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_CHECK_ALWAYS_DF | _CRTDBG_DELAY_FREE_MEM_DF);
     _CrtMemCheckpoint(&memStateAtStart);
+    memStateAtStartSet = 1;
 #endif /* defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
 
 
@@ -226,12 +228,18 @@ done:
     _CrtSetReportFile(_CRT_WARN,    _CRTDBG_FILE_STDERR);
     _CrtSetReportFile(_CRT_ERROR,   _CRTDBG_FILE_STDERR);
     _CrtSetReportFile(_CRT_ASSERT,  _CRTDBG_FILE_STDERR);
-    {
+    if(memStateAtStartSet) {
         _CrtMemState memStateNow, memStateDiff;
         _CrtMemCheckpoint(&memStateNow);
         if (_CrtMemDifference(&memStateDiff, &memStateAtStart, &memStateNow)
             && ((ptrdiff_t)memStateDiff.lCounts[_NORMAL_BLOCK] > 0 || (ptrdiff_t)memStateDiff.lCounts[_CLIENT_BLOCK] > 0)) {
             _CrtMemDumpAllObjectsSince(&memStateAtStart);
+            return(1);
+        }
+    } else {
+        /* the checkpoint was not taken because initialization failed early,
+         * so fall back to the default leak detection */
+        if(_CrtDumpMemoryLeaks()) {
             return(1);
         }
     }

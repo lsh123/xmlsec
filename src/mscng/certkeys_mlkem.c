@@ -372,6 +372,14 @@ xmlSecMSCngKeyDataCertGetMlKemPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HAND
         goto done;
     }
 
+    /* The ML-KEM SubjectPublicKey BIT STRING has no unused bits; a non-zero
+     * value would make the trailing padding bits part of the key material,
+     * so reject such SPKIs. */
+    if(spki->PublicKey.cUnusedBits != 0) {
+        xmlSecInvalidDataError("ML-KEM SPKI: PublicKey BIT STRING has unused bits", NULL);
+        goto done;
+    }
+
     /* The SubjectPublicKey field carries the raw ML-KEM public key. Some
      * encoders (e.g. OpenSSL) prefix it with a single zero byte; strip one
      * leading zero byte only when the resulting length matches a known

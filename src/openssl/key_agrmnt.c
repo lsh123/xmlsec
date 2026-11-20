@@ -395,19 +395,11 @@ xmlSecOpenSSLKeyAgreementGenerateSecret(xmlSecOpenSSLKeyAgreementCtxPtr ctx, xml
     }
 
     /* create and init pkey ctx */
-#if !defined(XMLSEC_OPENSSL_API_111)
     pKeyCtx = EVP_PKEY_CTX_new_from_pkey(xmlSecOpenSSLGetLibCtx(), myPrivKey, NULL);
     if(pKeyCtx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", NULL);
         goto done;
     }
-#else /* !defined(XMLSEC_OPENSSL_API_111) */
-    pKeyCtx = EVP_PKEY_CTX_new(myPrivKey, NULL);
-    if(pKeyCtx == NULL) {
-        xmlSecOpenSSLError("EVP_PKEY_CTX_new", NULL);
-        goto done;
-    }
-#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
     ret = EVP_PKEY_derive_init(pKeyCtx);
     if(ret != 1) {

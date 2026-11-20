@@ -80,7 +80,6 @@
  *
 *****************************************************************************/
 #if defined(XMLSEC_OPENSSL_IS_AWSLC)
-#define XMLSEC_NO_RSA_OAEP              1
 #define XMLSEC_NO_DH                    1
 #define XMLSEC_NO_DSA                   1
 #define XMLSEC_NO_CAMELLIA              1
@@ -90,7 +89,6 @@
 #endif /* defined(XMLSEC_OPENSSL_IS_AWSLC) */
 
 #if defined(XMLSEC_OPENSSL_IS_BORINGSSL)
-#define XMLSEC_NO_RSA_OAEP              1
 #define XMLSEC_NO_DH                    1
 #define XMLSEC_NO_DSA                   1
 #define XMLSEC_NO_SHA3                  1

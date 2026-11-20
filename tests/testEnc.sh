@@ -1418,7 +1418,7 @@ execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc-des3cbc-keyname-content" \
     "tripledes-cbc" \
-    " " \
+    "" \
     "--keys-file $topfolder/keys/keys.xml" \
     "--keys-file $topfolder/keys/keys.xml --xml-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname-content.data --node-id Test" \
     "--keys-file $topfolder/keys/keys.xml"
@@ -1427,7 +1427,7 @@ execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc-des3cbc-keyname-element" \
     "tripledes-cbc" \
-    " " \
+    "" \
     "--keys-file $topfolder/keys/keys.xml" \
     "--keys-file $topfolder/keys/keys.xml --xml-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname-element.data --node-id Test" \
     "--keys-file $topfolder/keys/keys.xml"
@@ -1436,7 +1436,7 @@ execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc-des3cbc-keyname-element-root" \
     "tripledes-cbc" \
-    " " \
+    "" \
     "--keys-file $topfolder/keys/keys.xml" \
     "--keys-file $topfolder/keys/keys.xml --xml-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname-element-root.data --node-id Test" \
     "--keys-file $topfolder/keys/keys.xml"
@@ -1464,7 +1464,7 @@ if [ "z$xmlsec_feature_rsa_oaep_sha1" = "zyes" ] ; then
         "" \
         "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha1" \
         "aes256-cbc rsa-oaep-mgf1p sha1 sha1" \
-        " " \
+        "" \
         "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
         "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-256 --enabled-key-data key-name,enc-key --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha1.data --node-name http://example.org/paymentv2:CreditCard" \
         "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
@@ -1474,7 +1474,7 @@ if [ "z$xmlsec_feature_rsa_oaep_sha1" = "zyes" ] ; then
         "" \
         "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha1" \
         "aes256-cbc rsa-oaep-mgf1p sha1 sha1" \
-        " " \
+        "" \
         "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
 fi
 
@@ -1698,6 +1698,16 @@ if [ "z$xmlsec_feature_rsa_oaep_sha256" = "zyes" ] ; then
         "" \
         "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
         "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-256 --enabled-key-data key-name,enc-key --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha256_mgf1_sha256.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123"
+
+    # XMLEnc 1.1 transform with a non-empty <OAEPparams> label
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_enc11_sha256-params" \
+        "aes256-cbc rsa-oaep-enc11 sha256 sha256" \
+        "" \
+        "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$rsa_pub_key_suffix.$pub_key_format --session-key aes-256 --enabled-key-data key-name,enc-key --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_enc11_sha256-params.data --node-name http://example.org/paymentv2:CreditCard" \
         "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123"
 fi
 

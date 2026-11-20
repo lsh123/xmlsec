@@ -1042,19 +1042,11 @@ xmlSecOpenSSLEvpSignatureCreatePkeyCtx(xmlSecTransformPtr transform, xmlSecOpenS
     xmlSecAssert2(ctx != NULL, NULL);
     xmlSecAssert2(ctx->pKey != NULL, NULL);
 
-#if !defined(XMLSEC_OPENSSL_API_111)
     pKeyCtx = EVP_PKEY_CTX_new_from_pkey(xmlSecOpenSSLGetLibCtx(), ctx->pKey, NULL);
     if (pKeyCtx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", xmlSecTransformGetName(transform));
         goto error;
     }
-#else  /* !defined(XMLSEC_OPENSSL_API_111) */
-    pKeyCtx = EVP_PKEY_CTX_new(ctx->pKey, NULL);
-    if (pKeyCtx == NULL) {
-        xmlSecOpenSSLError("EVP_PKEY_CTX_new", xmlSecTransformGetName(transform));
-        goto error;
-    }
-#endif /* !defined(XMLSEC_OPENSSL_API_111) */
 
     if(ctx->digest != NULL) {
         if(transform->operation == xmlSecTransformOperationSign) {

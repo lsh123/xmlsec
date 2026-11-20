@@ -82,7 +82,7 @@ static int do_init(void) {
     xmlSecErrorsSetCallback(&ignore_xmlsec_error);
 
 
-    /* xmlSecParseMemory() parses with the process-wide default options, which
+    /* xmlReadMemory() parses with the process-wide default options, which
      * include XML_PARSE_HUGE (see src/parser.c). Fuzz inputs are small, so the
      * relaxation is unnecessary; on libxml2 < 2.13.0 it disables the parser
      * depth limit, risking stack exhaustion on deeply nested fuzz input. */

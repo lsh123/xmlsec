@@ -35,11 +35,11 @@
 
 #ifndef XMLSEC_NO_DES
 
-static int       xmlSecOpenSSLKWDes3GenerateRandom               (xmlSecTransformPtr transform,
+static int      xmlSecOpenSSLKWDes3GenerateRandom               (xmlSecTransformPtr transform,
                                                                  xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
-static int       xmlSecOpenSSLKWDes3Sha1                         (xmlSecTransformPtr transform,
+static int      xmlSecOpenSSLKWDes3Sha1                         (xmlSecTransformPtr transform,
                                                                  const xmlSecByte * in,
                                                                  xmlSecSize inSize,
                                                                  xmlSecByte * out,

@@ -914,7 +914,7 @@ xmlSecOpenSSLSignatureLegacyEcdsa_XmlDSigToOpenSSL(
         XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(BN_num_bytes(rr), rLen, goto done, NULL);
         XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(BN_num_bytes(ss), sLen, goto done, NULL);
         if((rLen <= 0) || (rLen > keyHalfLen) || (sLen <= 0) || (sLen > keyHalfLen)) {
-            xmlSecInvalidDataError("Signature r or s length is zero or longer than expected based on key size", NULL);
+            xmlSecInvalidDataError("Signature r or s length is zero or greater than expected based on key size", NULL);
             goto done;
         }
 

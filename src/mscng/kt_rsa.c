@@ -391,9 +391,9 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         /** DECRYPT */
 
         /* from this point on 'outBuf' will hold the recovered plaintext
-         * (the CEK) once CryptDecrypt overwrites the ciphertext;
-         * xmlSecBufferMakeSecure() below marks the buffer secure so that
-         * its contents are wiped when the buffer is finalized */
+         * (the CEK) once NCryptDecrypt writes it there (the input ciphertext
+         * is left untouched); xmlSecBufferMakeSecure() below marks the buffer
+         * secure so that its contents are wiped when the buffer is finalized */
         xmlSecBufferMakeSecure(out);
 
         /* expect inSize == outSize after the checks above; re-check defensively */

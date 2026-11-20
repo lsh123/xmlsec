@@ -244,7 +244,7 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, HCERTSTORE hStoreHandle
         return(NULL);
     }
 
-    /* first attempt: try to find the cert with a full blown subject dn */
+    /* first attempt: try to find the cert with a full-blown subject DN */
 #ifndef XMLSEC_NO_X509
     if(NULL == pCertContext) {
         pCertContext = xmlSecMSCryptoX509FindCertBySubject(

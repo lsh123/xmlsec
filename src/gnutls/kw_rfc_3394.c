@@ -12,7 +12,6 @@
 #if !defined(XMLSEC_NO_AES) || !defined(XMLSEC_NO_CAMELLIA)
 #include "globals.h"
 
-#include <stdlib.h>
 #include <string.h>
 
 #include <gnutls/gnutls.h>

@@ -964,7 +964,7 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
                 /* stop */
                 state = XMLSEC_X509_NAME_READ_STATE_DELIMITER;
             } else if (inCh == '\\') {
-                  /* do not update output, move to next char */
+                /* do not update output, move to next char */
                 state = XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH1;
                 ++ii;
             } else {
@@ -1487,7 +1487,7 @@ done:
  * @brief Converts decimal string serial number to DER-encoded ASN.1 INTEGER bytes.
  * @details Converts a decimal string serial number to its DER-encoded ASN.1 INTEGER
  * byte representation (big-endian, with a leading 0x00 byte prepended when
- * the most-significant bit is set, per RFC 5280).
+ * the most-significant bit is set, per ASN.1 DER (X.690) encoding of signed INTEGERs).
  * @param str the decimal string representation of the serial number.
  * @param res the output buffer for the DER-encoded big-endian bytes.
  * @param resSize the size of @p res in bytes (must be >= XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES + 1).

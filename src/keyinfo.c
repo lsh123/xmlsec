@@ -206,7 +206,7 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCt
             xmlSecUnexpectedNodeError(cur, NULL);
             return(-1);
         } else {
-            /* ignore the error as instructed by user and continue with the next node */
+            /* unknown child node; silently skip it and continue with the next node */
         }
     }
 
@@ -384,7 +384,8 @@ xmlSecKeyInfoCtxClearUserPrefLists(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 
 /**
  * @brief Creates or resets an encryption context for KeyInfo processing.
- * @details Creates or resets an encryption context for processing &lt;enc:EncryptedKey/&gt;
+ * @details Creates or resets an encryption context for processing the
+ * &lt;enc:EncryptedKey/&gt;, &lt;enc11:DerivedKey/&gt;, or &lt;enc:AgreementMethod/&gt;
  * child of the &lt;dsig:KeyInfo/&gt; element.
  * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *

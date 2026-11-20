@@ -516,9 +516,9 @@ xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, voi
              * ancestor's walk covers this node's entire subtree, so
              * starting a second walk here would visit the overlapping
              * nodes more than once. For a combined set the walk roots are
-             * the first member's nodes, which are not all part of the set,
-             * so the check must be against the walk roots rather than the
-             * set itself */
+             * the first eligible member's nodes, which are not all part
+             * of the set, so the check must be against the walk roots
+             * rather than the set itself */
             if(xmlSecNodeSetWalkRootIsAncestor(fastPathNodes, cur)) {
                 continue;
             }

@@ -73,7 +73,7 @@ int                xmlSecMSCryptoConvertEndianInPlace           (xmlSecByte * bu
 #endif /* UNICODE */
 
 /**
- * @brief Contains information for looking up provider from MS Crypto.
+ * @brief Contains information for looking up a provider from MS Crypto.
  */
 typedef struct _xmlSecMSCryptoProviderInfo {
     LPCTSTR                 providerName;

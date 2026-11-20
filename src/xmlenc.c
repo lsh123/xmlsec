@@ -279,7 +279,7 @@ xmlSecEncCtxCopyUserPref(xmlSecEncCtxPtr dst, xmlSecEncCtxPtr src) {
  * @brief Encrypts @p data according to template @p tmpl.
  * @param encCtx the pointer to &lt;enc:EncryptedData/&gt; processing context.
  * @param tmpl the pointer to &lt;enc:EncryptedData/&gt; template node.
- * @param data the pointer for binary buffer.
+ * @param data the pointer to the binary buffer.
  * @param dataSize the @p data buffer size.
  * @return 0 on success or a negative value if an error occurs.
  */
@@ -1474,7 +1474,7 @@ done:
 
 /**
  * @brief Generates a key from the AgreementMethod node.
- * @details Generates (derives) a key from @p node (https://www.w3.org/TR/xmlenc-core1/#sec-AgreementMethod):
+ * @details Generates a key from @p node (https://www.w3.org/TR/xmlenc-core1/#sec-AgreementMethod):
  *
  * @param encCtx the pointer to encryption processing context.
  * @param keyId the expected key id, the actual derived key might have a different id.

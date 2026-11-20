@@ -242,7 +242,7 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKeyD
             xmlSecInternalError2("xmlSecBufferReadFile", NULL,
                 "filename=%s", xmlSecErrorsSafeString(filename));
             xmlSecBufferFinalize(&buffer);
-            return (NULL);
+            return(NULL);
         }
 
         bufferData = xmlSecBufferGetData(&buffer);

@@ -30,8 +30,6 @@
  *      ./verify1 sign2-res.xml rsapub.pem test-key-name
  * \endcode
  */
-#include <stdlib.h>
-#include <string.h>
 #include <assert.h>
 
 #include <libxml/tree.h>

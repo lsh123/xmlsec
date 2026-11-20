@@ -34,7 +34,8 @@
  *      ./verify-saml verify-saml-bad-res.xml ca2cert.pem cacert.pem
  * \endcode
  *
- * At the same time, the verify3 example successfully verifies this signature:
+ * At the same time, the verify3 example also rejects this signature,
+ * reporting the extra user-specified XPath transform as unexpected:
  *
  * \code{.sh}
  *      ./verify3 verify-saml-bad-res.xml ca2cert.pem cacert.pem

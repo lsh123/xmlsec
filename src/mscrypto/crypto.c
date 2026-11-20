@@ -452,7 +452,7 @@ done:
  * @param file the error location file name (__FILE__ macro).
  * @param line the error location line number (__LINE__ macro).
  * @param func the error location function name (__FUNCTION__ macro).
- * @param errorObject the specific error object
+ * @param errorObject the specific error object.
  * @param errorSubject the specific error subject.
  * @param reason the error code.
  * @param msg the additional error message.
@@ -471,7 +471,7 @@ xmlSecMSCryptoErrorsDefaultCallback(const char* file, int line, const char* func
  *
  *****************************************************************************/
 /**
- * @brief Finds the first provider from the list
+ * @brief Finds the first provider from the list.
  * @param providers the pointer to list of providers, last provider should have NULL for name.
  * @param pszContainer the container name for CryptAcquireContext call
  * @param dwFlags the flags for CryptAcquireContext call

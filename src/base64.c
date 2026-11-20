@@ -229,7 +229,6 @@ xmlSecBase64CtxFinalize(xmlSecBase64CtxPtr ctx) {
 
 /**
  * @brief Encodes or decodes the next piece of data from the input buffer.
- * @details Encodes or decodes the next piece of data from the input buffer.
  * @param ctx the pointer to xmlSecBase64Ctx structure
  * @param in the input buffer
  * @param inSize the input buffer size
@@ -992,7 +991,7 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
                     return(-1);
                 }
 
-                /* add from ctx buffer */
+                /* add the pending input bytes from the context state */
                 ret = xmlSecBase64CtxFinal_ex(ctx, xmlSecBufferGetData(out) + outSize,
                     outMaxLen, &outLen);
                 if(ret < 0) {

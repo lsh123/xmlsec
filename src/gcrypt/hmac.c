@@ -461,7 +461,7 @@ static xmlSecTransformKlass xmlSecGCryptHmacSha1Klass = {
     xmlSecGCryptHmacSize,                       /* xmlSecSize objSize */
 
     xmlSecNameHmacSha1,                         /* const xmlChar* name; */
-    xmlSecHrefHmacSha1,                         /* const xmlChar *href; */
+    xmlSecHrefHmacSha1,                         /* const xmlChar* href; */
     xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
 
     xmlSecGCryptHmacInitialize,                 /* xmlSecTransformInitializeMethod initialize; */
@@ -504,7 +504,7 @@ static xmlSecTransformKlass xmlSecGCryptHmacSha256Klass = {
     xmlSecGCryptHmacSize,                       /* xmlSecSize objSize */
 
     xmlSecNameHmacSha256,                       /* const xmlChar* name; */
-    xmlSecHrefHmacSha256,                       /* const xmlChar *href; */
+    xmlSecHrefHmacSha256,                       /* const xmlChar* href; */
     xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
 
     xmlSecGCryptHmacInitialize,                 /* xmlSecTransformInitializeMethod initialize; */
@@ -547,7 +547,7 @@ static xmlSecTransformKlass xmlSecGCryptHmacSha384Klass = {
     xmlSecGCryptHmacSize,                       /* xmlSecSize objSize */
 
     xmlSecNameHmacSha384,                       /* const xmlChar* name; */
-    xmlSecHrefHmacSha384,                       /* const xmlChar *href; */
+    xmlSecHrefHmacSha384,                       /* const xmlChar* href; */
     xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
 
     xmlSecGCryptHmacInitialize,                 /* xmlSecTransformInitializeMethod initialize; */
@@ -590,7 +590,7 @@ static xmlSecTransformKlass xmlSecGCryptHmacSha512Klass = {
     xmlSecGCryptHmacSize,                       /* xmlSecSize objSize */
 
     xmlSecNameHmacSha512,                       /* const xmlChar* name; */
-    xmlSecHrefHmacSha512,                       /* const xmlChar *href; */
+    xmlSecHrefHmacSha512,                       /* const xmlChar* href; */
     xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
 
     xmlSecGCryptHmacInitialize,                 /* xmlSecTransformInitializeMethod initialize; */

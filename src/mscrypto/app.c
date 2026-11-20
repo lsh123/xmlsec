@@ -737,7 +737,7 @@ done:
 /**
  * @brief Reads a cert from a file and adds to the key store.
  * @details Reads cert from @p filename and adds to the list of trusted or known
- * untrusted certs in @p store.
+ * untrusted certs in @p mngr.
  *
  * @param mngr the keys manager.
  * @param filename the certificate file.
@@ -791,7 +791,7 @@ xmlSecMSCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
 /**
  * @brief Reads cert from buffer and adds to the key store.
  * @details Reads cert from @p data and adds to the list of trusted or known
- * untrusted certs in @p store.
+ * untrusted certs in @p mngr.
  *
  * @param mngr the keys manager.
  * @param data the binary certificate.
@@ -849,7 +849,7 @@ xmlSecMSCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte
 
 /**
  * @brief Reads CRLs from a file and adds to the store.
- * @details Reads CRL from @p filename and adds to the list of CRLs in @p store.
+ * @details Reads CRL from @p filename and adds to the list of CRLs in @p mngr.
  *
  * @param mngr the keys manager.
  * @param filename the CRL file.
@@ -890,7 +890,7 @@ xmlSecMSCryptoAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *fi
 
 /**
  * @brief Reads CRLs from memory and adds to the store.
- * @details Reads CRL from @p data and adds to the list of CRLs in @p store.
+ * @details Reads CRL from @p data and adds to the list of CRLs in @p mngr.
  *
  * @param mngr the keys manager.
  * @param data the binary CRL.

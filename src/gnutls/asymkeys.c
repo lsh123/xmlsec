@@ -1616,7 +1616,6 @@ xmlSecGnuTLSKeyDataGostAdoptKey(int algo, xmlSecKeyDataPtr data, gnutls_pubkey_t
         }
     }
 
-
     /* do the work */
     return xmlSecGnuTLSAsymKeyDataAdoptKey(data, pubkey, privkey);
 }

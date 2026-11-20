@@ -2591,8 +2591,6 @@ done:
  *
  * EC XML key representation processing.
  *
- * http://csrc.nist.gov/publications/PubsNISTIRs.html#NIST-IR-7802
- *
  * RFC 4050 [RFC4050] describes a possible &lt;dsig:KeyValue/&gt; representation
  * for an EC key. The representation and processing instructions
  * described in [RFC4050] are not completely compatible with [XMLDSIG-11];

@@ -511,7 +511,8 @@ xmlSecGnuTLSX509CertDebugXmlDump(gnutls_x509_crt_t cert, FILE* output) {
  * x509 certs search ctx
  *
  *****************************************************************************/
-int xmlSecGnuTLSX509FindCertCtxInitialize(xmlSecGnuTLSX509FindCertCtxPtr ctx,
+int
+xmlSecGnuTLSX509FindCertCtxInitialize(xmlSecGnuTLSX509FindCertCtxPtr ctx,
     const xmlChar *subjectName,
     const xmlChar *issuerName, const xmlChar *issuerSerial,
     const xmlSecByte * ski, xmlSecSize skiSize
@@ -565,7 +566,8 @@ xmlSecGnuTLSX509FindCertCtxInitializeFromValue(xmlSecGnuTLSX509FindCertCtxPtr ct
     return(0);
 }
 
-void xmlSecGnuTLSX509FindCertCtxFinalize(xmlSecGnuTLSX509FindCertCtxPtr ctx) {
+void
+xmlSecGnuTLSX509FindCertCtxFinalize(xmlSecGnuTLSX509FindCertCtxPtr ctx) {
     xmlSecAssert(ctx != NULL);
 
     memset(ctx, 0, sizeof(*ctx));

@@ -743,7 +743,7 @@ xmlSecBnCompareReverse(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSi
  * @param bn the pointer to BN.
  * @param cur the pointer to an XML node.
  * @param format the BN format.
- * @param reverse if set then reverse read buffer after reading.
+ * @param reverse if set, the buffer is reversed after reading.
  * @return 0 on success or a negative value if an error occurs.
  */
 int

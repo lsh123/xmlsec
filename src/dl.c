@@ -73,10 +73,21 @@ static xmlChar*                 xmlSecCryptoDLLibraryConstructFilename  (const x
 static xmlChar*                 xmlSecCryptoDLLibraryConstructGetFunctionsName  (const xmlChar* name);
 
 
+/* the list calls these through the xmlSecPtr*ItemMethod types, see xmlSecKeyPtrListDestroyItem() */
+static xmlSecPtr
+xmlSecCryptoDLLibrariesListDuplicateItem(xmlSecPtr ptr) {
+    return(xmlSecCryptoDLLibraryDuplicate((xmlSecCryptoDLLibraryPtr)ptr));
+}
+
+static void
+xmlSecCryptoDLLibrariesListDestroyItem(xmlSecPtr ptr) {
+    xmlSecCryptoDLLibraryDestroy((xmlSecCryptoDLLibraryPtr)ptr);
+}
+
 static xmlSecPtrListKlass xmlSecCryptoDLLibrariesListKlass = {
     BAD_CAST "dl-libraries-list",
-    (xmlSecPtrDuplicateItemMethod)xmlSecCryptoDLLibraryDuplicate,/* xmlSecPtrDuplicateItemMethod duplicateItem; */
-    (xmlSecPtrDestroyItemMethod)xmlSecCryptoDLLibraryDestroy,   /* xmlSecPtrDestroyItemMethod destroyItem; */
+    xmlSecCryptoDLLibrariesListDuplicateItem,                    /* xmlSecPtrDuplicateItemMethod duplicateItem; */
+    xmlSecCryptoDLLibrariesListDestroyItem,                     /* xmlSecPtrDestroyItemMethod destroyItem; */
     NULL,                                                       /* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
     NULL,                                                       /* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
 };

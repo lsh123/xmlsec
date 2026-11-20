@@ -202,15 +202,18 @@ typedef int xmlSecOpenSSLSizeT;
  *****************************************************************************/
 #if defined(XMLSEC_OPENSSL_API_111)
 
-#define BIO_new_ex(libctx,type)                                     BIO_new((type))
-#define PEM_read_bio_PrivateKey_ex(bp,x,cb,u,libctx,propq)          PEM_read_bio_PrivateKey((bp),(x),(cb),(u))
-#define PEM_read_bio_PUBKEY_ex(bp,x,cb,u,libctx,propq)              PEM_read_bio_PUBKEY((bp),(x),(cb),(u))
-#define d2i_PrivateKey_ex_bio(bp,a,libctx,propq)                    d2i_PrivateKey_bio((bp),(a))
+#define BIO_new_ex(libctx,type)                                BIO_new((type))
+#define PEM_read_bio_PrivateKey_ex(bp,x,cb,u,libctx,propq)     PEM_read_bio_PrivateKey((bp),(x),(cb),(u))
+#define PEM_read_bio_PUBKEY_ex(bp,x,cb,u,libctx,propq)         PEM_read_bio_PUBKEY((bp),(x),(cb),(u))
+#define d2i_PrivateKey_ex_bio(bp,a,libctx,propq)               d2i_PrivateKey_bio((bp),(a))
 
-#define X509_new_ex(libctx,propq)                                   X509_new()
-#define X509_CRL_new_ex(libctx,propq)                               X509_CRL_new()
-#define X509_STORE_CTX_new_ex(libctx,propq)                         X509_STORE_CTX_new()
-#define X509_STORE_set_default_paths_ex(ctx,libctx,propq)           X509_STORE_set_default_paths((ctx))
+#define EVP_PKEY_CTX_new_from_pkey(libctx,pkey,propquery)      EVP_PKEY_CTX_new((pkey), NULL)
+#define EVP_PKEY_get_size(pkey)                                EVP_PKEY_size((pkey))
+
+#define X509_new_ex(libctx,propq)                              X509_new()
+#define X509_CRL_new_ex(libctx,propq)                          X509_CRL_new()
+#define X509_STORE_CTX_new_ex(libctx,propq)                    X509_STORE_CTX_new()
+#define X509_STORE_set_default_paths_ex(ctx,libctx,propq)      X509_STORE_set_default_paths((ctx))
 
 #endif /* defined(XMLSEC_OPENSSL_API_111) */
 

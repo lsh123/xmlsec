@@ -36,6 +36,7 @@ see the Copyright file in the distribution for details.
     will be removed in the future.
   - (xmlsec-openssl, **not backward compatible**) Bumped the minimum supported version of LibreSSL to 4.0.0
     and BoringSSL to later than Oct 2024.
+  - (xmlsec-openssl) Refactored RSA-OAEP implementation and added support for AWS-LC and BoringSSL.
   - (xmlsec-nss) Added support for ML-DSA signature and ML-KEM key transport algorithms (requires NSS 3.129 or newer).
   - (xmlsec-mscng) Added support for ML-DSA signature (requires Windows 11 version 25H2 or Windows Server 2025)
     and ChaCha20-Poly1305 encryption algorithm (requires Windows 10 version 1803 or newer).

@@ -677,6 +677,29 @@ xmlSecKeyDataId
 xmlSecMSCryptoKeyDataDesGetKlass(void) {
     return(&xmlSecMSCryptoKeyDataDesKlass);
 }
+
+/**
+ * @brief Sets the value of DES key data.
+ * @param data the pointer to DES key data.
+ * @param buf the pointer to key value.
+ * @param bufSize the key value size (in bytes).
+ * @return 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecMSCryptoKeyDataDesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
+    xmlSecBufferPtr buffer;
+
+    /* the key size is not validated here to match the other backends; an
+     * invalid size is rejected by the DES transforms at use time */
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataDesId), -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufSize > 0, -1);
+
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
+    xmlSecAssert2(buffer != NULL, -1);
+
+    return(xmlSecBufferSetData(buffer, buf, bufSize));
+}
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_HMAC

@@ -690,24 +690,12 @@ xmlSecOpenSSLPbkdf2SetDigestNameFromHref(xmlSecOpenSSLKdfCtxPtr ctx, const xmlCh
         xmlSecStrdupError(BAD_CAST digestName, NULL);
         return(-1);
     }
-    ctx->mac = xmlStrdup(BAD_CAST SN_hmac);
-    if(ctx->mac == NULL) {
-        xmlSecStrdupError(BAD_CAST SN_hmac, NULL);
-        return(-1);
-    }
-
     /* set params */
     if(ctx->paramsPos >= XMLSEC_OPENSSL_KDF_MAX_PARAMS) {
         xmlSecInvalidSizeDataError("Kdf Params Number", ctx->paramsPos, "too big", NULL);
         return(-1);
     }
     ctx->params[ctx->paramsPos++] = OSSL_PARAM_construct_utf8_string(OSSL_KDF_PARAM_DIGEST, (char*)ctx->digest, strlen((char*)ctx->digest));
-
-    if(ctx->paramsPos >= XMLSEC_OPENSSL_KDF_MAX_PARAMS) {
-        xmlSecInvalidSizeDataError("Kdf Params Number", ctx->paramsPos, "too big", NULL);
-        return(-1);
-    }
-    ctx->params[ctx->paramsPos++] = OSSL_PARAM_construct_utf8_string(OSSL_KDF_PARAM_MAC, (char*)ctx->mac, strlen((char*)ctx->mac));
 
     /* done */
     return(0);

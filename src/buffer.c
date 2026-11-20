@@ -671,6 +671,8 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
         xmlSecBufferGetMaxSize(buf), &outWritten);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
+        /* do not leave the buffer in a partially-decoded, resized state */
+        xmlSecBufferEmpty(buf);
         goto done;
     }
 

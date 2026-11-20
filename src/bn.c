@@ -813,6 +813,8 @@ xmlSecBnGetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
  * @param reverse the flag that indicates if to reverse the buffer before writing.
  * @param addLineBreaks the flag; if it is equal to 1 then linebreaks will be added before and after new buffer content.
  *
+ * Note: the existing content of @p cur is replaced.
+ *
  * Note: if @p reverse is non-zero the buffer is reversed in place before it is
  * written; if a later step fails the BN is left reversed (the reversal is not
  * undone on the error path).
@@ -835,15 +837,27 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
         }
     }
 
+    /* replace the node content (with the leading linebreak if addLineBreaks
+       is set), the value is appended below */
     if(addLineBreaks) {
 #if LIBXML_VERSION >= 21300
-        if(xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
-            xmlSecXmlError("xmlNodeAddContent", cur);
+        if(xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
             return(-1);
         }
 #else /* LIBXML_VERSION >= 21300 */
-        /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
-        xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
+        xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed());
+#endif /* LIBXML_VERSION >= 21300 */
+    } else {
+#if LIBXML_VERSION >= 21300
+        if(xmlNodeSetContent(cur, xmlSecStringEmpty) < 0) {
+            xmlSecXmlError("xmlNodeSetContent", cur);
+            return(-1);
+        }
+#else /* LIBXML_VERSION >= 21300 */
+        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
+        xmlNodeSetContent(cur, xmlSecStringEmpty);
 #endif /* LIBXML_VERSION >= 21300 */
     }
 
@@ -861,15 +875,16 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
             xmlSecInternalError("xmlSecBnToHexString", NULL);
             return(-1);
         }
+        /* append the value to the content replaced above */
 #if LIBXML_VERSION >= 21300
-        if(xmlNodeSetContent(cur, content) < 0) {
-            xmlSecXmlError("xmlNodeSetContent", cur);
+        if(xmlNodeAddContent(cur, content) < 0) {
+            xmlSecXmlError("xmlNodeAddContent", cur);
             xmlFree(content);
             return(-1);
         }
 #else /* LIBXML_VERSION >= 21300 */
-        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
-        xmlNodeSetContent(cur, content);
+        /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
+        xmlNodeAddContent(cur, content);
 #endif /* LIBXML_VERSION >= 21300 */
         xmlFree(content);
         break;
@@ -879,15 +894,16 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
             xmlSecInternalError("xmlSecBnToDecString", NULL);
             return(-1);
         }
+        /* append the value to the content replaced above */
 #if LIBXML_VERSION >= 21300
-        if(xmlNodeSetContent(cur, content) < 0) {
-            xmlSecXmlError("xmlNodeSetContent", cur);
+        if(xmlNodeAddContent(cur, content) < 0) {
+            xmlSecXmlError("xmlNodeAddContent", cur);
             xmlFree(content);
             return(-1);
         }
 #else /* LIBXML_VERSION >= 21300 */
-        /* libxml2 < 2.13.0: xmlNodeSetContent() returns void and cannot report errors */
-        xmlNodeSetContent(cur, content);
+        /* libxml2 < 2.13.0: xmlNodeAddContent() returns void and cannot report errors */
+        xmlNodeAddContent(cur, content);
 #endif /* LIBXML_VERSION >= 21300 */
         xmlFree(content);
         break;

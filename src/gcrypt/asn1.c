@@ -376,7 +376,7 @@ xmlSecGCryptAsn1ParseIntegerSequence(
                                    SPKI/SubjectPublicKeyInfo form; only the
                                    traditional (PKCS#1) RSA formats are supported */
                                 xmlSecInvalidDataError("unsupported key format: a SEQUENCE was found inside a BIT STRING (e.g. an RSA key in SPKI/SubjectPublicKeyInfo form); use the traditional PKCS#1 format instead", NULL);
-                            } else if((remaining >= 1) && ((*p == 0x04) || (*p == 0x03) || (*p == 0x02))) {
+                            } else if((remaining >= 1) && ((*p == 0x04) || (*p == 0x03))) {
                                 if((*objectids_out_size) > 0) {
                                     /* a curve OID was seen (the [0] ECParameters
                                        namedCurve field) but it is not in the list
@@ -386,8 +386,10 @@ xmlSecGCryptAsn1ParseIntegerSequence(
                                     /* the EC point prefixes (0x04 uncompressed,
                                        0x03 or 0x02 compressed; 0x03 is also the
                                        BIT STRING tag value but here it is data,
-                                       not a tag) indicate an EC key without a
-                                       curve OID: this branch is only reached
+                                       not a tag; 0x02 is never seen here since
+                                       it equals TAG_INTEGER and is parsed as an
+                                       INTEGER instead) indicate an EC key without
+                                       a curve OID: this branch is only reached
                                        when no EC curve OID was seen, so the
                                        namedCurve OID (normally carried in the
                                        [0] ECParameters field of an

@@ -3769,8 +3769,9 @@ xmlSecAppGetOutputFilename(const char* inputFileName, const char* outputFileName
         goto done;
     }
     tmp2 = strrchr(inputBasename, '.');
-    if(tmp2 != NULL) {
-        // remove extension if any
+    if((tmp2 != NULL) && (tmp2 != inputBasename)) {
+        /** remove extension if any (a leading dot, e.g. in a dotfile name like
+         * ".hidden", is not an extension separator) */
         (*tmp2) = '\0';
     }
 #else /* !defined(_MSC_VER) */

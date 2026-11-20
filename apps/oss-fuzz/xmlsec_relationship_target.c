@@ -175,11 +175,11 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     (void)xmlSecTransformCtxXmlExecute(transform_ctx, nodes);
 
 done:
-    if (nodes != NULL) {
-        xmlSecNodeSetDestroy(nodes);
-    }
     if (transform_ctx != NULL) {
         xmlSecTransformCtxDestroy(transform_ctx);
+    }
+    if (nodes != NULL) {
+        xmlSecNodeSetDestroy(nodes);
     }
     if (relationships_doc != NULL) {
         xmlFreeDoc(relationships_doc);

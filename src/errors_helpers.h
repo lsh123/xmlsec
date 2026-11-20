@@ -838,13 +838,16 @@ extern "C" {
  * @param transform the transform.
  */
 #define xmlSecInvalidTransformStatusError(transform)    \
+    do {                                                \
+        const xmlSecTransform* _xmlsec_transform = (transform); \
         xmlSecError(XMLSEC_ERRORS_HERE,                 \
-                   (const char*)xmlSecTransformGetName(transform), \
+                   (const char*)xmlSecTransformGetName(_xmlsec_transform), \
                    NULL,                                \
                    XMLSEC_ERRORS_R_INVALID_STATUS,      \
                    "transformStatus=" XMLSEC_ENUM_FMT,  \
-                   XMLSEC_ENUM_CAST((transform) != NULL ? (transform)->status : xmlSecTransformStatusNone) \
-        )
+                   XMLSEC_ENUM_CAST((_xmlsec_transform) != NULL ? (_xmlsec_transform)->status : xmlSecTransformStatusNone) \
+        );                                              \
+    } while(0)
 
 /**
  * @brief Macro. Reports invalid transform status errors.
@@ -853,13 +856,16 @@ extern "C" {
  * @param msg the extra message (a string literal appended to the error format).
  */
 #define xmlSecInvalidTransformStatusError2(transform, msg) \
+    do {                                                    \
+        const xmlSecTransform* _xmlsec_transform = (transform); \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                   (const char*)xmlSecTransformGetName(transform), \
+                   (const char*)xmlSecTransformGetName(_xmlsec_transform), \
                    NULL,                                    \
                    XMLSEC_ERRORS_R_INVALID_STATUS,          \
                    "transformStatus=" XMLSEC_ENUM_FMT "; msg=" msg, \
-                   XMLSEC_ENUM_CAST((transform) != NULL ? (transform)->status : xmlSecTransformStatusNone) \
-        )
+                   XMLSEC_ENUM_CAST((_xmlsec_transform) != NULL ? (_xmlsec_transform)->status : xmlSecTransformStatusNone) \
+        );                                                  \
+    } while(0)
 
 /**
  * @brief Macro. Reports invalid key data size errors.

@@ -1082,7 +1082,7 @@ xmlSecTransformCtxPrepare(xmlSecTransformCtxPtr ctx, xmlSecTransformDataType inp
 
         /* need to add parser transform */
         transform = xmlSecTransformCtxCreateAndPrepend(ctx, xmlSecTransformXmlParserId);
-        if(transform == NULL) {
+        if(!xmlSecTransformIsValid(transform)) {
             xmlSecInternalError("xmlSecTransformCtxCreateAndPrepend(xmlSecTransformXmlParserId)", NULL);
             return(-1);
         }
@@ -1091,7 +1091,7 @@ xmlSecTransformCtxPrepare(xmlSecTransformCtxPtr ctx, xmlSecTransformDataType inp
 
         /* need to add c14n transform */
         transform = xmlSecTransformCtxCreateAndPrepend(ctx, xmlSecTransformInclC14NId);
-        if(transform == NULL) {
+        if(!xmlSecTransformIsValid(transform)) {
             xmlSecInternalError("xmlSecTransformCtxCreateAndPrepend(xmlSecTransformInclC14NId)", NULL);
             return(-1);
         }

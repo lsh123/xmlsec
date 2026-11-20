@@ -1059,8 +1059,10 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(secItem != NULL, -1);
     xmlSecAssert2(secItem->type == siBuffer, -1);
-    xmlSecAssert2(secItem->data != NULL, -1);
-    xmlSecAssert2(secItem->len > 0, -1);
+    if((secItem->data == NULL) || (secItem->len <= 0)) {
+        xmlSecInvalidDataError("certificate data is empty", NULL);
+        return(-1);
+    }
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     /*
@@ -1554,8 +1556,10 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
 
     xmlSecAssert2(secItem != NULL, NULL);
     xmlSecAssert2(secItem->type == siBuffer, NULL);
-    xmlSecAssert2(secItem->data != NULL, NULL);
-    xmlSecAssert2(secItem->len > 0, NULL);
+    if((secItem->data == NULL) || (secItem->len <= 0)) {
+        xmlSecInvalidDataError("certificate data is empty", NULL);
+        return(NULL);
+    }
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
     certDb = CERT_GetDefaultCertDB();
@@ -1750,8 +1754,10 @@ xmlSecNssAppKeysMngrCertLoadSECItem(
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(secItem != NULL, -1);
     xmlSecAssert2(secItem->type == siBuffer, -1);
-    xmlSecAssert2(secItem->data != NULL, -1);
-    xmlSecAssert2(secItem->len > 0, -1);
+    if((secItem->data == NULL) || (secItem->len <= 0)) {
+        xmlSecInvalidDataError("certificate data is empty", NULL);
+        return(-1);
+    }
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     /*

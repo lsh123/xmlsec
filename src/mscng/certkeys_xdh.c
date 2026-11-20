@@ -31,6 +31,48 @@
 #define XMLSEC_MSCNG_XDH_CBKEY_SIZE 32
 
 /**
+ * @brief Reduces a 32-byte little-endian X25519 u-coordinate modulo the Curve25519 field prime.
+ * @details CNG rejects public keys with a non-canonical u-coordinate (u >= p = 2^255 - 19)
+ * at import time, while RFC 7748 section 5 requires implementations to accept such values
+ * and process them reduced modulo the field prime. Since u < 2^256 and 2p = 2^256 - 38,
+ * at most two subtractions of p are needed.
+ * @param u pointer to a 32-byte little-endian u-coordinate, reduced modulo p in place.
+ */
+static void
+xmlSecMSCngXdhReduceUModP(xmlSecByte* u) {
+    static const xmlSecByte pBytes[XMLSEC_MSCNG_XDH_CBKEY_SIZE] = {
+        0xED, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F
+    };   /* Curve25519 field prime p = 2^255 - 19, little-endian */
+    int iter;
+    int i;
+    int borrow;
+
+    for(iter = 0; iter < 2; iter++) {
+        /* compare u and p as little-endian values (most significant byte first) */
+        for(i = XMLSEC_MSCNG_XDH_CBKEY_SIZE - 1; i >= 0; i--) {
+            if(u[i] != pBytes[i]) {
+                break;
+            }
+        }
+        if((i >= 0) && (u[i] < pBytes[i])) {
+            /* u < p: the value is already canonical */
+            return;
+        }
+
+        /* u >= p: subtract p (little-endian subtraction with borrow) */
+        borrow = 0;
+        for(i = 0; i < XMLSEC_MSCNG_XDH_CBKEY_SIZE; i++) {
+            int diff = (int)u[i] - (int)pBytes[i] - borrow;
+            u[i] = (xmlSecByte)(diff & 0xFF);
+            borrow = (diff < 0) ? 1 : 0;
+        }
+    }
+}
+
+/**
  * @brief Imports an X25519 public key into a BCrypt handle.
  * @details Imports a raw 32-byte Curve25519 u-coordinate as a BCrypt X25519 public key handle.
  * @param pubKeyBytes pointer to 32-byte X25519 public key (u-coordinate, little-endian).
@@ -66,6 +108,11 @@ xmlSecMSCngKeyDataXdhImportPublicKey(const xmlSecByte* pubKeyBytes, DWORD pubKey
     /* BCRYPT_ECCPUBLIC_BLOB stores the u-coordinate in the same byte order as the
      * standard X25519 wire format (little-endian per RFC 7748/8410).  Copy as-is. */
     memcpy(pbBlob + sizeof(BCRYPT_ECCKEY_BLOB), pubKeyBytes, XMLSEC_MSCNG_XDH_CBKEY_SIZE); /* u-coord at offset 8; v stays zero */
+    /* RFC 7748 section 5 requires masking the top bit when decoding X25519 u-coordinates. */
+    pbBlob[sizeof(BCRYPT_ECCKEY_BLOB) + (XMLSEC_MSCNG_XDH_CBKEY_SIZE - 1)] &= 0x7F;
+    /* CNG rejects a non-canonical u-coordinate (u >= p) at import time, while RFC 7748
+     * section 5 requires accepting it reduced modulo the field prime; canonicalize in place */
+    xmlSecMSCngXdhReduceUModP(pbBlob + sizeof(BCRYPT_ECCKEY_BLOB));
 
     /* Open ECDH algorithm provider and set Curve25519 */
     status = BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_ECDH_ALGORITHM, NULL, 0);

@@ -185,10 +185,17 @@ static void write_generated_symmetric(uint8_t selector) {
 
     /* Ids are function-call macros, not compile-time constants. */
     switch (selector % 4) {
+#ifndef XMLSEC_NO_AES
     case 0: id = xmlSecOpenSSLKeyDataAesId; sizeBits = 128; break;
     case 1: id = xmlSecOpenSSLKeyDataAesId; sizeBits = 256; break;
+#endif /* XMLSEC_NO_AES*/
+#ifndef XMLSEC_NO_HMAC
     case 2: id = xmlSecOpenSSLKeyDataHmacId; sizeBits = 256; break;
-    default: id = xmlSecOpenSSLKeyDataHmacId; sizeBits = 160; break;
+    case 3: id = xmlSecOpenSSLKeyDataHmacId; sizeBits = 160; break;
+#endif /* XMLSEC_NO_HMAC */
+    default:
+        /* the selected key data type is not available in this build */
+        return;
     }
     key = xmlSecKeyGenerate(id, sizeBits, xmlSecKeyDataTypeSymmetric);
     if (key == NULL) {
@@ -239,18 +246,24 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     }
 
     ids[nids++] = xmlSecKeyDataIdUnknown;
+#ifndef XMLSEC_NO_RSA
     ids[nids++] = xmlSecOpenSSLKeyDataRsaId;
+#endif /* XMLSEC_NO_RSA */
 #ifndef XMLSEC_NO_DSA
     ids[nids++] = xmlSecOpenSSLKeyDataDsaId;
-#endif
+#endif /* XMLSEC_NO_DSA */
 #ifndef XMLSEC_NO_EC
     ids[nids++] = xmlSecOpenSSLKeyDataEcId;
-#endif
+#endif /* XMLSEC_NO_EC */
 #ifndef XMLSEC_NO_DH
     ids[nids++] = xmlSecOpenSSLKeyDataDhId;
-#endif
+#endif /* XMLSEC_NO_DH */
+#ifndef XMLSEC_NO_AES
     ids[nids++] = xmlSecOpenSSLKeyDataAesId;
+#endif /* XMLSEC_NO_AES */
+#ifndef XMLSEC_NO_HMAC
     ids[nids++] = xmlSecOpenSSLKeyDataHmacId;
+#endif /* XMLSEC_NO_HMAC */
     for (i = 0; i < nids; i++) {
         read_keyinfo(node, ids[i]);
     }

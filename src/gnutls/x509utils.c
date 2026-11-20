@@ -1361,24 +1361,6 @@ xmlSecGnuTLSDnAttrKeyMatch(const xmlChar * key1, const xmlChar * key2) {
     return(0);
 }
 
-const xmlSecGnuTLSDnAttr *
-xmlSecGnuTLSDnAttrsFind(const xmlSecGnuTLSDnAttr * attrs, xmlSecSize attrsSize, const xmlChar * key) {
-    xmlSecSize ii;
-
-    xmlSecAssert2(attrs != NULL, NULL);
-    xmlSecAssert2(attrsSize > 0, NULL);
-    xmlSecAssert2(key != NULL, NULL);
-
-    for(ii = 0; ii < attrsSize; ++ii) {
-        if((attrs[ii].key != NULL) && xmlSecGnuTLSDnAttrKeyMatch(key, attrs[ii].key)) {
-            return(&(attrs[ii]));
-        }
-    }
-
-    /* not found :( */
-    return(NULL);
-}
-
 int
 xmlSecGnuTLSDnAttrsEqual(const xmlSecGnuTLSDnAttr * left, xmlSecSize leftSize,
                           const xmlSecGnuTLSDnAttr * right, xmlSecSize rightSize)

@@ -606,7 +606,7 @@ xmlSecMSCryptoKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
 HCRYPTKEY
 xmlSecMSCryptoKeyDataGetDecryptKey(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
-    HCRYPTKEY hKey;
+    HCRYPTKEY hKey = 0;
     DWORD dwKeySpec;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);

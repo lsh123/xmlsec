@@ -780,7 +780,9 @@ xmlSecKeySetNameEx(xmlSecKeyPtr key, const xmlChar* name, xmlSecSize nameSize) {
         XMLSEC_SAFE_CAST_SIZE_TO_INT(nameSize, nameLen, return(-1), NULL);
         key->name = xmlStrndup(name, nameLen);
         if(key->name == NULL) {
-            xmlSecStrdupError(name, NULL);
+            /* do not call xmlSecStrdupError() here: it computes xmlStrlen(name),
+             * but name may not be NUL-terminated (only nameSize bytes are valid) */
+            xmlSecMallocError(nameLen, NULL);
             return(-1);
         }
     }

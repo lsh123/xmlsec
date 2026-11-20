@@ -1203,37 +1203,36 @@ test_bits_to_bytes(void) {
     /* 0 and negative values give 0 bytes */
     if(XMLSEC_BITS_TO_BYTES(0) != 0) {
         testLog("Error: XMLSEC_BITS_TO_BYTES(0) should be 0\n");
-        testFinishedFailure();
-        return;
+        goto failed;
     }
     if(XMLSEC_BITS_TO_BYTES(-1) != 0) {
         testLog("Error: XMLSEC_BITS_TO_BYTES(-1) should be 0\n");
-        testFinishedFailure();
-        return;
+        goto failed;
     }
 
     /* 1..8 bits give 1 byte */
     if((XMLSEC_BITS_TO_BYTES(1) != 1) || (XMLSEC_BITS_TO_BYTES(8) != 1)) {
         testLog("Error: XMLSEC_BITS_TO_BYTES(1)/XMLSEC_BITS_TO_BYTES(8) should be 1\n");
-        testFinishedFailure();
-        return;
+        goto failed;
     }
 
     /* 9..16 bits give 2 bytes */
     if((XMLSEC_BITS_TO_BYTES(9) != 2) || (XMLSEC_BITS_TO_BYTES(16) != 2)) {
         testLog("Error: XMLSEC_BITS_TO_BYTES(9)/XMLSEC_BITS_TO_BYTES(16) should be 2\n");
-        testFinishedFailure();
-        return;
+        goto failed;
     }
 
     /* larger values */
     if((XMLSEC_BITS_TO_BYTES(32) != 4) || (XMLSEC_BITS_TO_BYTES(64) != 8)) {
         testLog("Error: XMLSEC_BITS_TO_BYTES(32)/XMLSEC_BITS_TO_BYTES(64) should be 4/8\n");
-        testFinishedFailure();
-        return;
+        goto failed;
     }
 
     testFinishedSuccess();
+    return;
+
+failed:
+    testFinishedFailure();
 }
 
 /******************************************************************************

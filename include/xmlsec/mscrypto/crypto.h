@@ -412,6 +412,9 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformKWAes256GetKlass(
 #define xmlSecMSCryptoKeyDataDesId \
         xmlSecMSCryptoKeyDataDesGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataDesGetKlass(void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeyDataDesSet     (xmlSecKeyDataPtr data,
+                                                                         const xmlSecByte* buf,
+                                                                         xmlSecSize bufSize);
 
 /**
  * @brief The DES3 CBC cipher transform klass.

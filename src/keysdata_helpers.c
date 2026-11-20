@@ -910,6 +910,11 @@ xmlSecKeyValueEcXmlRead(xmlSecKeyValueEcPtr data, xmlNodePtr node) {
         xmlFree(data->curve);
         data->curve = curve;
     }
+    /* re-check that the curve name is not empty after the oid prefix removal */
+    if(data->curve[0] == '\0') {
+        xmlSecInvalidNodeAttributeError(cur, xmlSecAttrURI, NULL, "empty");
+        return(-1);
+    }
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* second node is PublicKey node: read the "combined" public key only since many

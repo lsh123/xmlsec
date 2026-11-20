@@ -2564,6 +2564,10 @@ test_xmlSecReplaceContent_new_node_becomes_child(void) {
     ret = xmlSecReplaceContent(node, newNode);
     if(ret < 0) {
         testLog("Error: xmlSecReplaceContent returned %d\n", ret);
+        /* on error the newNode may have been detached from the tree and is
+           then owned by the caller (see the xmlSecReplaceContent docs) */
+        xmlUnlinkNode(newNode);
+        xmlFreeNode(newNode);
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -2806,6 +2810,10 @@ test_xmlSecReplaceContent_cross_document_new_node(void) {
     ret = xmlSecReplaceContent(node, newNode);
     if(ret < 0) {
         testLog("Error: xmlSecReplaceContent returned %d\n", ret);
+        /* on error the newNode may have been detached from its tree and is
+           then owned by the caller (see the xmlSecReplaceContent docs) */
+        xmlUnlinkNode(newNode);
+        xmlFreeNode(newNode);
         xmlFreeDoc(extDoc);
         xmlFreeDoc(doc);
         testFinishedFailure();
@@ -2898,6 +2906,13 @@ test_xmlSecReplaceContentAndReturn_returns_old_content_in_order(void) {
     ret = xmlSecReplaceContentAndReturn(node, newNode, &replaced);
     if(ret < 0) {
         testLog("Error: xmlSecReplaceContentAndReturn returned %d\n", ret);
+        /* on error the old content may have been detached into 'replaced'
+           (caller-owned) and the newNode may have been detached as well */
+        if(replaced != NULL) {
+            xmlFreeNodeList(replaced);
+        }
+        xmlUnlinkNode(newNode);
+        xmlFreeNode(newNode);
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -2997,6 +3012,11 @@ test_xmlSecReplaceContentAndReturn_empty_node_returns_null(void) {
     ret = xmlSecReplaceContentAndReturn(node, newNode, &replaced);
     if(ret < 0) {
         testLog("Error: xmlSecReplaceContentAndReturn returned %d\n", ret);
+        /* on error the newNode may have been detached from the tree and is
+           then owned by the caller; 'replaced' is left as-is because it may
+           still hold the non-NULL sentinel pointing inside the doc */
+        xmlUnlinkNode(newNode);
+        xmlFreeNode(newNode);
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;

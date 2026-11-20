@@ -306,12 +306,12 @@ xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     if(verifyKey != 0) {
         ret = xmlSecCryptoAppDefaultKeysMngrVerifyKey(mngr, key, keyInfoCtx);
         if(ret < 0) {
-            fprintf(stderr, "Error: xmlSecCryptoAppDefaultKeysMngrVerifyKey failed: engineAndKeyId='%s'\n",
+            fprintf(stderr, "Error: xmlSecCryptoAppDefaultKeysMngrVerifyKey failed: engineAndKeyId=%s\n",
                     xmlSecErrorsSafeString(engineAndKeyId));
             xmlSecKeyDestroy(key);
             return(-1);
         } else if(ret != 1) {
-            fprintf(stderr, "Error: key cannot be verified: engineAndKeyId='%s'\n",
+            fprintf(stderr, "Error: key cannot be verified: engineAndKeyId=%s\n",
                     xmlSecErrorsSafeString(engineAndKeyId));
             xmlSecKeyDestroy(key);
             return(-1);
@@ -344,7 +344,7 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
     key = xmlSecCryptoAppKeyLoadEx(filename, xmlSecKeyDataTypePrivate, xmlSecKeyDataFormatPkcs12, pwd,
                     xmlSecCryptoAppGetDefaultPwdCallback(), (void*)filename);
     if(key == NULL) {
-        fprintf(stderr, "Error: xmlSecCryptoAppKeyLoadEx failed: filename='%s'\n",
+        fprintf(stderr, "Error: xmlSecCryptoAppKeyLoadEx failed: filename=%s\n",
                 xmlSecErrorsSafeString(filename));
         return(-1);
     }
@@ -352,7 +352,7 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
     if(name != NULL) {
         ret = xmlSecKeySetName(key, BAD_CAST name);
         if(ret < 0) {
-            fprintf(stderr, "Error: xmlSecKeySetName failed: name='%s'\n",
+            fprintf(stderr, "Error: xmlSecKeySetName failed: name=%s\n",
                     xmlSecErrorsSafeString(name));
             xmlSecKeyDestroy(key);
             return(-1);
@@ -362,12 +362,12 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
     if(verifyKey != 0) {
         ret = xmlSecCryptoAppDefaultKeysMngrVerifyKey(mngr, key, keyInfoCtx);
         if(ret < 0) {
-            fprintf(stderr, "Error: xmlSecCryptoAppDefaultKeysMngrVerifyKey failed: filename='%s'\n",
+            fprintf(stderr, "Error: xmlSecCryptoAppDefaultKeysMngrVerifyKey failed: filename=%s\n",
                     xmlSecErrorsSafeString(filename));
             xmlSecKeyDestroy(key);
             return(-1);
         } else if(ret != 1) {
-            fprintf(stderr, "Error: key cannot be verified: filename='%s'\n",
+            fprintf(stderr, "Error: key cannot be verified: filename=%s\n",
                     xmlSecErrorsSafeString(filename));
             xmlSecKeyDestroy(key);
             return(-1);

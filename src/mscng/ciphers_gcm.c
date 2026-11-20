@@ -411,7 +411,10 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
      * actual nonce is carried in authInfo.pbNonce, and CNG's GCM implementation
      * takes the nonce from there (verified empirically: the computed tag matches
      * a reference AES-GCM implementation that uses the same pbNonce); BCrypt
-     * only requires a non-NULL pbIV buffer to be supplied. */
+     * requires a non-NULL pbIV buffer to be supplied. With chained calls the pbIV
+     * is ignored as input on the first call, but that call updates it and the
+     * updated value is then used by the subsequent calls, so the buffer is
+     * allocated once here and must not be re-zeroed between calls. */
     if (ctx->pbIV == NULL) {
         ctx->pbIV = xmlMalloc(blockSize);
         if (ctx->pbIV == NULL) {
@@ -567,7 +570,7 @@ xmlSecMSCngGcmBlockCipherCtxUpdate(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
 
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(ctx->dwBlockLen, blockSize, return(-1), cipherName);
     if(xmlSecBufferGetSize(in) < blockSize) {
-        return 0;
+        return(0);
     }
 
     inBuf = xmlSecBufferGetData(in);
@@ -588,7 +591,7 @@ xmlSecMSCngGcmBlockCipherCtxUpdate(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
          * blockSize bytes. See https://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM */
         inSize = ((xmlSecBufferGetSize(in) - xmlSecMSCngAesGcmTagLengthInBytes) / blockSize) * blockSize;
         if (inSize < blockSize) {
-            return 0;
+            return(0);
         }
     }
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, inLen, return(-1), cipherName);

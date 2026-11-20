@@ -1509,7 +1509,7 @@ test_xmlSecTmplX509IssuerSerialAddSerialNumber_content(void) {
 
 /******************************************************************************
  * xmlSecTmplTransformAddXPath nsList
-   *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTmplTransformAddXPath_ns_list(void) {
     xmlDocPtr doc = NULL;
@@ -1604,7 +1604,7 @@ test_xmlSecTmplTransformAddXPath_ns_list_malformed(void) {
 
 /******************************************************************************
  * optional attributes
-   *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTmplSignatureAddReference_with_type(void) {
     xmlNodePtr signNode = NULL;
@@ -1787,7 +1787,7 @@ test_xmlSecTmplEncDataCreate_optional_attributes(void) {
 /******************************************************************************
  * xmlSecTmplSignatureAddObject / xmlSecTmplReferenceAddTransform /
  * xmlSecTmplObjectAddSignProperties / xmlSecTmplObjectAddManifest
-   *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTmplSignatureAddObject_attributes(void) {
     xmlNodePtr signNode = NULL;
@@ -2092,7 +2092,7 @@ test_xmlSecTmplObjectAddManifest_with_reference(void) {
  * xmlSecTmplEncDataEnsureEncProperties / xmlSecTmplEncDataAddEncProperty /
  * xmlSecTmplEncDataGetEncMethodNode / xmlSecTmplCipherReferenceAddTransform /
  * xmlSecTmplReferenceListAddDataReference / xmlSecTmplReferenceListAddKeyReference
-   *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTmplEncDataEnsureEncProperties_and_AddEncProperty(void) {
     xmlNodePtr encNode = NULL;
@@ -2729,7 +2729,7 @@ test_xmlSecTmplReferenceListAdd_insertion_order(void) {
 /******************************************************************************
  * xmlSecTmplKeyInfoAddKeyValue / xmlSecTmplKeyInfoAddRetrievalMethod /
  * xmlSecTmplKeyInfoAddEncryptedKey / xmlSecTmplX509DataAdd*
-   *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTmplKeyInfoAddKeyValue(void) {
     xmlNodePtr signNode = NULL;
@@ -3365,7 +3365,7 @@ test_xmlSecTmplX509DataAddCRL(void) {
  * xmlSecTmplTransformAddHmacOutputLength / xmlSecTmplTransformAddRsaOaepParam /
  * xmlSecTmplTransformAddRsaMgf / xmlSecTmplTransformAddRsaDigest /
  * xmlSecTmplTransformAddXsltStylesheet
-   *****************************************************************************/
+ *****************************************************************************/
 static void
 test_xmlSecTmplTransformAddHmacOutputLength(void) {
     xmlDocPtr doc = NULL;
@@ -3653,7 +3653,7 @@ test_xmlSecTmplTransformAddXsltStylesheet_malformed(void) {
 
 /******************************************************************************
  * exported entry point
-   *****************************************************************************/
+ *****************************************************************************/
 int
 test_templates(void) {
     int success = 1;

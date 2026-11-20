@@ -274,7 +274,7 @@ xmlSecMSCngKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
     xmlSecMSCngX509DataCtxPtr ctx;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), -1);
-    xmlSecAssert2(crl != 0, -1);
+    xmlSecAssert2(crl != NULL, -1);
 
     ctx = xmlSecMSCngX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);

@@ -16,11 +16,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <errno.h>
 #include <time.h>
 
 #include <prmem.h>
-#include <pratom.h>
 #include <keyhi.h>
 #include <cert.h>
 #include <certdb.h>

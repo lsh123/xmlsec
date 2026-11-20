@@ -50,7 +50,7 @@ struct _xmlSecGnuTLSBlockCipherCtx {
     xmlSecSize                  blockSize;
     xmlSecSize                  ivSize;
     int                         isIvPrepended;  /* 1 for CBC (IV prepended to stream), 0 for stream ciphers (IV from XML) */
-    int                         accumulateAll;  /* 1 to accumulate all input before processing (required for GnuTLS stream ciphers) */
+    int                         accumulateAll;  /* 1 to accumulate all input and process it in a single cipher call (a design choice; GnuTLS supports incremental updates) */
     xmlSecSize                  ivRandomOffset;
 
     gnutls_cipher_hd_t          cipher;

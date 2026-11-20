@@ -3,9 +3,10 @@
  *
  * Threat model: certificates and CRLs are attacker-controlled in X509Data
  * elements of signatures, and CRL validation decides revocation. Production
- * coverage: src/openssl/x509vfy.c 487/1701 lines, 26/49 functions unreached
- * (VerifyCrl, FindBestCrl, VerifyCertAgainstRevoked, FilterCrlsByTime are
- * never called by the signature-verify harness); openssl/app.c 97/1359.
+ * coverage at the time this target was written: src/openssl/x509vfy.c
+ * 487/1701 lines, 26/49 functions unreached (VerifyCrl, FindBestCrl,
+ * VerifyCertAgainstRevoked, FilterCrlsByTime are never called by the
+ * signature-verify harness); openssl/app.c 97/1359.
  *
  * Input container (cheap, mutator-friendly):
  *   byte 0      : format selector (Pem/Der) and cert trust-type bit

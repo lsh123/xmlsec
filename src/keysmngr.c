@@ -469,7 +469,7 @@ xmlSecSimpleKeysStoreEnableAllKeyData(xmlSecKeyInfoCtxPtr keyInfoCtx) {
  * @details Reads keys from an XML file. The X509 certificates and other key information are
  * extracted and added to the keys store using the provided adopt callback. The certificates
  * are not verified.
- * @param store the pointer to simple keys store.
+ * @param store the pointer to the keys store.
  * @param uri the filename.
  * @param keysMngr the pointer to associated keys manager.
  * @param adoptKeyFunc the callback to add the key to the keys store.

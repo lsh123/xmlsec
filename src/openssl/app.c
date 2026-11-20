@@ -86,7 +86,7 @@ static xmlSecKeyPtr xmlSecOpenSSLAppStoreKeyLoad        (const char *uri,
 XMLSEC_PTR_TO_FUNC_IMPL(pem_password_cb)
 XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
 
-/* helpers to overwrite global context temporarily for OpenSSL 3.0 */
+/* helpers to override global context temporarily for OpenSSL 3.0 */
 #if !defined(XMLSEC_OPENSSL_API_111)
 #define XMLSEC_OPENSSL_PUSH_LIB_CTX(on_error)      \
     {                                              \

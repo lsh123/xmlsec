@@ -851,7 +851,7 @@ test_xmlSecBnAdd_zeroResultAndTrimBoundaries(void) {
         return;
     }
 
-    /* 0x80 - 1 = 127: leading zero bytes are trimmed away */
+    /* 0x80 - 1 = 127: single-byte result 0x7F, nothing to trim */
     if(testBnAddWithData(&bn, "80", -1, "7F", plus127, sizeof(plus127)) < 0) {
         xmlSecBnFinalize(&bn);
         testFinishedFailure();

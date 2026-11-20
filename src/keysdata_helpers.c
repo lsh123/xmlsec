@@ -239,7 +239,7 @@ done:
 /**
  * @brief Base64 encodes key data and writes to an XML node.
  * @details Base64 encodes binary key data of klass @p id from the @p key and
- * sets to the @p node content.
+ * sets it as the @p node content.
  * @param id the data klass.
  * @param key the pointer to source key.
  * @param node the pointer to an XML node.
@@ -2102,7 +2102,7 @@ xmlSecKeyValueDsaXmlRead(xmlSecKeyValueDsaPtr data, xmlNodePtr node) {
         /* intentionally ignored */
         cur = xmlSecGetNextElementNode(cur->next);
     }
-    /* we don't require BOTH seed and pgenCounter nodes to be present; or BOTH to be absent
+    /* we don't require BOTH seed and pgenCounter nodes to be present, or BOTH to be absent,
      * since we don't process those nodes anyway */
 
     if(cur != NULL) {

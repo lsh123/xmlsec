@@ -42,7 +42,7 @@ static int g_xmlSecGCryptSecureMemoryInitialized = 0;
 int
 xmlSecGCryptAppInit(const char* config XMLSEC_ATTRIBUTE_UNUSED) {
     gcry_error_t err;
-    /* Secure memory initialisation based on documentation from:
+    /* Secure memory initialization based on documentation from:
          http://www.gnupg.org/documentation/manuals/gcrypt/Initializing-the-library.html
         NOTE sample code doesn't check gcry_control(...) return code
 

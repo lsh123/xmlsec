@@ -227,9 +227,9 @@ test_buffer_default_alloc_mode(void) {
         goto done;
     }
 
-    /* With exact mode the implementation allocates size+8 (clamped to the
-     * initial size of 8), so maxSize must be exactly 9; in double mode it
-     * would be 2*size+32 = 34. */
+    /* With exact mode the implementation allocates size+8 (the initial size
+     * of 8 acts only as a lower bound and is not active here), so maxSize
+     * must be exactly 9; in double mode it would be 2*size+32 = 34. */
     maxSize = xmlSecBufferGetMaxSize(buf);
     if(maxSize != 9) {
         testLog("Error: maxSize=" XMLSEC_SIZE_FMT " expected 9\n", maxSize);

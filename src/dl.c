@@ -588,7 +588,7 @@ xmlSecCryptoDLGetLibraryFunctions(const xmlChar* crypto) {
 /**
  * @brief Unloads a crypto library.
  * @details Unloads the xmlsec-$crypto library. All pointers to this library's
- * functions tables become invalid. This function is NOT thread safe; the
+ * functions table become invalid. This function is NOT thread safe; the
  * application MUST NOT call #xmlSecCryptoDLLoadLibrary,
  * #xmlSecCryptoDLGetLibraryFunctions, and #xmlSecCryptoDLUnloadLibrary from
  * multiple threads.
@@ -690,7 +690,7 @@ xmlSecCryptoDLGetFunctions(void) {
 
 /**
  * @brief Registers key data and transforms from a crypto library.
- * @details Registers the key data and transforms klasses from @p functions table in xmlsec.
+ * @details Registers the key data and transforms klasses from the @p functions table in xmlsec.
  * @param functions the functions table.
  * @return 0 on success or a negative value if an error occurs.
  */

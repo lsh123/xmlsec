@@ -607,13 +607,13 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
  * @details The SignedInfo Element (http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo)
  *
  * The structure of SignedInfo includes the canonicalization algorithm,
- * a result algorithm, and one or more references. The SignedInfo element
+ * a signature algorithm, and one or more references. The SignedInfo element
  * may contain an optional ID attribute that will allow it to be referenced by
  * other signatures and objects.
  *
- * SignedInfo does not include explicit result or digest properties (such as
+ * SignedInfo does not include explicit signature or digest properties (such as
  * calculation time, cryptographic device serial number, etc.). If an
- * application needs to associate properties with the result or digest,
+ * application needs to associate properties with the signature or digest,
  * it may include such information in a SignatureProperties element within
  * an Object element.
  *
@@ -912,7 +912,7 @@ xmlSecDSigCtxProcessObjectNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
  * the digests are actually checked against the objects referenced and what to
  * do if the object is inaccessible or the digest compare fails. If a Manifest
  * is pointed to from SignedInfo, the digest over the Manifest itself will be
- * checked by the core result validation behavior. The digests within such
+ * checked by the core signature validation behavior. The digests within such
  * a Manifest are checked at the application's discretion. If a Manifest is
  * referenced from another Manifest, even the overall digest of this two-level-deep
  * Manifest might not be checked.

@@ -114,7 +114,7 @@ typedef xmlSecKeyDataPtr       (*xmlSecKeyDataEcRead)                   (xmlSecK
                                                                          xmlSecKeyValueEcPtr ecValue);
 
 /**
- * @brief Writes xmlSecKeyData to xmlSecKeyValueEc.
+ * @brief Writes xmlSecKeyData to #xmlSecKeyValueEc.
  * @param id the key data ID.
  * @param data the pointer to input xmlSecKeyData.
  * @param ecValue the pointer to the xmlSecKeyValueEc value struct to be filled by the callback.
@@ -169,7 +169,7 @@ typedef xmlSecKeyDataPtr       (*xmlSecKeyDataRsaRead)                  (xmlSecK
                                                                          xmlSecKeyValueRsaPtr rsaValue);
 
 /**
- * @brief Writes xmlSecKeyData to xmlSecKeyValueRsa.
+ * @brief Writes xmlSecKeyData to #xmlSecKeyValueRsa.
  * @param id the key data ID.
  * @param data the pointer to input xmlSecKeyData.
  * @param rsaValue the pointer to the xmlSecKeyValueRsa value struct to be filled by the callback.
@@ -224,7 +224,7 @@ typedef xmlSecKeyDataPtr       (*xmlSecKeyDataDhRead)                   (xmlSecK
                                                                          xmlSecKeyValueDhPtr dhValue);
 
 /**
- * @brief Writes xmlSecKeyData to xmlSecKeyValueDh.
+ * @brief Writes xmlSecKeyData to #xmlSecKeyValueDh.
  * @param id the key data ID.
  * @param data the pointer to input xmlSecKeyData.
  * @param dhValue the pointer to the xmlSecKeyValueDh value struct to be filled by the callback.
@@ -278,7 +278,7 @@ typedef xmlSecKeyDataPtr       (*xmlSecKeyDataDsaRead)                  (xmlSecK
                                                                          xmlSecKeyValueDsaPtr dsaValue);
 
 /**
- * @brief Writes xmlSecKeyData to xmlSecKeyValueDsa.
+ * @brief Writes xmlSecKeyData to #xmlSecKeyValueDsa.
  * @param id the key data ID.
  * @param data the pointer to input xmlSecKeyData.
  * @param dsaValue the pointer to the xmlSecKeyValueDsa value struct to be filled by the callback.

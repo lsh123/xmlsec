@@ -144,7 +144,7 @@ xmlSecOpenSSLEvpDigestCheckId(xmlSecTransformPtr transform) {
     }
 }
 
-/* small helper macro to reduce clutter in the code */
+/* small helpers to reduce clutter in the code */
 #if !defined(XMLSEC_OPENSSL_API_111)
 
 static int

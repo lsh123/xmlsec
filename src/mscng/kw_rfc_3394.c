@@ -222,7 +222,7 @@ xmlSecMSCngKWAesInitialize(xmlSecTransformPtr transform) {
     }
     if (cbKeyObject == 0) {
         xmlSecInternalError2("BCryptGetProperty", xmlSecTransformGetName(transform),
-            "size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbKeyObject);
+            "unexpected key object size=" XMLSEC_SIZE_FMT, (xmlSecSize)cbKeyObject);
         xmlSecMSCngKWAesFinalize(transform);
         return(-1);
     }

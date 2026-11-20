@@ -201,7 +201,7 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
         memcpy(blobData + offset + (pSize - ySize), pYBlob->pbData, ySize);
     } else {
 #if XMLSEC_MSCNG_HAVE_DSA_V2
-        /* V2: BCRYPT_DSA_KEY_BLOB_V2 for keys > 1024-bit (up to 4096-bit)
+        /* V2: BCRYPT_DSA_KEY_BLOB_V2 for keys > 1024-bit (up to 3072-bit)
          * layout: header + seed[cbSeedLength] + q[cbGroupSize] + p[cbKey] + g[cbKey] + y[cbKey] */
         if(pSize > XMLSEC_MSCNG_DSA_MAX_P_SIZE) {
             xmlSecInvalidSizeMoreThanError("DSA P size", (xmlSecSize)pSize, (xmlSecSize)XMLSEC_MSCNG_DSA_MAX_P_SIZE, NULL);
@@ -553,7 +553,7 @@ done:
 
 /* Reads a DSA public key from the p, q, g, y values, builds the
  * appropriate BCrypt DSA public key blob (V1 for keys up to 1024-bit,
- * V2 for larger keys up to 4096-bit) and imports it via
+ * V2 for larger keys up to 3072-bit) and imports it via
  * BCryptImportKeyPair. Returns a new key data object adopting the
  * imported public key on success, or NULL on failure. The returned
  * key data must be destroyed by the caller. */
@@ -600,7 +600,7 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
 
     /* turn the read data into a public key blob.
      * We support both V1 (BCRYPT_DSA_KEY_BLOB, q up to 20 bytes, keys up to 1024-bit)
-     * and V2 (BCRYPT_DSA_KEY_BLOB_V2, q up to 32 bytes, keys up to 4096-bit).
+     * and V2 (BCRYPT_DSA_KEY_BLOB_V2, q up to 32 bytes, keys up to 3072-bit).
      * Both use BCRYPT_DSA_ALGORITHM and BCRYPT_DSA_PUBLIC_BLOB; the magic field
      * distinguishes them.
      */
@@ -635,7 +635,7 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         blobSize = offset + pSize * 3;
     } else {
 #if XMLSEC_MSCNG_HAVE_DSA_V2
-        /* V2: BCRYPT_DSA_KEY_BLOB_V2 for larger keys (up to 4096-bit),
+        /* V2: BCRYPT_DSA_KEY_BLOB_V2 for larger keys (up to 3072-bit),
          * layout: header + seed[cbSeedLength] + q[cbGroupSize] + p[cbKey] + g[cbKey] + y[cbKey] */
         offset = sizeof(BCRYPT_DSA_KEY_BLOB_V2);
         blobSize = offset + qBlobSize + qBlobSize + pSize * 3; /* seed + q + p + g + y */
@@ -687,7 +687,7 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         offset += pSize; /* ySize <= pSize */
     } else {
 #if XMLSEC_MSCNG_HAVE_DSA_V2
-        /* V2: BCRYPT_DSA_KEY_BLOB_V2 for keys > 1024-bit (up to 4096-bit) */
+        /* V2: BCRYPT_DSA_KEY_BLOB_V2 for keys > 1024-bit (up to 3072-bit) */
         DWORD dwQLen;
         BCRYPT_DSA_KEY_BLOB_V2* dsakey2;
 

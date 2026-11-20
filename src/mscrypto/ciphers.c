@@ -327,7 +327,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     if(encrypt) {
         DWORD dwBufLen;
 
-        /* Padding is handled manually above; the call passes dwFlags=0 so the provider does not add its own padding. */
+        /* Padding is handled manually above; the call passes Final=FALSE so the provider does not add its own padding (dwFlags is reserved and must always be 0). */
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG((inSize + blockSize), dwBufLen, return(-1), cipherName);
         if(!CryptEncrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen, dwBufLen)) {
             xmlSecMSCryptoError("CryptEncrypt", cipherName);

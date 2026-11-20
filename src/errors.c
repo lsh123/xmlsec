@@ -25,7 +25,7 @@
 #define XMLSEC_ERRORS_BUFFER_SIZE       1024
 
 /* Must fit into xmlChar[XMLSEC_ERRORS_BUFFER_SIZE] */
-static const xmlChar fatal_error[] = "Can not format error message";
+static const xmlChar fatal_error[] = "Cannot format error message";
 
 typedef struct _xmlSecErrorDescription                  xmlSecErrorDescription, *xmlSecErrorDescriptionPtr;
 struct _xmlSecErrorDescription {

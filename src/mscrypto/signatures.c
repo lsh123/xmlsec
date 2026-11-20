@@ -603,7 +603,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             return (-1);
         }
 
-        /* First try: create hash with provider acquired in xmlSecMSCryptoKeyDataAdoptCert.
+        /* First try: create hash with the provider acquired during key adoption or key generation.
          * Zero the out-handle first: it is not guaranteed to be zeroed on failure, so
          * a failed attempt must not leave an indeterminate handle for Finalize to destroy. */
         ctx->mscHash = 0;

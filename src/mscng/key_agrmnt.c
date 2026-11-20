@@ -617,7 +617,7 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
         goto done;
     }
 
-    /* get key */
+    /* get key agreement secret */
     status = NCryptDeriveKey(
         hSecret,
         BCRYPT_KDF_RAW_SECRET,

@@ -216,7 +216,7 @@ xmlSecIOCleanupCallbacks(void) {
 
 /**
  * @brief Registers I/O callbacks for parser input.
- * @details Register a new set of I/O callbacks for handling parser input.
+ * @details Registers a new set of I/O callbacks for handling parser input.
  * If an open callback is provided, the read and close callbacks should be
  * provided as well; otherwise a successfully opened resource will never
  * be read from or closed.
@@ -560,7 +560,7 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
     xmlSecAssert2(ctx->clbksCtx == NULL, -1);
 
     /*
-     * Try to find one of the input accept methods accepting that scheme.
+     * Try to find one of the registered I/O callback sets that accepts that scheme.
      * Go in reverse to give precedence to user-defined handlers.
      *
      * The URI is passed to the match and open callbacks as-is (without

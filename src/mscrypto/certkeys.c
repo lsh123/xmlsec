@@ -403,7 +403,7 @@ static xmlSecSize xmlSecMSCryptoKeyDataGetSize    (xmlSecKeyDataPtr data);
 
 /**
  * @brief Sets the value of key data.
- * @param data the pointer to MSCrypto pccert data.
+ * @param data the pointer to the MSCrypto key data object.
  * @param pCert the pointer to PCCERT key.
  * @param type the key type.
  * @return 0 on success or a negative value otherwise.
@@ -841,7 +841,7 @@ xmlSecMSCryptoKeyDataGetSize(xmlSecKeyDataPtr data) {
             DWORD lenlen = sizeof(length);
 
             if((cryptKey == 0) || (!CryptGetKeyParam(cryptKey, KP_KEYLEN, (BYTE *)&length, &lenlen, 0))) {
-                xmlSecMSCryptoError("CertGetPublicKeyLength", NULL);
+                xmlSecMSCryptoError("CryptGetKeyParam", NULL);
                 return(0);
             }
         }
@@ -1503,7 +1503,7 @@ xmlSecMSCryptoKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /* Exponent: strip trailing zero bytes from the big-endian value */
+    /* Exponent: strip the most-significant zero bytes (pubexp is a native little-endian DWORD, so they are the trailing bytes of the in-memory representation) */
     blob = (xmlSecByte*)(&(pubKey->pubexp));
     exponentLen = sizeof(pubKey->pubexp);
     while (exponentLen > 0 && blob[exponentLen - 1] == 0) {

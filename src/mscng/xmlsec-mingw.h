@@ -78,7 +78,7 @@
 
 /* HKDF KDF parameters */
 #ifndef KDF_HKDF_INFO
-#define KDF_HKDF_INFO                       20
+#define KDF_HKDF_INFO                       0x14
 #endif /* KDF_HKDF_INFO */
 #ifndef BCRYPT_HKDF_HASH_ALGORITHM
 #define BCRYPT_HKDF_HASH_ALGORITHM          L"HkdfHashAlgorithm"
@@ -126,7 +126,9 @@
 
 /* ---- wincrypt.h ---------------------------------------------------------- */
 
-/* MinGW may ship older wincrypt.h that lacks CERT_FIND_SHA256_HASH */
+/* MinGW may ship older wincrypt.h that lacks CERT_FIND_SHA256_HASH, and it is
+ * also missing from the Windows SDK 10.0.22621 wincrypt.h (added in SDK
+ * 10.0.26100, where CERT_COMPARE_SHA256_HASH is 22). */
 #ifndef CERT_FIND_SHA256_HASH
 #define CERT_FIND_SHA256_HASH               (22 << 16)
 #endif /* CERT_FIND_SHA256_HASH */

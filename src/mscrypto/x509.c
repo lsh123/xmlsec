@@ -17,8 +17,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
-#include <errno.h>
 #include <time.h>
 
 #include <xmlsec/xmlsec.h>
@@ -201,7 +199,7 @@ xmlSecMSCryptoKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert
 
     /* CertAddCertificateContextToStore creates a new copy of the certificate context
      * https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcertificatecontexttostore */
-    if (!CertAddCertificateContextToStore(ctx->hMemStore, cert, CERT_STORE_ADD_USE_EXISTING,  NULL)) {
+    if (!CertAddCertificateContextToStore(ctx->hMemStore, cert, CERT_STORE_ADD_USE_EXISTING, NULL)) {
         xmlSecMSCryptoError("CertAddCertificateContextToStore", NULL);
         return(-1);
     }

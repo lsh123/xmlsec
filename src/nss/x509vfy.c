@@ -439,7 +439,7 @@ xmlSecNssX509StoreRemoveRevokedCerts(
             xmlSecNssError("CERT_DupCertificate", NULL);
             return(-1);
         }
-        rv = CERT_AddCertToListTail((*res),  cert);
+        rv = CERT_AddCertToListTail((*res), cert);
         if(rv != SECSuccess) {
             xmlSecNssError("CERT_AddCertToListTail", NULL);
             CERT_DestroyCertificate(cert);
@@ -594,7 +594,7 @@ xmlSecNssX509StoreVerifyCert(
      * is performed. */
     status = CERT_VerifyCertificate(handle, cert, PR_TRUE,
                 usage,
-                verificationTime , NULL, NULL, NULL);
+                verificationTime, NULL, NULL, NULL);
     if(status == SECSuccess) {
         return(1);
     }
@@ -1535,7 +1535,7 @@ int xmlSecNssX509FindCertCtxInitialize(
             xmlSecNssX509FindCertCtxFinalize(ctx);
             return(-1);
         }
-        ctx->subjectNameItem = SEC_ASN1EncodeItem(ctx->arena, NULL, (void *)ctx->subjectName , SEC_ASN1_GET(CERT_NameTemplate));
+        ctx->subjectNameItem = SEC_ASN1EncodeItem(ctx->arena, NULL, (void *)ctx->subjectName, SEC_ASN1_GET(CERT_NameTemplate));
         if (ctx->subjectNameItem == NULL) {
             xmlSecNssError2("SEC_ASN1EncodeItem(subjectName)", NULL,
                 "subjectName=%s", xmlSecErrorsSafeString(subjectName));
@@ -1555,7 +1555,7 @@ int xmlSecNssX509FindCertCtxInitialize(
             xmlSecNssX509FindCertCtxFinalize(ctx);
             return(-1);
         }
-        ctx->issuerNameItem = SEC_ASN1EncodeItem(ctx->arena, NULL, (void *)ctx->issuerName , SEC_ASN1_GET(CERT_NameTemplate));
+        ctx->issuerNameItem = SEC_ASN1EncodeItem(ctx->arena, NULL, (void *)ctx->issuerName, SEC_ASN1_GET(CERT_NameTemplate));
         if (ctx->issuerNameItem == NULL) {
             xmlSecNssError2("SEC_ASN1EncodeItem(issuerName)", NULL,
                 "issuerName=%s", xmlSecErrorsSafeString(issuerName));
@@ -1667,8 +1667,8 @@ xmlSecNssX509MatchByIssuer(xmlSecNssX509FindCertCtxPtr ctx, CERTCertificate* cer
     }
 
     if (
-        SECITEM_ItemsAreEqual(&(cert->derIssuer),  &(ctx->issuerAndSN.derIssuer)) &&
-        SECITEM_ItemsAreEqual(&(cert->serialNumber),  &(ctx->issuerAndSN.serialNumber))
+        SECITEM_ItemsAreEqual(&(cert->derIssuer), &(ctx->issuerAndSN.derIssuer)) &&
+        SECITEM_ItemsAreEqual(&(cert->serialNumber), &(ctx->issuerAndSN.serialNumber))
     ) {
         /* found a match */
         return(1);

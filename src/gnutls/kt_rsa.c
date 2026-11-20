@@ -683,7 +683,7 @@ xmlSecGnuTLSRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
             xmlSecInvalidTransformError2(transform,
                 "GnuTLS does not support RSA-OAEP with the SHA1 or SHA-224 digest algorithm (%s): "
                 "use SHA-256, SHA-384 or SHA-512 instead",
-                (oaepParams.digestAlgorithm != NULL) ? (const char*)oaepParams.digestAlgorithm
+                (oaepParams.digestAlgorithm != NULL) ? xmlSecErrorsSafeString(oaepParams.digestAlgorithm)
                                                      : "SHA1 (default)");
         }
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);

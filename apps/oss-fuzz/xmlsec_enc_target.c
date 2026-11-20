@@ -61,7 +61,7 @@ static const struct {
 };
 #define G_SYM_NKEYS ((int)(sizeof(g_sym_keys) / sizeof(g_sym_keys[0])))
 
-/* Public test-suite key from tests/merlin-xmlenc-five/rsapriv.pem, named
+/* Private test-suite key from tests/merlin-xmlenc-five/rsapriv.pem, named
  * merlin-rsa-key by tests/testEnc.sh. This is test material, not a production
  * secret. The PEM lines are reassembled with newlines at runtime. */
 static const char* const g_key_lines[] = {
@@ -231,9 +231,9 @@ static void restrict_uris(xmlSecEncCtxPtr encCtx) {
         xmlSecTransformUriTypeEmpty | xmlSecTransformUriTypeSameDocument;
 }
 
-/* xmlSecEncCtxDecrypt() replaces the encrypted node in its document, so it is
- * given the last turn. Both entry points are driven because they diverge on
- * how the decrypted octets are returned. */
+/* Both entry points are driven because they diverge on how the decrypted
+ * octets are returned. They run on separate documents (a copy and the
+ * original), so the order in which they run is not consequential. */
 static void decrypt_to_buffer(xmlDocPtr doc) {
     xmlSecEncCtxPtr encCtx = NULL;
     xmlNodePtr node = xmlSecFindNode(xmlDocGetRootElement(doc),

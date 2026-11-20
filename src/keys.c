@@ -517,7 +517,7 @@ xmlSecKeyReqDebugXmlDump(xmlSecKeyReqPtr keyReq, FILE* output) {
  * or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecKeyCreate(void)  {
+xmlSecKeyCreate(void) {
     xmlSecKeyPtr key;
 
     /* Allocate a new xmlSecKey and fill the fields. */

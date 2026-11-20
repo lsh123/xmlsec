@@ -814,7 +814,7 @@ xmlSecOpenSSLKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x5
     xmlSecAssert2(x509Value != NULL, -1);
     xmlSecAssert2(keysMngr != NULL, -1);
 
-    /* read CRT or CRL */
+    /* read CERT or CRL */
     if(xmlSecBufferGetSize(&(x509Value->cert)) > 0) {
         cert = xmlSecOpenSSLX509CertDerRead(xmlSecBufferGetData(&(x509Value->cert)),
             xmlSecBufferGetSize(&(x509Value->cert)));
@@ -2144,7 +2144,6 @@ xmlSecOpenSSLX509CertDebugXmlDump(X509* cert, FILE* output) {
 /******************************************************************************
  *
  * Raw X509 Certificate processing
- *
  *
  *****************************************************************************/
 static int              xmlSecOpenSSLKeyDataRawX509CertBinRead  (xmlSecKeyDataId id,

@@ -13,7 +13,6 @@
 
 #ifndef XMLSEC_NO_XSLT
 
-#include <stdlib.h>
 #include <string.h>
 
 #include <libxml/tree.h>
@@ -384,6 +383,14 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         ret = xmlParseChunk(ctx->parserCtx, NULL, 0, 1);
         if((ret != 0) || (ctx->parserCtx->myDoc == NULL)) {
             xmlSecXmlParserError("xmlParseChunk", ctx->parserCtx, xmlSecTransformGetName(transform));
+            transform->status = xmlSecTransformStatusFail;
+            return(-1);
+        }
+
+        /* check the wellFormed flag explicitly
+         * (same contract as xmlSecParseFile and xmlSecParseMemory) */
+        if(!(ctx->parserCtx->wellFormed)) {
+            xmlSecInternalError("document is not well formed", NULL);
             transform->status = xmlSecTransformStatusFail;
             return(-1);
         }

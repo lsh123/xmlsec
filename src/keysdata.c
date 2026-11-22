@@ -217,7 +217,7 @@ xmlSecKeyDataIdsRegisterDefault(void) {
  * or NULL if an error occurs.
  */
 xmlSecKeyDataPtr
-xmlSecKeyDataCreate(xmlSecKeyDataId id)  {
+xmlSecKeyDataCreate(xmlSecKeyDataId id) {
     xmlSecKeyDataPtr data;
     int ret;
 
@@ -485,7 +485,7 @@ xmlSecKeyDataDebugXmlDump(xmlSecKeyDataPtr data, FILE *output) {
  * Keys Data list
  *
  *****************************************************************************/
-/* the list calls these through the xmlSecPtr*ItemMethod types, see xmlSecKeyPtrListDestroyItem() */
+/* the list calls these through the xmlSecPtr*ItemMethod types, see xmlSecKeyDataListDestroyItem() */
 static xmlSecPtr
 xmlSecKeyDataListDuplicateItem(xmlSecPtr ptr) {
     return(xmlSecKeyDataDuplicate((xmlSecKeyDataPtr)ptr));
@@ -745,7 +745,7 @@ xmlSecKeyDataIdListDebugXmlDump(xmlSecPtrListPtr list, FILE* output) {
  * or NULL if an error occurs.
  */
 xmlSecKeyDataStorePtr
-xmlSecKeyDataStoreCreate(xmlSecKeyDataStoreId id)  {
+xmlSecKeyDataStoreCreate(xmlSecKeyDataStoreId id) {
     xmlSecKeyDataStorePtr store;
     int ret;
 
@@ -820,7 +820,7 @@ xmlSecKeyDataStorePtrListGetKlass(void) {
     return(&xmlSecKeyDataStorePtrListKlass);
 }
 
-/* the list calls destroyItem as xmlSecPtrDestroyItemMethod, see xmlSecKeyPtrListDestroyItem() */
+/* the list calls destroyItem as xmlSecPtrDestroyItemMethod, see xmlSecKeyDataStorePtrListDestroyItem() */
 static void
 xmlSecKeyDataStorePtrListDestroyItem(xmlSecPtr ptr) {
     xmlSecKeyDataStoreDestroy((xmlSecKeyDataStorePtr)ptr);

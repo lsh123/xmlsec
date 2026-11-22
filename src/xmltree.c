@@ -306,7 +306,7 @@ xmlSecFindChild(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns)
 /**
  * @brief Searches a node and its ancestors by name and namespace.
  * @details Searches the @p cur node itself and its ancestors (up to the
- * document root, inclusive) for a node having given name and namespace href.
+ * document node, inclusive) for a node having given name and namespace href.
  * @param cur the pointer to an XML node.
  * @param name the name.
  * @param ns the namespace href (may be NULL).
@@ -647,7 +647,7 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
         xmlFreeNode(cur);
         return(NULL);
     }
-    if(xmlAddNextSibling(node, text) == NULL) {
+    if(xmlAddNextSibling(cur, text) == NULL) {
         xmlSecXmlError("xmlAddNextSibling", NULL);
         xmlFreeNode(text);
         xmlUnlinkNode(cur);
@@ -722,9 +722,10 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
 }
 
 /**
- * @brief Searches for the next element node.
+ * @brief Searches for the first element node at or after @p cur.
  * @param cur the pointer to an XML node.
- * @return the pointer to next element node or NULL if it is not found.
+ * @return the pointer to the first element node at or after @p cur or NULL
+ * if it is not found.
  */
 xmlNodePtr
 xmlSecGetNextElementNode(xmlNodePtr cur) {

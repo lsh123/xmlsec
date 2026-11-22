@@ -442,7 +442,7 @@ xmlSecBnMul(xmlSecBnPtr bn, int multiplier) {
  * @details Divides @p bn by @p divider and places modulus into @p mod.
  * @p divider must be a positive value.
  * @param bn the pointer to BN.
- * @param divider the divider
+ * @param divider the divider.
  * @param mod the pointer for modulus result.
  * @return 0 on success or a negative value if an error occurs.
  */

@@ -1690,6 +1690,31 @@ execDSigTest $res_success \
     "--enabled-reference-uris any $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
+# Relationship transform: a TargetMode attribute bound to the Relationships namespace with a prefix
+# (eg rel:TargetMode="External") is the same attribute as the unprefixed one, so its value must be
+# preserved (not replaced by the default "Internal") and it is serialized unprefixed so that the
+# output stays well formed.
+execDSigTest $res_success \
+    "aleksey-xmldsig-01" \
+    "enveloping-sha256-rsa-sha256-relationship-targetmode" \
+    "sha256 rsa-sha256 relationship" \
+    "rsa x509" \
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "--enabled-reference-uris any $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+# Relationship transform: when both the unprefixed and the prefixed (Relationships-namespace)
+# TargetMode attribute are present on the same element, the unprefixed one takes precedence and
+# only a single TargetMode attribute is written to the output.
+execDSigTest $res_success \
+    "aleksey-xmldsig-01" \
+    "enveloping-sha256-rsa-sha256-relationship-targetmode-both" \
+    "sha256 rsa-sha256 relationship" \
+    "rsa x509" \
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "--enabled-reference-uris any $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
 # XPath2 (xmldsig-filter2) transform with a relative expression: per the xmldsig-filter2
 # REC (sec 3.3) the expression is evaluated with the document root node (the document node
 # itself) as the context node, context position and size 1. Without the context node the
@@ -1715,11 +1740,36 @@ execDSigTest $res_success \
     "--relationship-legacy --enabled-reference-uris any $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--relationship-legacy --enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
+# Relationship transform (legacy mode): the input also contains a CDATA section. Nodes without
+# a name (eg CDATA) cannot be serialized as elements, so even in legacy mode they are dropped
+# instead of failing the transform with a "cur->name != NULL" assertion.
+execDSigTest $res_success \
+    "aleksey-xmldsig-01" \
+    "enveloping-sha256-rsa-sha256-relationship-cdata-legacy" \
+    "sha256 rsa-sha256 relationship" \
+    "rsa x509" \
+    "--relationship-legacy --enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "--relationship-legacy --enabled-reference-uris any $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--relationship-legacy --enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
 # Relationship transform (legacy mode): with --relationship-legacy the old behaviour is restored,
 # so foreign namespace declarations are written as a single unprefixed xmlns="..." instead of being removed.
 execDSigTest $res_success \
     "aleksey-xmldsig-01" \
     "enveloping-sha256-rsa-sha256-relationship-ns-legacy" \
+    "sha256 rsa-sha256 relationship" \
+    "rsa x509" \
+    "--relationship-legacy --enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "--relationship-legacy --enabled-reference-uris any $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--relationship-legacy --enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+# Relationship transform (legacy mode): a prefixed TargetMode attribute bound to the Relationships
+# namespace is serialized unprefixed in legacy mode as well, without duplicating it with the default
+# value (before the fix the output contained an undeclared prefix and a duplicate TargetMode
+# attribute, which was not well formed).
+execDSigTest $res_success \
+    "aleksey-xmldsig-01" \
+    "enveloping-sha256-rsa-sha256-relationship-targetmode-legacy" \
     "sha256 rsa-sha256 relationship" \
     "rsa x509" \
     "--relationship-legacy --enabled-reference-uris any --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \

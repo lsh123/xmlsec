@@ -324,7 +324,7 @@ xmlSecBase64CtxFinal_ex(xmlSecBase64CtxPtr ctx, xmlSecByte *out, xmlSecSize outS
     }
 
     /* add \0 just in case (if we can) */
-    if(((*outWritten) + 1) < outSize) {
+    if((*outWritten) < outSize) {
         out[(*outWritten)] = '\0';
     }
     return(0);
@@ -849,7 +849,7 @@ xmlSecTransformBase64GetKlass(void) {
 
 /**
  * @brief Sets the max line size to @p lineSize.
- * @param transform the pointer to BASE64 encode transform.
+ * @param transform the pointer to the BASE64 encode transform.
  * @param lineSize the new max line size; use 0 for no line breaks or a value greater than 1.
  */
 void

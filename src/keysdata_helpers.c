@@ -112,15 +112,18 @@ xmlSecKeyDataBinaryValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecAssert2(buffer != NULL, -1);
 
     /* copy data */
-    ret = xmlSecKeyDataBinaryValueSetBuffer(dst,
-                    xmlSecBufferGetData(buffer),
-                    xmlSecBufferGetSize(buffer));
+    ret = xmlSecKeyDataBinaryValueSetBuffer(
+        dst,
+        xmlSecBufferGetData(buffer),
+        xmlSecBufferGetSize(buffer)
+    );
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataBinaryValueSetBuffer",
                             xmlSecKeyDataGetName(dst));
         return(-1);
     }
 
+    /* done */
     return(0);
 }
 
@@ -512,14 +515,16 @@ xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyDataPtr data) {
  * @return 0 on success or a negative value otherwise.
  */
 int
-xmlSecKeyDataBinaryValueSetBuffer(xmlSecKeyDataPtr data,
-                        const xmlSecByte* buf, xmlSecSize bufSize) {
+xmlSecKeyDataBinaryValueSetBuffer(
+    xmlSecKeyDataPtr data,
+    const xmlSecByte* buf,
+    xmlSecSize bufSize
+) {
     xmlSecBufferPtr buffer;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecKeyDataBinarySize), -1);
-    xmlSecAssert2(buf != NULL, -1);
-    xmlSecAssert2(bufSize > 0, -1);
+    xmlSecAssert2((buf != NULL) || (bufSize == 0), -1);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);

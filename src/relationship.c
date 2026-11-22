@@ -475,10 +475,13 @@ xmlSecTransformRelationshipProcessNodeList(xmlSecTransformPtr transform, xmlOutp
          * so they are not written out as spurious <text>/<comment> elements.
          *
          * Legacy mode (XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY): restore the old
-         * behaviour and serialize non-element nodes as well.
+         * behaviour and serialize non-element nodes as well. Nodes without a name (eg
+         * CDATA sections) cannot be serialized as elements, so they are skipped even in
+         * legacy mode.
          */
-        if(((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY) == 0) &&
-           (cur->type != XML_ELEMENT_NODE)) {
+        if((cur->type != XML_ELEMENT_NODE) &&
+           (((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY) == 0) ||
+            (cur->name == NULL))) {
             continue;
         }
 
@@ -562,7 +565,7 @@ xmlSecTransformRelationshipWriteEscapedValue(xmlOutputBufferPtr buf, const xmlCh
     }
     escaped = xmlMalloc(len * 6 + 1);
     if(escaped == NULL) {
-        xmlSecXmlError("xmlMalloc", NULL);
+        xmlSecMallocError(len * 6 + 1, NULL);
         return(-1);
     }
 
@@ -782,6 +785,7 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
     xmlAttrPtr attr;
     xmlNsPtr ns;
     int foundTargetMode = 0;
+    int haveUnprefixedTargetMode = 0;
     int relNsWritten = 0;
     int ret;
 
@@ -856,14 +860,45 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
     /*
      * Write attributes.
      *
-     * Detect an existing TargetMode attribute so that the default value (step 3,
-     * point 6) is only added when the attribute is actually missing.
-     * Only the unprefixed TargetMode attribute counts as present; a namespaced one
-     * must not suppress the default.
+     * A TargetMode attribute bound to the Relationships namespace (with a prefix,
+     * e.g. <rel:TargetMode/>) is the same attribute as the unprefixed one, so both
+     * forms count as present and suppress the default value (step 3, point 6). The
+     * prefixed form is serialized unprefixed so that the output stays well formed
+     * in both legacy and non-legacy modes; when both forms are present the
+     * unprefixed one takes precedence.
      */
     for(attr = cur->properties; attr != NULL; attr = attr->next) {
-        if((attr->ns == NULL) && (xmlStrcmp(attr->name, xmlSecRelationshipAttrTargetMode) == 0)) {
+        if(xmlStrcmp(attr->name, xmlSecRelationshipAttrTargetMode) != 0) {
+            continue;
+        }
+        if(attr->ns == NULL) {
+            haveUnprefixedTargetMode = 1;
             foundTargetMode = 1;
+        } else if((attr->ns->href != NULL) && (xmlStrcmp(attr->ns->href, xmlSecRelationshipsNs) == 0)) {
+            foundTargetMode = 1;
+        }
+    }
+
+    for(attr = cur->properties; attr != NULL; attr = attr->next) {
+        /* a TargetMode attribute bound to the Relationships namespace (with a
+         * prefix) is the same attribute as the unprefixed one; serialize it
+         * unprefixed so that the output is well formed in both modes */
+        if((attr->ns != NULL) &&
+           ((attr->ns->href != NULL) && (xmlStrcmp(attr->ns->href, xmlSecRelationshipsNs) == 0)) &&
+           (xmlStrcmp(attr->name, xmlSecRelationshipAttrTargetMode) == 0)) {
+            if(haveUnprefixedTargetMode != 0) {
+                /* the unprefixed attribute is the authoritative one; writing both
+                 * would duplicate the attribute */
+                continue;
+            }
+            ret = xmlSecTransformRelationshipWriteProp(buf, xmlSecRelationshipAttrTargetMode,
+                        (attr->children != NULL) ? attr->children->content : BAD_CAST "");
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecTransformRelationshipWriteProp(TargetMode)",
+                                    xmlSecTransformGetName(transform));
+                return(-1);
+            }
+            continue;
         }
 
         if(((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY) == 0) &&

@@ -75,6 +75,7 @@ static const xmlSecErrorDescription xmlSecErrorsTable[] = {
   { XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL,       "maximum key retrieval level" },
   { XMLSEC_ERRORS_R_RETRIEVAL_TYPE_MISMATCH,    "key retrieval type mismatch" },
   { XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL, "maximum KeyInfoReference level" },
+  { XMLSEC_ERRORS_R_MAX_KEYINFO_CHILDREN,       "maximum number of KeyInfo children" },
   { XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL,           "maximum encrypted key level" },
   { XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,         "certificate verification failed" },
   { XMLSEC_ERRORS_R_CERT_NOT_FOUND,             "certificate is not found" },

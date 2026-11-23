@@ -181,6 +181,7 @@ struct _xmlSecKeyInfoCtx {
     xmlSecKeyInfoMode                   mode;  /**< do we read or write <dsig:KeyInfo /> element. */
     xmlSecPtrList                       enabledKeyData;  /**< the list of enabled #xmlSecKeyDataId (if list is empty then all data ids are enabled). */
     int                                 base64LineSize;  /**< the maximum column size for base64 encoding. */
+    xmlSecSize                          maxKeyInfoChildren;  /**< the max number of child elements of the <dsig:KeyInfo /> element processed when reading; the default value is 10; 0 disables the limit. */
 
     /* RetrievalMethod */
     xmlSecTransformCtx                  retrievalMethodCtx;  /**< the transforms context for <dsig:RetrievalMethod /> element processing. */

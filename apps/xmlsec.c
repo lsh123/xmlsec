@@ -791,6 +791,19 @@ static xmlSecAppCmdLineParam maxEncryptedKeyLevelParam = {
 };
 #endif /* XMLSEC_NO_XMLENC */
 
+static xmlSecAppCmdLineParam maxKeyInfoChildrenParam = {
+    xmlSecAppCmdLineTopicDSigCommon |
+    xmlSecAppCmdLineTopicEncCommon,
+    "--max-key-info-children",
+    NULL,
+    "--max-key-info-children <count>"
+    "\n\tlimits the number of <dsig:KeyInfo /> child elements processed when"
+    "\n\treading to <count>; set to 0 to disable the limit; default is 10",
+    xmlSecAppCmdLineParamTypeNumber,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
+
 
 /******************************************************************************
  *
@@ -1181,6 +1194,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
 #ifndef XMLSEC_NO_XMLENC
     &maxEncryptedKeyLevelParam,
 #endif /* XMLSEC_NO_XMLENC */
+    &maxKeyInfoChildrenParam,
 
     /* Keys Manager params */
     &enabledKeyDataParam,
@@ -2370,6 +2384,15 @@ xmlSecAppPrepareKeyInfoCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 
     if(xmlSecAppCmdLineParamIsSet(&laxKeySearchParam)) {
         keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH;
+    }
+
+    if(xmlSecAppCmdLineParamIsSet(&maxKeyInfoChildrenParam)) {
+        int maxKeyInfoChildren = xmlSecAppCmdLineParamGetInt(&maxKeyInfoChildrenParam, 0);
+        if(maxKeyInfoChildren < 0) {
+            fprintf(stderr, "Error: max number of KeyInfo children should be greater than or equal to zero\n");
+            return(-1);
+        }
+        keyInfoCtx->maxKeyInfoChildren = (xmlSecSize)maxKeyInfoChildren;
     }
 
 #ifndef XMLSEC_NO_XMLENC

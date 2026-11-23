@@ -1138,6 +1138,16 @@ execEncTest $res_success \
     "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/enc-two-enc-keys.data --pubkey-cert-$cert_format:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-cert.$cert_format --pubkey-cert-$cert_format:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-cert.$cert_format" \
     "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
 
+# same test as above but with max number of KeyInfo children=1 should fail:
+# the <dsig:KeyInfo /> element of the <EncryptedData /> node has two
+# <enc:EncryptedKey /> children and the key can only be found in the second one
+extra_message="Negative test: max number of KeyInfo children=1 is not enough"
+execEncTest $res_fail \
+    "" \
+    "aleksey-xmlenc-01/enc-two-enc-keys" \
+    "aes256-cbc rsa-oaep-mgf1p sha256 sha1" \
+    "x509" \
+    "--max-key-info-children 1 $priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
 
 execEncTest $res_success \
     "" \

@@ -98,7 +98,7 @@ typedef enum {
 #define XMLSEC_DSIG_FLAGS_STORE_SIGNATURE                       0x00000008
 
 /**
- * @brief If set, resolve URI ID references without XPointers (Visa3D hack).
+ * @brief Deprecated. If set, resolve URI ID references without XPointers (Visa3D hack).
  * @details If this flag is set then URI ID references are resolved directly
  * without using XPointers. This allows one to sign/verify Visa3D
  * documents that don't follow XML, XPointer and XML DSig specifications.

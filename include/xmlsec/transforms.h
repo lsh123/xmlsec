@@ -239,7 +239,7 @@ typedef unsigned int                            xmlSecTransformUsage;
 typedef int             (*xmlSecTransformCtxPreExecuteCallback)         (xmlSecTransformCtxPtr transformCtx);
 
 /**
- * @brief Resolve URI ID references without XPointers (Visa3D hack).
+ * @brief Deprecated. Resolve URI ID references without XPointers (Visa3D hack).
  * @details If this flag is set then URI ID references are resolved directly
  * without using XPointers. This allows one to sign/verify Visa3D
  * documents that don't follow XML, XPointer and XML DSig specifications.
@@ -286,6 +286,7 @@ struct _xmlSecTransformCtx {
     unsigned int                                flags;  /**< the bit mask flags to control transforms execution. */
     unsigned int                                maxDepth;  /**< the maximum depth for transforms (eg Relationship Transform) execution (if 0 then depth check is disabled). */
     xmlSecSize                                  binaryChunkSize;  /**< the chunk size for binary transforms processing. */
+    xmlSecSize                                  xpathOpsLimit;  /**< the limit on the number of XPath operations performed by XPath, XPath2 and XPointer transforms (if 0 then the limit is disabled). */
     xmlSecTransformUriType                      enabledUris;  /**< the allowed transform data source uri types. By default only the Empty and SameDocument URI types are enabled; dereferencing local or remote URIs requires explicit opt-in. */
     xmlSecPtrList                               enabledTransforms;  /**< the list of enabled transforms; if the list is empty (default) then all registered transforms are enabled. */
     xmlSecTransformCtxPreExecuteCallback        preExecCallback;  /**< the callback called after preparing the transform chain and right before actual data processing; application can use this callback to change transforms parameters, insert additional transforms in the chain or do additional validation (and abort transform execution if needed). */
@@ -352,6 +353,9 @@ XMLSEC_EXPORT void                      xmlSecTransformCtxSetDefaultBinaryChunkS
 
 XMLSEC_EXPORT unsigned int              xmlSecTransformCtxGetDefaultMaxDepth(void);
 XMLSEC_EXPORT void                      xmlSecTransformCtxSetDefaultMaxDepth(unsigned int maxDepth);
+
+XMLSEC_EXPORT xmlSecSize                xmlSecTransformCtxGetDefaultXpathOpsLimit(void);
+XMLSEC_EXPORT void                      xmlSecTransformCtxSetDefaultXpathOpsLimit(xmlSecSize xpathOpsLimit);
 
 XMLSEC_EXPORT xmlSecKeyDataPtr          xmlSecTransformCtxExtraKeyDataGet       (xmlSecTransformCtxPtr ctx,
                                                                                  xmlSecKeyDataId dataId);
@@ -899,7 +903,7 @@ XMLSEC_EXPORT void              xmlSecTransformXsltSetDefaultSecurityPrefs(xsltS
 XMLSEC_EXPORT xmlSecTransformId xmlSecTransformRemoveXmlTagsC14NGetKlass(void);
 
 /**
- * @brief Selects node subtree by node id string (Visa3D hack).
+ * @brief Deprecated. Selects node subtree by node id string (Visa3D hack).
  * @details Selects node subtree by given node id string. The only reason why we need this
  * is Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows
  * invalid XPointer expressions in the URI attribute. Since we couldn't evaluate
@@ -907,9 +911,9 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecTransformRemoveXmlTagsC14NGetKlass(void);
  */
 #define xmlSecTransformVisa3DHackId \
         xmlSecTransformVisa3DHackGetKlass()
-XMLSEC_EXPORT xmlSecTransformId xmlSecTransformVisa3DHackGetKlass       (void);
-XMLSEC_EXPORT int               xmlSecTransformVisa3DHackSetID          (xmlSecTransformPtr transform,
-                                                                         const xmlChar* id);
+XMLSEC_EXPORT XMLSEC_DEPRECATED xmlSecTransformId xmlSecTransformVisa3DHackGetKlass     (void);
+XMLSEC_EXPORT XMLSEC_DEPRECATED int               xmlSecTransformVisa3DHackSetID        (xmlSecTransformPtr transform,
+                                                                                         const xmlChar* id);
 
 
 

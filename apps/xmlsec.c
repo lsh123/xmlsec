@@ -232,6 +232,19 @@ static xmlSecAppCmdLineParam transformMaxDepthParam = {
     NULL
 };
 
+static xmlSecAppCmdLineParam xpathOpsLimitParam = {
+    xmlSecAppCmdLineTopicCryptoConfig,
+    "--xpath-ops-limit",
+    NULL,
+    "--xpath-ops-limit <limit>"
+    "\n\tsets the limit on the number of XPath operations performed by XPath, "
+    "\n\tXPath2 and XPointer transforms to <limit>; default: 1000000; "
+    "\n\tset to 0 to disable the limit",
+    xmlSecAppCmdLineParamTypeNumber,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
+
 static xmlSecAppCmdLineParam verboseParam = {
     xmlSecAppCmdLineTopicGeneral,
     "--verbose",
@@ -838,7 +851,7 @@ static xmlSecAppCmdLineParam enableVisa3DHackParam = {
     "--enable-visa3d-hack",
     NULL,
     "--enable-visa3d-hack"
-    "\n\tenables Visa3D protocol specific hack for URI attributes processing"
+    "\n\tdeprecated, enables Visa3D protocol specific hack for URI attributes processing"
     "\n\twhen we are trying not to use XPath/XPointer engine; this is a hack"
     "\n\tand I don't know what else might be broken in your application when"
     "\n\tyou use it (also check \"--id-attr\" option because you might need it)",
@@ -1251,6 +1264,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &base64LineSizeParam,
     &transformBinChunkSizeParam,
     &transformMaxDepthParam,
+    &xpathOpsLimitParam,
     &xxeParam,
     &urlMapParam,
     &helpParam,
@@ -1655,6 +1669,17 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
             goto done;
         }
         xmlSecTransformCtxSetDefaultMaxDepth((unsigned int)maxDepth);
+    }
+
+    /* xpath operations limit */
+    if(xmlSecAppCmdLineParamIsSet(&xpathOpsLimitParam)) {
+        int limit = xmlSecAppCmdLineParamGetInt(&xpathOpsLimitParam, 0);
+        if(limit < 0) {
+            fprintf(stderr, "Error: xpath operations limit should be greater than or equal to zero\n");
+            xmlSecAppPrintUsage();
+            goto done;
+        }
+        xmlSecTransformCtxSetDefaultXpathOpsLimit((xmlSecSize)limit);
     }
 
     /* load keys */

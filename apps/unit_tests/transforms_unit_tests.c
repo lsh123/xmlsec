@@ -542,6 +542,124 @@ test_xmlSecTransformCtxSetUri_uri_with_xpointer_fragment(void) {
 }
 
 static void
+test_xmlSecTransformCtxSetUri_xpointer_fragment_transform_disabled(void) {
+    static const char uri[] = "http://example.com/bar.xml#xpointer(//foo)";
+    xmlDocPtr doc;
+    xmlSecTransformCtxPtr ctx;
+    xmlNodePtr hereNode;
+    int ret;
+
+    testStart("SetUri uri with xpointer fragment is rejected when the XPointer transform is not enabled");
+
+    doc = transformsTestCreateDoc();
+    if(doc == NULL) {
+        testFinishedFailure();
+        return;
+    }
+    hereNode = xmlDocGetRootElement(doc);
+    if(hereNode == NULL) {
+        testLog("Error: parsed XML does not have a root node\n");
+        transformsTestCleanup(doc, NULL);
+        testFinishedFailure();
+        return;
+    }
+    ctx = transformsTestCreateCtx();
+    if(ctx == NULL) {
+        transformsTestCleanup(doc, NULL);
+        testFinishedFailure();
+        return;
+    }
+    ctx->enabledUris = xmlSecTransformUriTypeAny;
+    /* a non-empty enabled transforms list that does not contain the XPointer transform */
+    if(xmlSecPtrListAdd(&(ctx->enabledTransforms), (void*)xmlSecTransformBase64Id) < 0) {
+        testLog("Error: failed to add a transform to the enabled transforms list\n");
+        transformsTestCleanup(doc, ctx);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformCtxSetUri(ctx, BAD_CAST uri, hereNode);
+    if(ret >= 0) {
+        testLog("Error: xmlSecTransformCtxSetUri accepted a uri with an xpointer fragment when the XPointer transform is not enabled\n");
+        transformsTestCleanup(doc, ctx);
+        testFinishedFailure();
+        return;
+    }
+
+    if(ctx->first != NULL) {
+        testLog("Error: a transform was created for a rejected uri with an xpointer fragment\n");
+        transformsTestCleanup(doc, ctx);
+        testFinishedFailure();
+        return;
+    }
+
+    transformsTestCleanup(doc, ctx);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformCtxSetUri_xpointer_fragment_transform_enabled(void) {
+    static const char uri[] = "http://example.com/bar.xml#xpointer(//foo)";
+    static const xmlChar* expectedUri = BAD_CAST "http://example.com/bar.xml";
+    static const xmlChar* expectedXptrExpr = BAD_CAST "#xpointer(//foo)";
+    xmlDocPtr doc;
+    xmlSecTransformCtxPtr ctx;
+    xmlNodePtr hereNode;
+    int ret;
+
+    testStart("SetUri uri with xpointer fragment is accepted when the XPointer transform is enabled");
+
+    doc = transformsTestCreateDoc();
+    if(doc == NULL) {
+        testFinishedFailure();
+        return;
+    }
+    hereNode = xmlDocGetRootElement(doc);
+    if(hereNode == NULL) {
+        testLog("Error: parsed XML does not have a root node\n");
+        transformsTestCleanup(doc, NULL);
+        testFinishedFailure();
+        return;
+    }
+    ctx = transformsTestCreateCtx();
+    if(ctx == NULL) {
+        transformsTestCleanup(doc, NULL);
+        testFinishedFailure();
+        return;
+    }
+    ctx->enabledUris = xmlSecTransformUriTypeAny;
+    /* a non-empty enabled transforms list that contains the XPointer transform */
+    if(xmlSecPtrListAdd(&(ctx->enabledTransforms), (void*)xmlSecTransformXPointerId) < 0) {
+        testLog("Error: failed to add a transform to the enabled transforms list\n");
+        transformsTestCleanup(doc, ctx);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformCtxSetUri(ctx, BAD_CAST uri, hereNode);
+    if(ret < 0) {
+        testLog("Error: xmlSecTransformCtxSetUri returned %d for a uri with an xpointer fragment when the XPointer transform is enabled\n", ret);
+        transformsTestCleanup(doc, ctx);
+        testFinishedFailure();
+        return;
+    }
+
+    if((ctx->uri == NULL) || (xmlStrcmp(ctx->uri, expectedUri) != 0) ||
+       ((ctx->xptrExpr == NULL) || (xmlStrcmp(ctx->xptrExpr, expectedXptrExpr) != 0)) ||
+       (ctx->first == NULL) || (!xmlSecTransformCheckId(ctx->first, xmlSecTransformXPointerId))) {
+        testLog("Error: unexpected ctx state for a uri with an xpointer fragment and the XPointer transform enabled (uri='%s', xptrExpr='%s')\n",
+                (ctx->uri != NULL) ? (const char*)ctx->uri : "NULL",
+                (ctx->xptrExpr != NULL) ? (const char*)ctx->xptrExpr : "NULL");
+        transformsTestCleanup(doc, ctx);
+        testFinishedFailure();
+        return;
+    }
+
+    transformsTestCleanup(doc, ctx);
+    testFinishedSuccess();
+}
+
+static void
 test_xmlSecTransformCtxSetUri_remote_uri_disabled_by_default(void) {
     static const char uri[] = "http://example.com/bar.xml";
     xmlDocPtr doc;
@@ -807,6 +925,62 @@ test_xmlSecTransformCtxSetUri_visa3d_hack_uri_with_fragment(void) {
     testFinishedSuccess();
 }
 
+static void
+test_xmlSecTransformCtxSetUri_visa3d_hack_transform_disabled(void) {
+    static const char uri[] = "#12345";
+    xmlDocPtr doc;
+    xmlSecTransformCtxPtr ctx;
+    xmlNodePtr hereNode;
+    int ret;
+
+    testStart("SetUri bare fragment is rejected when the Visa3DHack transform is not enabled");
+
+    doc = transformsTestCreateDoc();
+    if(doc == NULL) {
+        testFinishedFailure();
+        return;
+    }
+    hereNode = xmlDocGetRootElement(doc);
+    if(hereNode == NULL) {
+        testLog("Error: parsed XML does not have a root node\n");
+        transformsTestCleanup(doc, NULL);
+        testFinishedFailure();
+        return;
+    }
+    ctx = transformsTestCreateCtx();
+    if(ctx == NULL) {
+        transformsTestCleanup(doc, NULL);
+        testFinishedFailure();
+        return;
+    }
+    ctx->flags |= XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK;
+    /* a non-empty enabled transforms list that does not contain the Visa3DHack transform */
+    if(xmlSecPtrListAdd(&(ctx->enabledTransforms), (void*)xmlSecTransformBase64Id) < 0) {
+        testLog("Error: failed to add a transform to the enabled transforms list\n");
+        transformsTestCleanup(doc, ctx);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformCtxSetUri(ctx, BAD_CAST uri, hereNode);
+    if(ret >= 0) {
+        testLog("Error: xmlSecTransformCtxSetUri accepted a bare fragment when the Visa3DHack transform is not enabled\n");
+        transformsTestCleanup(doc, ctx);
+        testFinishedFailure();
+        return;
+    }
+
+    if(ctx->first != NULL) {
+        testLog("Error: a transform was created for a rejected bare fragment\n");
+        transformsTestCleanup(doc, ctx);
+        testFinishedFailure();
+        return;
+    }
+
+    transformsTestCleanup(doc, ctx);
+    testFinishedSuccess();
+}
+
 
 /******************************************************************************
  * exported entry point
@@ -825,11 +999,14 @@ test_transforms(void) {
     test_xmlSecTransformCtxSetUri_bare_id_fragment();
     test_xmlSecTransformCtxSetUri_uri_with_id_fragment();
     test_xmlSecTransformCtxSetUri_uri_with_xpointer_fragment();
+    test_xmlSecTransformCtxSetUri_xpointer_fragment_transform_disabled();
+    test_xmlSecTransformCtxSetUri_xpointer_fragment_transform_enabled();
     test_xmlSecTransformCtxSetUri_remote_uri_disabled_by_default();
     test_xmlSecTransformCtxSetUri_local_uri_disabled_by_default();
     test_xmlSecTransformCtxSetUri_local_uri_enabled();
     test_xmlSecTransformCtxSetUri_visa3d_hack_bare_fragment();
     test_xmlSecTransformCtxSetUri_visa3d_hack_uri_with_fragment();
+    test_xmlSecTransformCtxSetUri_visa3d_hack_transform_disabled();
     if(testGroupFinished() != 1) { success = 0; }
 
     return(success);

@@ -116,6 +116,12 @@ xmlsec_unit_tests_SOURCES = \
 	$(NULL)
 
 
+# The unit tests intentionally exercise deprecated APIs, so do not apply
+# the deprecation attribute when they are compiled.
+xmlsec_unit_tests_CPPFLAGS = \
+	-DXMLSEC_DEPRECATED= \
+	$(NULL)
+
 xmlsec_unit_tests_LDFLAGS = \
 	@XMLSEC_STATIC_BINARIES@ \
 	@XMLSEC_EXTRA_LDFLAGS@ \

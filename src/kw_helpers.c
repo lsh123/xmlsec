@@ -810,7 +810,7 @@ static const xmlSecByte xmlSecKWRfc3394MagicBlock[XMLSEC_KW_RFC3394_MAGIC_BLOCK_
 };
 
 /* XORs the full 64-bit counter @p counter into the 8-byte A register @p block
- * (big-endian), as required by RFC 3394. Only the low byte is not enough: for
+ * (big-endian), as required by RFC 3394. The low byte alone is not enough: for
  * N >= 43 the counter t exceeds 255 and the high bytes must be mixed in too. */
 static void
 xmlSecKWRfc3394XorCounter(xmlSecByte* block, uint64_t counter) {
@@ -856,9 +856,15 @@ xmlSecKWRfc3394Encode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
         outWritten2 = 0;
         ret = kwRfc3394Id->encrypt(transform, out, inSize + XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE,
             out, outSize, &outWritten2);
-        if((ret < 0) || (outWritten2 != XMLSEC_KW_RFC3394_BLOCK_SIZE)) {
-            xmlSecInternalError2("kwRfc3394Id->encrypt", NULL,
-                "outWritten2=" XMLSEC_SIZE_FMT, outWritten2);
+        if(ret < 0) {
+            xmlSecInternalError("kwRfc3394Id->encrypt", NULL);
+            /* wipe the plaintext key from the output buffer before returning */
+            xmlSecMemCleanse(out, inSize + XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE);
+            return(-1);
+        }
+        if(outWritten2 != XMLSEC_KW_RFC3394_BLOCK_SIZE) {
+            xmlSecInvalidSizeError("kwRfc3394Id->encrypt", outWritten2,
+                XMLSEC_KW_RFC3394_BLOCK_SIZE, NULL);
             /* wipe the plaintext key from the output buffer before returning */
             xmlSecMemCleanse(out, inSize + XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE);
             return(-1);
@@ -874,9 +880,17 @@ xmlSecKWRfc3394Encode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
 
                 outWritten2 = 0;
                 ret = kwRfc3394Id->encrypt(transform, block, sizeof(block), block, sizeof(block), &outWritten2);
-                if((ret < 0) || (outWritten2 != XMLSEC_KW_RFC3394_BLOCK_SIZE)) {
-                    xmlSecInternalError2("kwRfc3394Id->encrypt", NULL,
-                        "outWritten2=" XMLSEC_SIZE_FMT, outWritten2);
+                if(ret < 0) {
+                    xmlSecInternalError("kwRfc3394Id->encrypt", NULL);
+                    /* wipe the plaintext key from the output buffer before returning */
+                    xmlSecMemCleanse(out, inSize + XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE);
+                    /* wipe the local temporary block before returning */
+                    xmlSecMemCleanse(block, sizeof(block));
+                    return(-1);
+                }
+                if(outWritten2 != XMLSEC_KW_RFC3394_BLOCK_SIZE) {
+                    xmlSecInvalidSizeError("kwRfc3394Id->encrypt", outWritten2,
+                        XMLSEC_KW_RFC3394_BLOCK_SIZE, NULL);
                     /* wipe the plaintext key from the output buffer before returning */
                     xmlSecMemCleanse(out, inSize + XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE);
                     /* wipe the local temporary block before returning */
@@ -931,9 +945,15 @@ xmlSecKWRfc3394Decode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
         outWritten2 = 0;
         ret = kwRfc3394Id->decrypt(transform, out, inSize,
             out, outSize, &outWritten2);
-        if((ret < 0) || (outWritten2 != XMLSEC_KW_RFC3394_BLOCK_SIZE)) {
-            xmlSecInternalError2("kwRfc3394Id->decrypt", NULL,
-                "outWritten2=" XMLSEC_SIZE_FMT, outWritten2);
+        if(ret < 0) {
+            xmlSecInternalError("kwRfc3394Id->decrypt", NULL);
+            /* wipe the plaintext key from the output buffer before returning */
+            xmlSecMemCleanse(out, inSize);
+            return(-1);
+        }
+        if(outWritten2 != XMLSEC_KW_RFC3394_BLOCK_SIZE) {
+            xmlSecInvalidSizeError("kwRfc3394Id->decrypt", outWritten2,
+                XMLSEC_KW_RFC3394_BLOCK_SIZE, NULL);
             /* wipe the plaintext key from the output buffer before returning */
             xmlSecMemCleanse(out, inSize);
             return(-1);
@@ -951,9 +971,17 @@ xmlSecKWRfc3394Decode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
                 outWritten2 = 0;
                 ret = kwRfc3394Id->decrypt(transform, block, sizeof(block),
                     block, sizeof(block), &outWritten2);
-                if((ret < 0) || (outWritten2 != XMLSEC_KW_RFC3394_BLOCK_SIZE)) {
-                    xmlSecInternalError2("kwRfc3394Id->decrypt", NULL,
-                        "outWritten2=" XMLSEC_SIZE_FMT, outWritten2);
+                if(ret < 0) {
+                    xmlSecInternalError("kwRfc3394Id->decrypt", NULL);
+                    /* wipe the plaintext key from the output buffer before returning */
+                    xmlSecMemCleanse(out, inSize);
+                    /* wipe the local temporary block before returning */
+                    xmlSecMemCleanse(block, sizeof(block));
+                    return(-1);
+                }
+                if(outWritten2 != XMLSEC_KW_RFC3394_BLOCK_SIZE) {
+                    xmlSecInvalidSizeError("kwRfc3394Id->decrypt", outWritten2,
+                        XMLSEC_KW_RFC3394_BLOCK_SIZE, NULL);
                     /* wipe the plaintext key from the output buffer before returning */
                     xmlSecMemCleanse(out, inSize);
                     /* wipe the local temporary block before returning */

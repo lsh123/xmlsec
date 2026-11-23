@@ -580,6 +580,7 @@ test_xmlSecX509NameRead(void) {
     test_xmlSecX509NameRead_success("check end comma", "Foo=Bar,emailAddress=Value,", NULL, 2, "Foo", "Bar", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, "emailAddress", "Value", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
     test_xmlSecX509NameRead_success("check email address", "Foo=Bar,E=Value,", test_X509NameReplacements, 2, "Foo", "Bar", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, "emailAddress", "Value", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
     test_xmlSecX509NameRead_success("check escaped comma in name", "Foo\\,Bar=Baz", NULL, 1, "Foo,Bar", "Baz", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, NULL, NULL, -1);
+    test_xmlSecX509NameRead_success("check escaped comma in value before RDN separator", "CN=a\\,b,OU=x", NULL, 2, "CN", "a,b", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, "OU", "x", XMLSEC_X509_VALUE_TYPE_UTF8_STRING);
     test_xmlSecX509NameRead_success("check escaped hex pair in value", "Foo=Bar\\41", NULL, 1, "Foo", "BarA", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, NULL, NULL, -1);
     test_xmlSecX509NameRead_success("check quoted plus in value", "CN=\"a + b\"", NULL, 1, "CN", "a + b", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, NULL, NULL, -1);
     test_xmlSecX509NameRead_success("check escaped plus in value", "CN=a\\+b", NULL, 1, "CN", "a+b", XMLSEC_X509_VALUE_TYPE_UTF8_STRING, NULL, NULL, -1);
@@ -617,6 +618,9 @@ test_xmlSecX509NameRead(void) {
     test_xmlSecX509NameRead_failure("check unescaped plus after mid-value quote", "CN=a\"b+c", NULL, 0);
     test_xmlSecX509NameRead_failure("check unescaped plus after a mid-value quoted region", "CN=a\"b+c\"d", NULL, 0);
     test_xmlSecX509NameRead_failure("check unterminated quoted value", "OU=\"abc", NULL, 0);
+    test_xmlSecX509NameRead_failure("check unescaped comma in name", "CN,,OU=b", NULL, 0);
+    test_xmlSecX509NameRead_failure("check unescaped comma in name (empty RDN)", "CN=a,,OU=b", NULL, 0);
+    test_xmlSecX509NameRead_failure("check unescaped plus in name", "CN+OU=b", NULL, 0);
 
     /* done */
     return (testGroupFinished());

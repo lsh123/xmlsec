@@ -213,7 +213,6 @@ const xmlChar xmlSecNameExcC14NWithComments[]   = "exc-c14n-with-comments";
 const xmlChar xmlSecHrefExcC14NWithComments[]   = "http://www.w3.org/2001/10/xml-exc-c14n#WithComments";
 
 const xmlChar xmlSecNsExcC14N[]                 = "http://www.w3.org/2001/10/xml-exc-c14n#";
-const xmlChar xmlSecNsExcC14NWithComments[]     = "http://www.w3.org/2001/10/xml-exc-c14n#WithComments";
 
 const xmlChar xmlSecNodeInclusiveNamespaces[]   = "InclusiveNamespaces";
 const xmlChar xmlSecAttrPrefixList[]            = "PrefixList";
@@ -223,8 +222,6 @@ const xmlChar xmlSecAttrPrefixList[]            = "PrefixList";
  * ConcatKDF strings
  *
  *****************************************************************************/
-const xmlChar xmlSecNameConcatKdfKey[]          = "concatkdf";
-
 const xmlChar xmlSecNameConcatKdf[]             = "concatkdf";
 const xmlChar xmlSecHrefConcatKdf[]             = "http://www.w3.org/2009/xmlenc11#ConcatKDF";
 
@@ -326,7 +323,7 @@ const xmlChar xmlSecNodeDSAP[]                  = "P";
 const xmlChar xmlSecNodeDSAQ[]                  = "Q";
 const xmlChar xmlSecNodeDSAG[]                  = "G";
 const xmlChar xmlSecNodeDSAJ[]                  = "J";
-/* DSA X node is a proprietary extension by XMLSec library and uses xmlSecNs namespace.
+/* DSA X node is a proprietary extension by the XMLSec library and uses the xmlSecNs namespace.
  * DEPRECATED and will be removed in the future. */
 const xmlChar xmlSecNodeDSAX[]                  = "X";
 const xmlChar xmlSecNodeDSAY[]                  = "Y";
@@ -646,8 +643,6 @@ const xmlChar xmlSecHrefMd5[]                   = "http://www.w3.org/2001/04/xml
  * PBKDF2
  *
  *****************************************************************************/
-const xmlChar xmlSecNamePbkdf2Key[]             = "pbkdf2";
-
 const xmlChar xmlSecNamePbkdf2[]                = "pbkdf2";
 const xmlChar xmlSecHrefPbkdf2[]                = "http://www.w3.org/2009/xmlenc11#pbkdf2";
 
@@ -663,8 +658,6 @@ const xmlChar xmlSecNodePbkdf2PRF[]             = "PRF";
  * HKDF strings
  *
  *****************************************************************************/
-const xmlChar xmlSecNameHkdfKey[]               = "hkdf";
-
 const xmlChar xmlSecNameHkdf[]                  = "hkdf";
 const xmlChar xmlSecHrefHkdf[]                  = "http://www.w3.org/2021/04/xmldsig-more#hkdf";
 
@@ -700,7 +693,7 @@ const xmlChar xmlSecNodeRSAKeyValue[]           = "RSAKeyValue";
 const xmlChar xmlSecHrefRSAKeyValue[]           = "http://www.w3.org/2000/09/xmldsig#RSAKeyValue";
 const xmlChar xmlSecNodeRSAModulus[]            = "Modulus";
 const xmlChar xmlSecNodeRSAExponent[]           = "Exponent";
-/* PrivateExponent node is a proprietary extension by XMLSec library and uses xmlSecNs namespace.
+/* PrivateExponent node is a proprietary extension by the XMLSec library and uses the xmlSecNs namespace.
  * DEPRECATED and will be removed in the future. */
 const xmlChar xmlSecNodeRSAPrivateExponent[]    = "PrivateExponent";
 

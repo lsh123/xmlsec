@@ -413,8 +413,8 @@ xmlSecTransformCtxExtraKeyDataEnsure(xmlSecTransformCtxPtr ctx, xmlSecKeyDataId 
 
 /**
  * @brief Adopts key data into the transforms context extra key data list.
- * @details Adds @p data to @p ctx->extraKeyData list. The context takes
- * ownership of @p data. Returns an error if key data of the same type
+ * @details Adds @p data to @p ctx->extraKeyData list. On success, the context
+ * takes ownership of @p data. Returns an error if key data of the same type
  * already exists in the list.
  * @param ctx the pointer to transforms chain processing context.
  * @param data the key data to adopt (must not be NULL).
@@ -613,6 +613,7 @@ xmlSecTransformCtxCopyUserPref(xmlSecTransformCtxPtr dst, xmlSecTransformCtxPtr 
     dst->enabledUris     = src->enabledUris;
     dst->preExecCallback = src->preExecCallback;
 
+    xmlSecPtrListEmpty(&(dst->enabledTransforms));
     ret = xmlSecPtrListCopy(&(dst->enabledTransforms), &(src->enabledTransforms));
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListCopy(enabledTransforms)", NULL);

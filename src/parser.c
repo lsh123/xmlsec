@@ -26,7 +26,7 @@
 
 #include "cast_helpers.h"
 
-/* inputPush was renamed into xmlCtxtPushInput in libxml2 2.14.0, which keeps
+/* inputPush was renamed to xmlCtxtPushInput in libxml2 2.14.0, which keeps
  * inputPush as a deprecated alias for xmlCtxtPushInput, so the compatibility
  * definition below also works on libxml2 2.14.x */
 #if (LIBXML_VERSION < 21500)

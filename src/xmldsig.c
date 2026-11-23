@@ -1262,6 +1262,7 @@ xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlSecDSi
 
     /* copy enabled transforms */
     if(dsigCtx->enabledReferenceTransforms != NULL) {
+        xmlSecPtrListEmpty(&(dsigRefCtx->transformCtx.enabledTransforms));
         ret = xmlSecPtrListCopy(&(dsigRefCtx->transformCtx.enabledTransforms),
                                      dsigCtx->enabledReferenceTransforms);
         if(ret < 0) {
@@ -1481,7 +1482,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
             return(-1);
         }
 
-        /* write signed data to xml */
+        /* write the digest result to xml */
         outBuf = xmlSecBufferGetData(dsigRefCtx->result);
         outSize = xmlSecBufferGetSize(dsigRefCtx->result);
         XMLSEC_SAFE_CAST_SIZE_TO_INT(outSize, outLen, return(-1), NULL);

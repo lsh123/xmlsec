@@ -107,7 +107,7 @@ xmlSecBnFinalize(xmlSecBnPtr bn) {
 }
 
 /**
- * @brief Gets pointer to the binary @p bn representation.
+ * @brief Gets the pointer to the binary @p bn representation.
  * @param bn the pointer to BN.
  * @return pointer to binary BN data or NULL if the BN buffer has no allocated data.
  */
@@ -640,8 +640,8 @@ xmlSecBnPrependZeroIfMsbSet(xmlSecBnPtr bn) {
  * @param bn the pointer to BN.
  * @param data the data to compare BN to.
  * @param dataSize the @p data size.
- * @return 0 if data is equal, negative value if @p bn is less or positive value if @p bn
- * is greater than @p data.
+ * @return 0 if data is equal, negative value if @p bn is less than @p data, or
+ * positive value if @p bn is greater than @p data.
  */
 int
 xmlSecBnCompare(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSize) {
@@ -687,8 +687,8 @@ xmlSecBnCompare(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSize) {
  * @param bn the pointer to BN.
  * @param data the data to compare BN to.
  * @param dataSize the @p data size.
- * @return 0 if data is equal, negative value if @p bn is less or positive value if @p bn
- * is greater than @p data.
+ * @return 0 if data is equal, negative value if @p bn is less than @p data, or
+ * positive value if @p bn is greater than @p data.
  */
 int
 xmlSecBnCompareReverse(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSize) {

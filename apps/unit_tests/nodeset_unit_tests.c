@@ -303,6 +303,72 @@ test_xmlSecNodeSetGetChildren_invert_excludes_subtree(void) {
 }
 
 static void
+test_xmlSecNodeSetGetChildren_document_node_parent(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlNodePtr keep;
+    xmlNodePtr drop;
+    xmlNodePtr nested;
+    xmlSecNodeSetPtr nset;
+    xmlSecNodeSetPtr inverted;
+
+    testStart("xmlSecNodeSetGetChildren with the document node as parent");
+
+    doc = nodesetTestParseDoc("<Root><Keep/><Drop><Nested/></Drop></Root>");
+    if(doc == NULL) {
+        testLog("Error: failed to parse the test document\n");
+        testFinishedFailure();
+        return;
+    }
+
+    root = xmlDocGetRootElement(doc);
+    keep = nodesetTestFindChild(root, BAD_CAST "Keep");
+    drop = nodesetTestFindChild(root, BAD_CAST "Drop");
+    nested = nodesetTestFindChild(drop, BAD_CAST "Nested");
+
+    /* the document node's "subtree" is the whole document: a non-inverted
+     * set must match every node, an inverted set must match none */
+    /* the document node is represented as the xmlDoc itself, whose first
+     * fields mirror the common part of the xmlNode structure */
+    nset = xmlSecNodeSetGetChildren(doc, (xmlNodePtr)doc, 1, 0);
+    inverted = xmlSecNodeSetGetChildren(doc, (xmlNodePtr)doc, 1, 1);
+    if((root == NULL) || (keep == NULL) || (drop == NULL) || (nested == NULL) ||
+       (nset == NULL) || (inverted == NULL)) {
+        testLog("Error: failed to prepare the document-node-parent test data\n");
+        if(nset != NULL) {
+            xmlSecNodeSetDestroy(nset);
+        }
+        if(inverted != NULL) {
+            xmlSecNodeSetDestroy(inverted);
+        }
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    if((xmlSecNodeSetContains(nset, root, root->parent) != 1) ||
+       (xmlSecNodeSetContains(nset, keep, root) != 1) ||
+       (xmlSecNodeSetContains(nset, drop, root) != 1) ||
+       (xmlSecNodeSetContains(nset, nested, drop) != 1) ||
+       (xmlSecNodeSetContains(inverted, root, root->parent) != 0) ||
+       (xmlSecNodeSetContains(inverted, keep, root) != 0) ||
+       (xmlSecNodeSetContains(inverted, drop, root) != 0) ||
+       (xmlSecNodeSetContains(inverted, nested, drop) != 0)) {
+        testLog("Error: xmlSecNodeSetGetChildren/xmlSecNodeSetContains returned unexpected results for a document node parent\n");
+        xmlSecNodeSetDestroy(nset);
+        xmlSecNodeSetDestroy(inverted);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlSecNodeSetDestroy(nset);
+    xmlSecNodeSetDestroy(inverted);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
 test_xmlSecNodeSetAdd_subtraction_removes_subtree(void) {
     xmlDocPtr doc;
     xmlNodePtr root;
@@ -1164,6 +1230,7 @@ test_nodeset(void) {
     testGroupStart("xmlSecNodeSetGetChildren");
     test_xmlSecNodeSetGetChildren_without_comments_contains_subtree();
     test_xmlSecNodeSetGetChildren_invert_excludes_subtree();
+    test_xmlSecNodeSetGetChildren_document_node_parent();
     if(testGroupFinished() != 1) { success = 0; }
 
     testGroupStart("xmlSecNodeSetAdd");

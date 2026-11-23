@@ -340,6 +340,7 @@ xmlSecEncCtxBinaryEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl,
 int
 xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node) {
     xmlOutputBufferPtr output;
+    int encTypeElement;
     int ret;
 
     xmlSecAssert2(encCtx != NULL, -1);
@@ -383,10 +384,14 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
      * restore the XML document to its original cleartext form". Hence the XMLSec library
      * requires the Type attribute to be present. */
     if((encCtx->type != NULL) && xmlStrEqual(encCtx->type, xmlSecTypeEncElement)) {
+        encTypeElement = 1;
+
         /* get the content of the node */
         xmlNodeDumpOutput(output, node->doc, node, 0, 0, NULL);
     } else if((encCtx->type != NULL) && xmlStrEqual(encCtx->type, xmlSecTypeEncContent)) {
         xmlNodePtr cur;
+
+        encTypeElement = 0;
 
         /* get the content of the node's children */
         for(cur = node->children; cur != NULL; cur = cur->next) {
@@ -416,7 +421,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
     }
 
     /* now we need to update our original document */
-    if((encCtx->type == NULL) || xmlStrEqual(encCtx->type, xmlSecTypeEncElement)) {
+    if(encTypeElement == 1) {
         /* check if we need to return the replaced node */
         if((encCtx->flags & XMLSEC_ENC_FLAGS_RETURN_REPLACED_NODE) != 0) {
             ret = xmlSecReplaceNodeAndReturn(node, tmpl, &(encCtx->replacedNodeList));
@@ -432,7 +437,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
             }
         }
         encCtx->resultReplaced = 1;
-    } else if((encCtx->type != NULL) && xmlStrEqual(encCtx->type, xmlSecTypeEncContent)) {
+    } else {
         /* check if we need to return the replaced node */
         if((encCtx->flags & XMLSEC_ENC_FLAGS_RETURN_REPLACED_NODE) != 0) {
             ret = xmlSecReplaceContentAndReturn(node, tmpl, &(encCtx->replacedNodeList));
@@ -448,12 +453,8 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
             }
         }
         encCtx->resultReplaced = 1;
-    } else {
-        /* we should've caught this error before */
-        xmlSecInvalidStringTypeError("encryption type", encCtx->type,
-                "supported encryption type", NULL);
-        return(-1);
     }
+
     /* done */
     return(0);
 }
@@ -644,13 +645,13 @@ xmlSecEncCtxEncryptOrDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
         }
 
         ret = xmlSecTransformCtxBinaryExecute(&(encCtx->transformCtx), data, xmlSecStrlen(data));
-        if(ret < 0) {
+        if((ret < 0) || (encCtx->transformCtx.result == NULL)) {
             xmlSecInternalError("xmlSecTransformCtxBinaryExecute", NULL);
             goto done;
         }
     } else {
         ret = xmlSecTransformCtxExecute(&(encCtx->transformCtx), node->doc);
-        if(ret < 0) {
+        if((ret < 0) || (encCtx->transformCtx.result == NULL)) {
             xmlSecInternalError("xmlSecTransformCtxExecute", NULL);
             goto done;
         }
@@ -658,7 +659,6 @@ xmlSecEncCtxEncryptOrDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 
     /* success */
     res = encCtx->result = encCtx->transformCtx.result;
-    xmlSecAssert2(encCtx->result != NULL, NULL);
 
 done:
     if(data != NULL) {
@@ -971,8 +971,15 @@ xmlSecEncCtxCipherReferenceNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     xmlSecAssert2(encCtx != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
-    /* first read the optional uri attr and check that we can process it */
+    /* first read the required uri attr and check that we can process it; the
+     * XML-Enc schema marks the URI attribute as required, so a missing
+     * attribute is rejected (a present but empty value is allowed, it means
+     * "the whole document") */
     uri = xmlGetProp(node, xmlSecAttrURI);
+    if(uri == NULL) {
+        xmlSecInvalidDataError("CipherReference node must have a URI attribute", NULL);
+        return(-1);
+    }
     ret = xmlSecTransformCtxSetUri(&(encCtx->transformCtx), uri, node);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecTransformCtxSetUri", NULL,
@@ -1834,12 +1841,11 @@ xmlSecEncCtxEncryptedKeyXmlWrite(
 
     /* encrypt the key */
     ret = xmlSecTransformCtxBinaryExecute(&(encCtx->transformCtx), keyBuf, keySize);
-    if(ret < 0) {
+    if((ret < 0) || (encCtx->transformCtx.result == NULL)) {
         xmlSecInternalError("xmlSecTransformCtxBinaryExecute", NULL);
         goto done;
     }
     encCtx->result = encCtx->transformCtx.result;
-    xmlSecAssert2(encCtx->result != NULL, -1);
 
     /* write the EncryptedKey node */
     ret = xmlSecEncCtxEncDataNodeWrite(encCtx);

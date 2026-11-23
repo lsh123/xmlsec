@@ -1436,6 +1436,14 @@ execDSigTest $res_success \
     "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
     "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
 
+extra_message="Negative test: XPointer transform should fail for low XPath ops limit"
+execDSigTest $res_fail \
+    "" \
+    "aleksey-xmldsig-01/xpointer-hmac" \
+    "xpointer sha256 hmac-sha256" \
+    "hmac" \
+    "--xpath-ops-limit 3 --lax-key-search --hmackey $topfolder/keys/hmackey.bin"
+
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-sha1-hmac-sha1" \

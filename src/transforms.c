@@ -270,8 +270,41 @@ xmlSecTransformUriTypeCheck(xmlSecTransformUriType type, const xmlChar* uri) {
  * xmlSecTransformCtx
  *
  *****************************************************************************/
-static xmlSecSize g_xmlSecTransformCtxDefaultBinaryChunkSize = (64*1024); /* 64kb */
-static unsigned int g_xmlSecTransformCtxDefaultMaxDepth = 16u; /* 16 levels */
+
+/**
+ * The default binary chunk size is 64 KB but it can be changed at compile time
+ * with -DXMLSEC_TRANSFORM_CTX_DEFAULT_BINARY_CHUNK_SIZE=<size> or at runtime
+ * using xmlSecTransformCtxSetDefaultBinaryChunkSize().
+ */
+#if !defined(XMLSEC_TRANSFORM_CTX_DEFAULT_BINARY_CHUNK_SIZE)
+#define XMLSEC_TRANSFORM_CTX_DEFAULT_BINARY_CHUNK_SIZE          ((xmlSecSize)64*1024)
+#endif /* !defined(XMLSEC_TRANSFORM_CTX_DEFAULT_BINARY_CHUNK_SIZE) */
+
+/**
+ * The default max depth is 16 levels but it can be changed at compile time
+ * with -DXMLSEC_TRANSFORM_CTX_DEFAULT_MAX_DEPTH=<max-depth> or at runtime
+ * using xmlSecTransformCtxSetDefaultMaxDepth().
+ */
+#if !defined(XMLSEC_TRANSFORM_CTX_DEFAULT_MAX_DEPTH)
+#define XMLSEC_TRANSFORM_CTX_DEFAULT_MAX_DEPTH                  16u
+#endif /* !defined(XMLSEC_TRANSFORM_CTX_DEFAULT_MAX_DEPTH) */
+
+/**
+ * The default XPath operations limit is 1000000 but it can be changed at compile time
+ * with -DXMLSEC_TRANSFORM_CTX_DEFAULT_XPATH_OPS_LIMIT=<limit> or at runtime
+ * using xmlSecTransformCtxSetDefaultXpathOpsLimit(). Note: 0 means unlimited.
+ */
+#if !defined(XMLSEC_TRANSFORM_CTX_DEFAULT_XPATH_OPS_LIMIT)
+#define XMLSEC_TRANSFORM_CTX_DEFAULT_XPATH_OPS_LIMIT            ((xmlSecSize)1000000)
+#endif /* !defined(XMLSEC_TRANSFORM_CTX_DEFAULT_XPATH_OPS_LIMIT) */
+
+static xmlSecSize g_xmlSecTransformCtxDefaultBinaryChunkSize = XMLSEC_TRANSFORM_CTX_DEFAULT_BINARY_CHUNK_SIZE;
+static unsigned int g_xmlSecTransformCtxDefaultMaxDepth = XMLSEC_TRANSFORM_CTX_DEFAULT_MAX_DEPTH;
+static xmlSecSize g_xmlSecTransformCtxDefaultXpathOpsLimit = XMLSEC_TRANSFORM_CTX_DEFAULT_XPATH_OPS_LIMIT; /* 0 means unlimited */
+
+
+static int      xmlSecTransformCtxCheckIfEnabled        (xmlSecTransformCtxPtr transformCtx,
+                                                         xmlSecTransformId id);
 
 /**
  * @brief Gets the default binary chunk size.
@@ -324,6 +357,31 @@ xmlSecTransformCtxGetDefaultMaxDepth(void) {
 void
 xmlSecTransformCtxSetDefaultMaxDepth(unsigned int maxDepth) {
     g_xmlSecTransformCtxDefaultMaxDepth = maxDepth;
+}
+
+/**
+ * @brief Gets the default XPath operations limit.
+ * @details Gets the default limit on the number of XPath operations performed by
+ * XPath, XPath2 and XPointer transforms.
+ *
+ * @return the current default XPath operations limit value (0 means unlimited).
+ */
+xmlSecSize
+xmlSecTransformCtxGetDefaultXpathOpsLimit(void) {
+    return(g_xmlSecTransformCtxDefaultXpathOpsLimit);
+}
+
+
+/**
+ * @brief Sets the default XPath operations limit.
+ * @details Sets the default limit on the number of XPath operations performed by
+ * XPath, XPath2 and XPointer transforms. If set to 0, the limit is disabled.
+ * This function is not thread safe and should only be called during initialization.
+ * @param xpathOpsLimit the new default XPath operations limit value.
+ */
+void
+xmlSecTransformCtxSetDefaultXpathOpsLimit(xmlSecSize xpathOpsLimit) {
+    g_xmlSecTransformCtxDefaultXpathOpsLimit = xpathOpsLimit;
 }
 
 /**
@@ -532,6 +590,7 @@ xmlSecTransformCtxInitialize(xmlSecTransformCtxPtr ctx) {
     ctx->enabledUris = xmlSecTransformUriTypeEmpty | xmlSecTransformUriTypeSameDocument;
     ctx->binaryChunkSize = xmlSecTransformCtxGetDefaultBinaryChunkSize();
     ctx->maxDepth = xmlSecTransformCtxGetDefaultMaxDepth();
+    ctx->xpathOpsLimit = xmlSecTransformCtxGetDefaultXpathOpsLimit();
 
     /* done */
     return(0);
@@ -610,6 +669,7 @@ xmlSecTransformCtxCopyUserPref(xmlSecTransformCtxPtr dst, xmlSecTransformCtxPtr 
     dst->flags           = src->flags;
     dst->maxDepth        = src->maxDepth;
     dst->binaryChunkSize = src->binaryChunkSize;
+    dst->xpathOpsLimit   = src->xpathOpsLimit;
     dst->enabledUris     = src->enabledUris;
     dst->preExecCallback = src->preExecCallback;
 
@@ -1002,6 +1062,19 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     if(useVisa3DHack == 0) {
         xmlSecTransformPtr transform;
 
+        /* check with enabled transforms list */
+        ret = xmlSecTransformCtxCheckIfEnabled(ctx, xmlSecTransformXPointerId);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecTransformCtxCheckIfEnabled",
+                                xmlSecTransformKlassGetName(xmlSecTransformXPointerId));
+            goto done;
+        } else if(ret == 0) {
+            xmlSecOtherError2(XMLSEC_ERRORS_R_TRANSFORM_DISABLED,
+                              xmlSecTransformKlassGetName(xmlSecTransformXPointerId),
+                              "uri=%s", xmlSecErrorsSafeString(uri));
+            goto done;
+        }
+
         /* we need to create XPointer transform to execute expr */
         transform = xmlSecTransformCtxCreateAndPrepend(ctx, xmlSecTransformXPointerId);
         if(!xmlSecTransformIsValid(transform)) {
@@ -1022,6 +1095,19 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
          * XPath/XPointer engine, we need to have this hack here
          */
         xmlSecTransformPtr transform;
+
+        /* check with enabled transforms list */
+        ret = xmlSecTransformCtxCheckIfEnabled(ctx, xmlSecTransformVisa3DHackId);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecTransformCtxCheckIfEnabled",
+                                xmlSecTransformKlassGetName(xmlSecTransformVisa3DHackId));
+            goto done;
+        } else if(ret == 0) {
+            xmlSecOtherError2(XMLSEC_ERRORS_R_TRANSFORM_DISABLED,
+                              xmlSecTransformKlassGetName(xmlSecTransformVisa3DHackId),
+                              "uri=%s", xmlSecErrorsSafeString(uri));
+            goto done;
+        }
 
         transform = xmlSecTransformCtxCreateAndPrepend(ctx, xmlSecTransformVisa3DHackId);
         if(!xmlSecTransformIsValid(transform)) {
@@ -1333,6 +1419,25 @@ xmlSecTransformCtxExecute(xmlSecTransformCtxPtr ctx, xmlDocPtr doc) {
     return(0);
 }
 
+/* returns 1 if the transform is enabled, 0 if disabled, -1 on error */
+static int
+xmlSecTransformCtxCheckIfEnabled(xmlSecTransformCtxPtr transformCtx, xmlSecTransformId id) {
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    /* if no enabled transforms are specified, all are considered enabled */
+    if(xmlSecPtrListGetSize(&(transformCtx->enabledTransforms)) == 0) {
+        return(1);
+    }
+    /* otherwise, check if the transform is in the enabled list */
+    if(xmlSecTransformIdListFind(&(transformCtx->enabledTransforms), id) == 1) {
+        return(1);
+    }
+
+    /* no luck: the transform is not in the enabled list */
+    return(0);
+}
+
+
 /**
  * @brief Prints transforms context debug information to @p output.
  * @details Prints transforms context debug information to @p output.
@@ -1553,8 +1658,12 @@ xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTrans
     }
 
     /* check with enabled transforms list */
-    if((xmlSecPtrListGetSize(&(transformCtx->enabledTransforms)) > 0) &&
-       (xmlSecTransformIdListFind(&(transformCtx->enabledTransforms), id) != 1)) {
+    ret = xmlSecTransformCtxCheckIfEnabled(transformCtx, id);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformCtxCheckIfEnabled", xmlSecTransformKlassGetName(id));
+        xmlFree(href);
+        return(NULL);
+    } else if(ret == 0) {
         xmlSecOtherError2(XMLSEC_ERRORS_R_TRANSFORM_DISABLED,
                           xmlSecTransformKlassGetName(id),
                           "href=%s", xmlSecErrorsSafeString(href));

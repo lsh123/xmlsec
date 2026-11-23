@@ -91,7 +91,8 @@ static int                      xmlSecXPathDataNodeRead         (xmlSecXPathData
                                                                  xmlNodePtr node);
 static xmlSecNodeSetPtr         xmlSecXPathDataExecute          (xmlSecXPathDataPtr data,
                                                                  xmlDocPtr doc,
-                                                                 xmlNodePtr hereNode);
+                                                                 xmlNodePtr hereNode,
+                                                                 xmlSecTransformCtxPtr transformCtx);
 
 static xmlSecXPathDataPtr
 xmlSecXPathDataCreate(xmlSecXPathDataType type) {
@@ -208,7 +209,12 @@ xmlSecXPathDataNodeRead(xmlSecXPathDataPtr data, xmlNodePtr node) {
 }
 
 static xmlSecNodeSetPtr
-xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNode) {
+xmlSecXPathDataExecute(
+    xmlSecXPathDataPtr data,
+    xmlDocPtr doc,
+    xmlNodePtr hereNode,
+    xmlSecTransformCtxPtr transformCtx
+) {
     xmlXPathObjectPtr xpathObj = NULL;
     xmlSecNodeSetPtr nodes;
 
@@ -217,9 +223,13 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
     xmlSecAssert2(data->ctx != NULL, NULL);
     xmlSecAssert2(doc != NULL, NULL);
     xmlSecAssert2(hereNode != NULL, NULL);
+    xmlSecAssert2(transformCtx != NULL, NULL);
 
     /* do not forget to set the doc */
     data->ctx->doc = doc;
+
+    /* set the limit on the number of XPath operations (0 means unlimited) */
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(transformCtx->xpathOpsLimit, data->ctx->opLimit, return(NULL), NULL);
 
     /*
      * Set the document root node (the document node itself) as the context
@@ -320,7 +330,8 @@ static xmlSecPtrListId  xmlSecXPathDataListGetKlass             (void);
 static xmlSecNodeSetPtr xmlSecXPathDataListExecute              (xmlSecPtrListPtr dataList,
                                                                  xmlDocPtr doc,
                                                                  xmlNodePtr hereNode,
-                                                                 xmlSecNodeSetPtr nodes);
+                                                                 xmlSecNodeSetPtr nodes,
+                                                                 xmlSecTransformCtxPtr transformCtx);
 
 /* the list calls these through the xmlSecPtr*ItemMethod types, see xmlSecKeyPtrListDestroyItem() */
 static void
@@ -342,8 +353,13 @@ xmlSecXPathDataListGetKlass(void) {
 }
 
 static xmlSecNodeSetPtr
-xmlSecXPathDataListExecute(xmlSecPtrListPtr dataList, xmlDocPtr doc,
-                           xmlNodePtr hereNode, xmlSecNodeSetPtr nodes) {
+xmlSecXPathDataListExecute(
+    xmlSecPtrListPtr dataList,
+    xmlDocPtr doc,
+    xmlNodePtr hereNode,
+    xmlSecNodeSetPtr nodes,
+    xmlSecTransformCtxPtr transformCtx
+) {
     xmlSecXPathDataPtr data;
     xmlSecNodeSetPtr res, tmp, tmp2;
     xmlSecSize pos;
@@ -352,6 +368,7 @@ xmlSecXPathDataListExecute(xmlSecPtrListPtr dataList, xmlDocPtr doc,
     xmlSecAssert2(xmlSecPtrListGetSize(dataList) > 0, NULL);
     xmlSecAssert2(doc != NULL, NULL);
     xmlSecAssert2(hereNode != NULL, NULL);
+    xmlSecAssert2(transformCtx != NULL, NULL);
 
     res = nodes;
     for(pos = 0; pos < xmlSecPtrListGetSize(dataList); ++pos) {
@@ -364,7 +381,7 @@ xmlSecXPathDataListExecute(xmlSecPtrListPtr dataList, xmlDocPtr doc,
             return(NULL);
         }
 
-        tmp = xmlSecXPathDataExecute(data, doc, hereNode);
+        tmp = xmlSecXPathDataExecute(data, doc, hereNode, transformCtx);
         if(tmp == NULL) {
             xmlSecInternalError("xmlSecXPathDataExecute", NULL);
             if((res != NULL) && (res != nodes)) {
@@ -465,7 +482,7 @@ xmlSecTransformXPathExecute(xmlSecTransformPtr transform, int last,
     xmlSecAssert2(doc != NULL, -1);
 
     transform->outNodes = xmlSecXPathDataListExecute(dataList, doc,
-                                transform->hereNode, transform->inNodes);
+        transform->hereNode, transform->inNodes, transformCtx);
     if(transform->outNodes == NULL) {
         xmlSecInternalError("xmlSecXPathDataListExecute",
                             xmlSecTransformGetName(transform));

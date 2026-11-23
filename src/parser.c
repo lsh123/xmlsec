@@ -145,6 +145,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXmlParserId), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2((data != NULL) || (dataSize == 0), -1);
 
     ctx = xmlSecParserGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

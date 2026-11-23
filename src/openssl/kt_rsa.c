@@ -854,7 +854,7 @@ xmlSecOpenSSLRsaOaepSetParamsIfNeeded(xmlSecOpenSSLRsaOaepCtxPtr ctx) {
             xmlSecOpenSSLError("OPENSSL_malloc", NULL);
             return(-1);
         }
-        memcpy(labelCopy, label, (unsigned int)labelSize);
+        memcpy(labelCopy, label, labelSize);
 
         ret = EVP_PKEY_CTX_set0_rsa_oaep_label(ctx->pKeyCtx, labelCopy, labelLen);
         if(ret <= 0) {

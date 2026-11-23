@@ -1289,6 +1289,294 @@ test_xmlSecAddChild_multiple_distinct(void) {
 }
 
 /******************************************************************************
+ * xmlSecAddNextSibling
+ *****************************************************************************/
+static void
+test_xmlSecAddNextSibling_name_and_ns(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlNodePtr first, second, cur;
+    xmlNodePtr text;
+    const xmlChar* nsHref;
+    xmlChar* content;
+
+    testStart("xmlSecAddNextSibling: new element is inserted after the node with correct name and namespace");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+    /* use xmlNewChild (no text nodes) so the child order is predictable */
+    first  = xmlNewChild(root, NULL, BAD_CAST "First",  NULL);
+    second = xmlNewChild(root, NULL, BAD_CAST "Second", NULL);
+    if((first == NULL) || (second == NULL)) {
+        testLog("Error: failed to add children\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    cur = xmlSecAddNextSibling(first, BAD_CAST "New", TEST_NS);
+    if(cur == NULL) {
+        testLog("Error: xmlSecAddNextSibling returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(xmlStrcmp(cur->name, BAD_CAST "New") != 0) {
+        testLog("Error: expected name 'New', got '%s'\n", (char*)cur->name);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    nsHref = xmlSecGetNodeNsHref(cur);
+    if((nsHref == NULL) || (xmlStrcmp(nsHref, TEST_NS) != 0)) {
+        testLog("Error: expected ns 'http://test.ns', got '%s'\n",
+                nsHref ? (char*)nsHref : "NULL");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(cur->parent != root) {
+        testLog("Error: the new node is not a child of the same parent\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* the new element must be placed immediately after the node; the
+     * line feed text node follows the new element (matching
+     * xmlSecAddChild and xmlSecAddPrevSibling), not the node */
+    if(first->next != cur) {
+        testLog("Error: the new element is not immediately after the node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    text = cur->next;
+    if((text == NULL) || (text->type != XML_TEXT_NODE)) {
+        testLog("Error: expected a text node after the new element\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    content = xmlNodeGetContent(text);
+    if((content == NULL) || (xmlStrcmp(content, xmlSecGetDefaultLineFeed()) != 0)) {
+        testLog("Error: unexpected content of the line feed node: '%s'\n",
+                content ? (char*)content : "NULL");
+        xmlFree(content);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(content);
+    /* the pre-existing next sibling must remain after the line feed node */
+    if(text->next != second) {
+        testLog("Error: the pre-existing next sibling was not preserved after the line feed node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecAddNextSibling_at_end_of_children(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlNodePtr last, cur;
+    xmlNodePtr text;
+
+    testStart("xmlSecAddNextSibling: line feed node becomes the last child when the node is last");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+    last = xmlNewChild(root, NULL, BAD_CAST "Last", NULL);
+    if(last == NULL) {
+        testLog("Error: failed to add child\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    cur = xmlSecAddNextSibling(last, BAD_CAST "New", TEST_NS);
+    if(cur == NULL) {
+        testLog("Error: xmlSecAddNextSibling returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    if(last->next != cur) {
+        testLog("Error: the new element is not immediately after the node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    text = cur->next;
+    if((text == NULL) || (text->type != XML_TEXT_NODE)) {
+        testLog("Error: expected a text node after the new element\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(text->next != NULL) {
+        testLog("Error: expected the line feed node to be the last child of the parent\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(root->last != text) {
+        testLog("Error: the line feed node is not the last child of the parent\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecAddNextSibling_after_node_with_line_feed(void) {
+    /* mirrors the src/templates.c case: <ds:KeyInfo/> is appended after a
+     * <ds:SignatureValue/> element created by xmlSecAddChild(), which already
+     * has a line feed text node after it */
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlNodePtr value, cur;
+    xmlNodePtr text1, text2;
+    xmlChar* content;
+
+    testStart("xmlSecAddNextSibling: new element is inserted before the pre-existing line feed node");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+    value = xmlSecAddChild(root, BAD_CAST "Value", TEST_NS);
+    if(value == NULL) {
+        testLog("Error: xmlSecAddChild returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    /* test setup: xmlSecAddChild adds a line feed text node after the child */
+    text1 = value->next;
+    if((text1 == NULL) || (text1->type != XML_TEXT_NODE)) {
+        testLog("Error: expected the line feed node after the value node (test setup)\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    cur = xmlSecAddNextSibling(value, BAD_CAST "KeyInfo", TEST_NS);
+    if(cur == NULL) {
+        testLog("Error: xmlSecAddNextSibling returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* the new element must be placed immediately after the value node,
+     * pushing the pre-existing line feed node behind the new one */
+    if(value->next != cur) {
+        testLog("Error: the new element is not immediately after the node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    text2 = cur->next;
+    if((text2 == NULL) || (text2->type != XML_TEXT_NODE)) {
+        testLog("Error: expected a text node after the new element\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    content = xmlNodeGetContent(text2);
+    if((content == NULL) || (xmlStrcmp(content, xmlSecGetDefaultLineFeed()) != 0)) {
+        testLog("Error: unexpected content of the new line feed node: '%s'\n",
+                content ? (char*)content : "NULL");
+        xmlFree(content);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    xmlFree(content);
+    if(text2->next != text1) {
+        testLog("Error: the pre-existing line feed node was not preserved after the new one\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecAddNextSibling_null_ns(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlNodePtr first, cur;
+    const xmlChar* nsHref;
+
+    testStart("xmlSecAddNextSibling: NULL namespace produces an unnamespaced element");
+
+    doc = xmltreeTestCreateDoc(BAD_CAST "Root", NULL);
+    if(doc == NULL) {
+        testLog("Error: failed to create doc\n");
+        testFinishedFailure();
+        return;
+    }
+    root = xmlDocGetRootElement(doc);
+    first = xmlNewChild(root, NULL, BAD_CAST "First", NULL);
+    if(first == NULL) {
+        testLog("Error: failed to add child\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    cur = xmlSecAddNextSibling(first, BAD_CAST "New", NULL);
+    if(cur == NULL) {
+        testLog("Error: xmlSecAddNextSibling returned NULL\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    nsHref = xmlSecGetNodeNsHref(cur);
+    if(nsHref != NULL) {
+        testLog("Error: expected no namespace, got '%s'\n", (char*)nsHref);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if(first->next != cur) {
+        testLog("Error: the new element is not immediately after the node\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+/******************************************************************************
  * xmlSecCheckNodeName
  *****************************************************************************/
 static void
@@ -3099,6 +3387,13 @@ test_xmltree(void) {
     testGroupStart("xmlSecAddChild");
     test_xmlSecAddChild_name_and_ns();
     test_xmlSecAddChild_multiple_distinct();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecAddNextSibling");
+    test_xmlSecAddNextSibling_name_and_ns();
+    test_xmlSecAddNextSibling_at_end_of_children();
+    test_xmlSecAddNextSibling_after_node_with_line_feed();
+    test_xmlSecAddNextSibling_null_ns();
     if(testGroupFinished() != 1) { success = 0; }
 
     testGroupStart("xmlSecCheckNodeName");

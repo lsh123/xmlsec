@@ -622,6 +622,11 @@ xmlSecNodeSetNamespacesWalk(xmlNodePtr cur, xmlSecNodeSetWalkCtx* ctx) {
     }
 
     for(ns = nsList; (*ns) != NULL; ns++) {
+        /* stop if the walk was interrupted (e.g. during the attributes walk) */
+        if(ctx->interrupted) {
+            xmlFree(nsList);
+            return(0);
+        }
         if(xmlSecNodeSetContains(ctx->nset, (xmlNodePtr)(*ns), cur) != 1) {
             continue;
         }
@@ -661,6 +666,10 @@ xmlSecNodeSetWalkRecursiveCallback(xmlNodePtr cur, void* data) {
             return(0);
         }
     }
+    /* if the callback interrupted the walk during the node itself, stop the tree walk cleanly */
+    if(ctx->interrupted) {
+        return(0);
+    }
 
     /* Element nodes have attributes and namespaces */
     if(cur->type == XML_ELEMENT_NODE) {
@@ -670,12 +679,20 @@ xmlSecNodeSetWalkRecursiveCallback(xmlNodePtr cur, void* data) {
             xmlSecInternalError("xmlSecNodeSetAttributesWalk", NULL);
             return(-1);
         }
+        /* if the callback interrupted the walk during the attributes walk, stop the tree walk cleanly */
+        if(ctx->interrupted) {
+            return(0);
+        }
 
         /* Walk all in-scope namespaces of the current element */
         ret = xmlSecNodeSetNamespacesWalk(cur, ctx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecNodeSetNamespacesWalk", NULL);
             return(-1);
+        }
+        /* if the callback interrupted the walk during the namespaces walk, stop the tree walk cleanly */
+        if(ctx->interrupted) {
+            return(0);
         }
     }
 

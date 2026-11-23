@@ -1017,8 +1017,8 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         /* Visa3D protocol doesn't follow XML/XPointer/XMLDSig specs
          * and allows invalid XPointer expressions (e.g. "#12345") in
          * the URI attribute.
-         * Since we couldn't evaluate such expressions thru XPath/XPointer
-         * engine, we need to have this hack here
+         * Since we couldn't evaluate such expressions through the
+         * XPath/XPointer engine, we need to have this hack here
          */
         xmlSecTransformPtr transform;
 
@@ -2309,6 +2309,7 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(dataSize != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2(transformCtx->binaryChunkSize > 0, -1);
 
     while((xmlSecBufferGetSize(&(transform->outBuf)) == 0) && (final == 0)) {
         /* read data from previous transform if exist */
@@ -2507,7 +2508,7 @@ static xmlSecPtrListKlass xmlSecTransformIdListKlass = {
 };
 
 /**
- * @brief The transform id list klass.
+ * @brief Gets the transform id list klass.
  *
  * @return pointer to the transform id list klass.
  */

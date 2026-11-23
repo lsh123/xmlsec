@@ -1646,10 +1646,16 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
 
     xmlSecAssert2(id == xmlSecKeyDataEncryptedKeyId, -1);
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(key->value == NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
+
+    /* the key value may already be set by an earlier
+     * <enc:EncryptedKey> element in the same <ds:KeyInfo>; skip
+     * this element in that case */
+    if(key->value != NULL) {
+        return(0);
+    }
 
     /* check the enc level */
     if(keyInfoCtx->curEncryptedKeyLevel >= keyInfoCtx->maxEncryptedKeyLevel) {

@@ -1755,6 +1755,10 @@ xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bits
 /**
  * @brief Creates a &lt;enc:OAEPparams/&gt; child node in the @p transformNode.
  * @details Creates a &lt;enc:OAEPparams/&gt; child node in the @p transformNode.
+ * Despite the "Transform" naming, @p transformNode must be an
+ * &lt;enc:EncryptionMethod/&gt; node: per the XML-Enc specification,
+ * &lt;enc:OAEPparams/&gt; is a child of &lt;enc:EncryptionMethod/&gt;, not
+ * of &lt;dsig:Transform/&gt;.
  * Empty params (@p buf == NULL and @p size == 0) are accepted and produce
  * an empty &lt;enc:OAEPparams/&gt; element.
  * @param transformNode the pointer to &lt;enc:EncryptionMethod/&gt; node.
@@ -1809,6 +1813,11 @@ xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode, const xmlSecByte *b
 
 /**
  * @brief Creates a &lt;enc11:MGF/&gt; child node in the @p transformNode.
+ * @details Creates a &lt;enc11:MGF/&gt; child node in the @p transformNode.
+ * Despite the "Transform" naming, @p transformNode must be an
+ * &lt;enc:EncryptionMethod/&gt; node: per the XML-Enc specification,
+ * &lt;enc11:MGF/&gt; is a child of &lt;enc:EncryptionMethod/&gt;, not
+ * of &lt;dsig:Transform/&gt;.
  * @param transformNode the pointer to &lt;enc:EncryptionMethod/&gt; node.
  * @param algorithm MGF1 algorithm href.
  *
@@ -1845,7 +1854,11 @@ xmlSecTmplTransformAddRsaMgf(xmlNodePtr transformNode, const xmlChar *algorithm)
 
 /**
  * @brief Creates a &lt;dsig:DigestMethod/&gt; child node in the @p transformNode.
- * @details Creates &lt;dsig:DigestMethod/&gt; child node in the @p transformNode.
+ * @details Creates a &lt;dsig:DigestMethod/&gt; child node in the @p transformNode.
+ * Despite the "Transform" naming, @p transformNode must be an
+ * &lt;enc:EncryptionMethod/&gt; node: per the XML-Enc specification,
+ * &lt;dsig:DigestMethod/&gt; is a child of &lt;enc:EncryptionMethod/&gt;, not
+ * of &lt;dsig:Transform/&gt;.
  * @param transformNode the pointer to &lt;enc:EncryptionMethod/&gt; node.
  * @param algorithm digest algorithm href.
  *

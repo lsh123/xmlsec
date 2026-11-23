@@ -248,6 +248,7 @@ xmlSecBufferSetData(xmlSecBufferPtr buf, const xmlSecByte* data, xmlSecSize size
     xmlSecAssert2((data != NULL) || (size == 0), -1);
 
     xmlSecBufferEmpty(buf);
+
     if((data != NULL) && (size > 0)) {
         ret = xmlSecBufferSetMaxSize(buf, size);
         if(ret < 0) {

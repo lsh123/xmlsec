@@ -757,6 +757,8 @@ xmlSecKeyX509DataValueXmlWriteBase64Blob(xmlSecBufferPtr buf, xmlNodePtr node,
 #if LIBXML_VERSION >= 21300
         if(xmlNodeSetContent(child, xmlSecGetDefaultLineFeed()) < 0) {
             xmlSecXmlError("xmlNodeSetContent", child);
+            xmlUnlinkNode(child);
+            xmlFreeNode(child);
             child = NULL;
             goto done;
         }
@@ -769,6 +771,8 @@ xmlSecKeyX509DataValueXmlWriteBase64Blob(xmlSecBufferPtr buf, xmlNodePtr node,
 #if LIBXML_VERSION >= 21300
     if(xmlNodeAddContent(child, content) < 0) {
         xmlSecXmlError("xmlNodeAddContent", child);
+        xmlUnlinkNode(child);
+        xmlFreeNode(child);
         child = NULL;
         goto done;
     }
@@ -781,6 +785,8 @@ xmlSecKeyX509DataValueXmlWriteBase64Blob(xmlSecBufferPtr buf, xmlNodePtr node,
 #if LIBXML_VERSION >= 21300
         if(xmlNodeAddContent(child, xmlSecGetDefaultLineFeed()) < 0) {
             xmlSecXmlError("xmlNodeAddContent", child);
+            xmlUnlinkNode(child);
+            xmlFreeNode(child);
             child = NULL;
             goto done;
         }
@@ -819,6 +825,8 @@ xmlSecKeyX509DataValueXmlWriteString(const xmlChar* content, xmlNodePtr node,
 #if LIBXML_VERSION >= 21300
     if(xmlNodeSetContent(cur, content) < 0) {
         xmlSecXmlError("xmlNodeSetContent", cur);
+        xmlUnlinkNode(cur);
+        xmlFreeNode(cur);
         return(-1);
     }
 #else /* LIBXML_VERSION >= 21300 */
@@ -894,6 +902,8 @@ xmlSecKeyX509DataValueXmlWrite(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr n
         if(ret < 0) {
             xmlSecInternalError2("xmlSecKeyX509DataValueXmlWriteString", NULL,
                 "issuerName=%s", xmlSecErrorsSafeString(x509Value->issuerName));
+            xmlUnlinkNode(issuerSerial);
+            xmlFreeNode(issuerSerial);
             return(-1);
         }
 
@@ -902,6 +912,8 @@ xmlSecKeyX509DataValueXmlWrite(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr n
         if(ret < 0) {
             xmlSecInternalError2("xmlSecKeyX509DataValueXmlWriteString", NULL,
                 "issuerSerial=%s", xmlSecErrorsSafeString(x509Value->issuerSerial));
+            xmlUnlinkNode(issuerSerial);
+            xmlFreeNode(issuerSerial);
             return(-1);
         }
     }
@@ -984,13 +996,13 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
             }
             break;
         case XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH1:
-             /* if next char after \\ is a hex then we expect \\XX, otherwise we just remove \\ */
+             /* if next char after a backslash is a hex then we expect a \XX escape, otherwise we just remove the backslash */
              if (xmlSecIsHex(inCh)) {
                 inFirstHex = inCh;
                 state = XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH2;
                 ++ii;
              } else {
-                /* just remove \\ */
+                /* just remove the backslash */
                 state = XMLSEC_X509_NAME_READ_STATE_NORMAL;
 
                 /* copy char and move to next */
@@ -1333,7 +1345,7 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReplacements *replacements,
                  * explicitly (a return value >= buffer size means the name was cut) */
                 ret = xmlStrPrintf(BAD_CAST name, sizeof(name), "%s", cur->replacement);
                 if((ret < 0) || ((size_t)ret >= sizeof(name))) {
-                    xmlSecInternalError("xmlStrPrintf", NULL);
+                    xmlSecInternalError("replacement name too long", NULL);
                     return(-1);
                 }
                 break;

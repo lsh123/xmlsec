@@ -468,7 +468,7 @@ xmlSecTransformKAMFinalize(xmlSecTransformKAMPtr params) {
 
 
 /*
- * Returns the output size in bytes for the given digest algorithm @p href
+ * Returns the output size in bytes for the given digest algorithm href
  * or 0 if the algorithm is not recognized.
  *
  * Used by Key Agreement Methods as the default derived key size when the
@@ -1708,7 +1708,7 @@ xmlSecTransformHkdfParamsRead(xmlSecTransformHkdfParamsPtr params, xmlNodePtr no
  * </xenc:EncryptionMethod>
  */
 
- /* IV: 16 bytes: 4 byte counter + 12 byte nonce */
+/* IV: 16 bytes: 4 byte counter + 12 byte nonce */
 int
 xmlSecTransformChaCha20ParamsRead(xmlNodePtr node, xmlSecByte *iv, xmlSecSize ivSize, xmlSecSize *ivSizeOut, int *noncePresent) {
     xmlSecBuffer buf;

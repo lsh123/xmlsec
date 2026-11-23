@@ -242,6 +242,11 @@ extern "C" {
 #define XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL      53
 
 /**
+ * @brief Max allowed number of <dsig:KeyInfo /> child elements reached.
+ */
+#define XMLSEC_ERRORS_R_MAX_KEYINFO_CHILDREN            54
+
+/**
  * @brief Max EncryptedKey level reached.
  */
 #define XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL                61

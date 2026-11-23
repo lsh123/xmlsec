@@ -34,9 +34,12 @@ see the Copyright file in the distribution for details.
     maximum HKDF derived key length (`XMLSEC_HKDF_MAX_KEY_LENGTH`, 16320 bytes by default).
   - (xmlsec-core) Fixed the XPointer transform identifier, the original one is kept as deprecated and
     will be removed in the future.
-  - (xmlsec-core, **not backward compatible**) Added `--xpath-ops-limit` option to control the limit on
-    the number of XPath operations performed by XPath, XPath2 and XPointer transforms (default: `1000000`;
-    `0` disables the limit).
+  - (xmlsec-core, **not backward compatible**) Added `--xpath-ops-limit` option and `xmlSecTransformCtxSetDefaultXpathOpsLimit`
+    helper function to control the limit on the number of XPath operations performed by XPath, XPath2 and XPointer transforms
+    (default: `1000000`; `0` disables the limit).
+  - (xmlsec-core, **not backward compatible**) Added the `--max-key-info-children` option (and the `maxKeyInfoChildren`
+    field in the `xmlSecKeyInfoCtx` struct) to limit the number of <dsig:KeyInfo /> child elements
+    processed when reading (default: `10`; `0` disables the limit).
   - (xmlsec-core) The Visa3D hack (the `xmlSecTransformVisa3DHackId` transform, the
     `XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK` / `XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK` flags and the
     `--enable-visa3d-hack` option) is deprecated and will be removed in the future.

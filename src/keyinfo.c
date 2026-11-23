@@ -60,16 +60,66 @@
 #include "keysdata_helpers.h"
 #include "xmlenc_helpers.h"
 
-/* default limits */
+/******************************************************************************
+ *
+ * Default limits
+ *
+ *****************************************************************************/
+
+/**
+ * The default max number of <dsig:KeyInfo /> child elements processed when reading
+ * is 10 but it can be changed at compile time with
+ * -DXMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_CHILDREN=<count> or at runtime by setting
+ * the maxKeyInfoChildren field of the xmlSecKeyInfoCtx struct. Note: 0 disables
+ * the limit.
+ */
+#if !defined(XMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_CHILDREN)
+#define XMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_CHILDREN         10
+#endif /* !defined(XMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_CHILDREN) */
+
+/**
+ * The default max recursion level when processing <dsig11:KeyInfoReference /> element
+ * is 1 but it can be changed at compile time with
+ * -DXMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_REFERENCE_LEVEL=<level> or at runtime by
+ * setting the maxKeyInfoReferenceLevel field of the xmlSecKeyInfoCtx struct.
+ */
+#if !defined(XMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_REFERENCE_LEVEL)
 #define XMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_REFERENCE_LEVEL  1
+#endif /* !defined(XMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_REFERENCE_LEVEL) */
+
+/**
+ * The default max recursion level when processing <dsig:RetrievalMethod /> element
+ * is 1 but it can be changed at compile time with
+ * -DXMLSEC_KEYINFO_DEFAULT_MAX_RETRIEVAL_METHOD_LEVEL=<level> or at runtime by
+ * setting the maxRetrievalMethodLevel field of the xmlSecKeyInfoCtx struct.
+ */
+#if !defined(XMLSEC_KEYINFO_DEFAULT_MAX_RETRIEVAL_METHOD_LEVEL)
 #define XMLSEC_KEYINFO_DEFAULT_MAX_RETRIEVAL_METHOD_LEVEL   1
+#endif /* !defined(XMLSEC_KEYINFO_DEFAULT_MAX_RETRIEVAL_METHOD_LEVEL) */
 
 #ifndef XMLSEC_NO_XMLENC
+/**
+ * The default max recursion level when processing <enc:EncryptedKey />,
+ * <enc11:DerivedKey /> or <enc:AgreementMethod /> elements is 1 but it can be
+ * changed at compile time with
+ * -DXMLSEC_KEYINFO_DEFAULT_MAX_ENCRYPTED_KEY_LEVEL=<level> or at runtime by
+ * setting the maxEncryptedKeyLevel field of the xmlSecKeyInfoCtx struct.
+ */
+#if !defined(XMLSEC_KEYINFO_DEFAULT_MAX_ENCRYPTED_KEY_LEVEL)
 #define XMLSEC_KEYINFO_DEFAULT_MAX_ENCRYPTED_KEY_LEVEL      1
+#endif /* !defined(XMLSEC_KEYINFO_DEFAULT_MAX_ENCRYPTED_KEY_LEVEL) */
 #endif /* XMLSEC_NO_XMLENC */
 
 #ifndef XMLSEC_NO_X509
+/**
+ * The default max certificate chain length is 9 but it can be changed at compile
+ * time with -DXMLSEC_KEYINFO_DEFAULT_MAX_CERT_VERIFICATION_DEPTH=<depth> or at
+ * runtime by setting the certsVerificationDepth field of the xmlSecKeyInfoCtx
+ * struct.
+ */
+#if !defined(XMLSEC_KEYINFO_DEFAULT_MAX_CERT_VERIFICATION_DEPTH)
 #define XMLSEC_KEYINFO_DEFAULT_MAX_CERT_VERIFICATION_DEPTH  9
+#endif /* !defined(XMLSEC_KEYINFO_DEFAULT_MAX_CERT_VERIFICATION_DEPTH) */
 #endif /* XMLSEC_NO_X509 */
 
 /******************************************************************************
@@ -93,6 +143,7 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
     const xmlChar* nodeNs;
     xmlSecKeyDataId dataId;
     xmlNodePtr cur;
+    xmlSecSize childrenCount;
     int ret;
 
     xmlSecAssert2(keyInfoNode != NULL, -1);
@@ -100,8 +151,8 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
 
+    childrenCount = 0;
     for(cur = xmlSecGetNextElementNode(keyInfoNode->children); cur != NULL; cur = xmlSecGetNextElementNode(cur->next)) {
-
         /* stop processing the next nodes if the key already matches
          * the requirements (unless the DONT_STOP_ON_KEY_FOUND flag is set) */
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND) == 0) {
@@ -116,6 +167,15 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
                 }
             }
         }
+
+        /* stop processing when the max number of <dsig:KeyInfo /> child elements is reached */
+        ++childrenCount;
+        if((keyInfoCtx->maxKeyInfoChildren != 0) && (childrenCount > keyInfoCtx->maxKeyInfoChildren)) {
+            xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_KEYINFO_CHILDREN, "KeyInfo",
+                "cur=" XMLSEC_SIZE_T_FMT ";max=" XMLSEC_SIZE_T_FMT, childrenCount, keyInfoCtx->maxKeyInfoChildren);
+            return(-1);
+        }
+
 
         /* find data id */
         nodeName = cur->name;
@@ -285,6 +345,7 @@ xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr key
         xmlSecInternalError("xmlSecPtrListInitialize", NULL);
         return(-1);
     }
+    keyInfoCtx->maxKeyInfoChildren = XMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_CHILDREN;
 
     keyInfoCtx->maxRetrievalMethodLevel = XMLSEC_KEYINFO_DEFAULT_MAX_RETRIEVAL_METHOD_LEVEL;
     ret = xmlSecTransformCtxInitialize(&(keyInfoCtx->retrievalMethodCtx));
@@ -493,11 +554,12 @@ xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
     xmlSecAssert2(dst != NULL, -1);
     xmlSecAssert2(src != NULL, -1);
 
-    dst->userData       = src->userData;
-    dst->flags          = src->flags;
-    dst->flags2         = src->flags2;
-    dst->keysMngr       = src->keysMngr;
-    dst->base64LineSize = src->base64LineSize;
+    dst->userData           = src->userData;
+    dst->flags              = src->flags;
+    dst->flags2             = src->flags2;
+    dst->keysMngr           = src->keysMngr;
+    dst->base64LineSize     = src->base64LineSize;
+    dst->maxKeyInfoChildren = src->maxKeyInfoChildren;
 
     xmlSecPtrListEmpty(&(dst->enabledKeyData));
     ret = xmlSecPtrListCopy(&(dst->enabledKeyData), &(src->enabledKeyData));

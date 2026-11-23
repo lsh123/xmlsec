@@ -87,7 +87,7 @@ xmlSecTransformConcatKdfParamsReadBitsAttr(xmlSecBufferPtr buf, xmlNodePtr node,
     data = xmlSecBufferGetData(buf);
     size = xmlSecBufferGetSize(buf);
     if((data == NULL) || (size == 0)) {
-        /* ignore empty buffer */
+        /* empty bits attributes are allowed and simply do not contribute any data to the KDF */
         return(0);
     }
 

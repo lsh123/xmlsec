@@ -137,7 +137,7 @@ xmlSecInit(void) {
         return(-1);
     }
 
-    /* initialize safe external entity loader */
+    /* save the default external entity loader */
     if(!xmlSecDefaultExternalEntityLoader) {
         xmlSecDefaultExternalEntityLoader = xmlGetExternalEntityLoader();
     }
@@ -231,6 +231,12 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
         }
         break;
     case xmlSecCheckVersionABICompatible:
+        if((minor < 0) || (subminor < 0)) {
+            xmlSecOtherError3(XMLSEC_ERRORS_R_INVALID_VERSION, NULL,
+                    "mode=abi compatible;negative version component is not allowed;minor version=%d;subminor version=%d",
+                    minor, subminor);
+            return(0);
+        }
         if((minor > XMLSEC_VERSION_MINOR) || ((minor == XMLSEC_VERSION_MINOR) &&
                 (subminor > XMLSEC_VERSION_SUBMINOR))) {
             xmlSecOtherError5(XMLSEC_ERRORS_R_INVALID_VERSION, NULL,

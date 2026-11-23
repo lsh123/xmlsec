@@ -55,8 +55,8 @@ struct _xmlSecCryptoDLLibrary {
     xmlChar*    getFunctionsName;
     xmlSecCryptoDLFunctionsPtr functions;
 
-    /* Only one of the handles will be enabled depending on the platform, if both are enabled
-     * then the library is not configured correctly */
+    /* Only one of the handles will be enabled depending on the platform; if both are enabled,
+     * the library is not configured correctly */
 #ifdef XMLSEC_DL_LIBLTDL
     lt_dlhandle handle;
 #endif /* XMLSEC_DL_LIBLTDL */

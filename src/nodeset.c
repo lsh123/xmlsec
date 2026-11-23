@@ -128,7 +128,7 @@ xmlSecNodeSetCheckNode(xmlNodeSetPtr nodes, xmlNodePtr node, xmlNodePtr parent) 
         xmlNodePtr hostingNode;
         int ii;
 
-        /* the "hosting" element the namespace is in scope on (this is a libxml hack! check xpath.c for details) */
+        /* the "hosting" element the namespace is in scope on (this is a libxml2 hack! check xpath.c for details) */
         if((parent != NULL) && (parent->type == XML_ATTRIBUTE_NODE)) {
             hostingNode = parent->parent;
         } else {
@@ -479,7 +479,11 @@ xmlSecNodeSetGetFastPathNodes(xmlSecNodeSetPtr nset) {
  * element in which they are in scope (the walk revisits the namespace
  * declarations along each element's ancestor chain), so a namespace declared
  * on a common ancestor may be reported more than once; for Normal sets the
- * namespace copies are reported at most once each.
+ * namespace copies are reported at most once each. Namespace nodes are
+ * enumerated via xmlGetNsList()/xmlGetNsListSafe(), which do not include the
+ * implicit "xml" namespace, so implicit "xml"-namespace entries present in the
+ * set (e.g. the copies created by the XPath engine for namespace::* results)
+ * are never reported.
  * If the @p walkFunc returns a negative value, then the walk procedure
  * is interrupted; an interrupted walk is not an error.
  * @param nset the pointer to node set.
@@ -739,7 +743,9 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlNodePtr startNode, xmlSecNo
  *    all nodes in the @p doc except nodes in the @p parent subtree
  *    and comment nodes.
  * @param doc the pointer to an XML document.
- * @param parent the pointer to parent XML node or NULL if we want to include all document nodes.
+ * @param parent the pointer to parent XML node or NULL if we want to include all document
+ * nodes; a document node is treated the same as a NULL parent, since its subtree is the
+ * whole document.
  * @param withComments the flag to include comments or not.
  * @param invert the "invert" flag.
  * @return pointer to the newly created xmlSecNodeSet structure
@@ -750,18 +756,28 @@ xmlSecNodeSetGetChildren(xmlDocPtr doc, const xmlNodePtr parent, int withComment
     xmlSecNodeSetPtr nset;
     xmlNodeSetPtr nodes;
     xmlSecNodeSetType type;
+    xmlNodePtr curParent;
 
     xmlSecAssert2(doc != NULL, NULL);
     xmlSecAssert2((parent == NULL) || (parent->doc == doc), NULL);
 
-    nodes = xmlXPathNodeSetCreate(parent);
+    /* a document node is the root of the tree, so its "subtree" is the whole
+     * document; treat it the same as a NULL parent (all the document's
+     * children) to match the documented semantics */
+    curParent = parent;
+    if((curParent != NULL) && ((curParent->type == XML_DOCUMENT_NODE) ||
+            (curParent->type == XML_HTML_DOCUMENT_NODE))) {
+        curParent = NULL;
+    }
+
+    nodes = xmlXPathNodeSetCreate(curParent);
     if(nodes == NULL) {
         xmlSecXmlError("xmlXPathNodeSetCreate", NULL);
         return(NULL);
     }
 
-    /* if parent is NULL then we add all the doc children */
-    if(parent == NULL) {
+    /* if parent is NULL (or was a document node) then we add all the doc children */
+    if(curParent == NULL) {
         xmlNodePtr cur;
         for(cur = doc->children; cur != NULL; cur = cur->next) {
             if(withComments || (cur->type != XML_COMMENT_NODE)) {

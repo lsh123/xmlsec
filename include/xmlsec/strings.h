@@ -219,7 +219,6 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNameExcC14NWithComments[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefExcC14NWithComments[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNsExcC14N[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNsExcC14NWithComments[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeInclusiveNamespaces[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrPrefixList[];
@@ -229,8 +228,6 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrPrefixList[];
  * ConcatKDF strings
  *
  *****************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameConcatKdfKey[];
-
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameConcatKdf[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefConcatKdf[];
 
@@ -674,8 +671,6 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMd5[];
  * PBKDF2 strings
  *
  *****************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNamePbkdf2Key[];
-
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNamePbkdf2[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefPbkdf2[];
 
@@ -691,8 +686,6 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePbkdf2PRF[];
  * HKDF strings
  *
  *****************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHkdfKey[];
-
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHkdf[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHkdf[];
 

@@ -607,6 +607,26 @@ test_xmlSecCheckVersionExt_exact_mismatch_subminor_higher(void) {
     testFinishedSuccess();
 }
 
+static void
+test_xmlSecCheckVersionExt_negative_components(void) {
+    testStart("xmlSecCheckVersionExt negative components (abi compatible)");
+
+    if(xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, -1,
+            XMLSEC_VERSION_SUBMINOR, xmlSecCheckVersionABICompatible) != 0) {
+        testLog("Error: ABI-compatible check with a negative minor version should return 0\n");
+        testFinishedFailure();
+        return;
+    }
+    if(xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR, -1,
+            xmlSecCheckVersionABICompatible) != 0) {
+        testLog("Error: ABI-compatible check with a negative subminor version should return 0\n");
+        testFinishedFailure();
+        return;
+    }
+
+    testFinishedSuccess();
+}
+
 int
 test_xmlsec(void) {
     int success = 1;
@@ -627,6 +647,7 @@ test_xmlsec(void) {
     test_xmlSecCheckVersionExt_exact_mismatch_minor_higher();
     test_xmlSecCheckVersionExt_exact_mismatch_subminor_lower();
     test_xmlSecCheckVersionExt_exact_mismatch_subminor_higher();
+    test_xmlSecCheckVersionExt_negative_components();
 
     if(testGroupFinished() != 1) { success = 0; }
 

@@ -257,7 +257,7 @@ xmlSecKeyUseWithDebugXmlDump(xmlSecKeyUseWithPtr keyUseWith, FILE* output) {
  * KeyUseWith list
  *
  *****************************************************************************/
-/* the list calls these through the xmlSecPtr*ItemMethod types, see xmlSecKeyPtrListDestroyItem() */
+/* the list calls these through the xmlSecPtr*ItemMethod types, see xmlSecKeyUseWithPtrListDestroyItem() */
 static xmlSecPtr
 xmlSecKeyUseWithPtrListDuplicateItem(xmlSecPtr ptr) {
     return(xmlSecKeyUseWithDuplicate((xmlSecKeyUseWithPtr)ptr));
@@ -376,13 +376,12 @@ xmlSecKeyReqCopy(xmlSecKeyReqPtr dst, xmlSecKeyReqPtr src) {
         return(0);
     }
 
-    xmlSecPtrListEmpty(&dst->keyUseWithList);
-
     dst->keyId          = src->keyId;
     dst->keyType        = src->keyType;
     dst->keyUsage       = src->keyUsage;
     dst->keyBitsSize    = src->keyBitsSize;
 
+    xmlSecPtrListEmpty(&dst->keyUseWithList);
     ret = xmlSecPtrListCopy(&dst->keyUseWithList, &src->keyUseWithList);
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListCopy", NULL);

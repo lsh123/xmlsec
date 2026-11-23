@@ -32,7 +32,7 @@
  * See xmlXPtrHereFunction() in xpointer.c. The only change is that
  * we return NodeSet instead of NodeInterval.
  * @param ctxt the pointer to the XPath parser context.
- * @param nargs the arguments number.
+ * @param nargs the number of arguments.
  */
 static void
 xmlSecXPathHereFunction(xmlXPathParserContextPtr ctxt, int nargs) {
@@ -512,7 +512,7 @@ static xmlSecTransformKlass xmlSecTransformXPathKlass = {
 
 /**
  * @brief Gets the XPath transform klass.
- * @details The XPath transform evaluates given XPath expression and
+ * @details The XPath transform evaluates the given XPath expression and
  * intersects the result with the previous nodes set. See
  * http://www.w3.org/TR/xmldsig-core/#sec-XPath for more details.
  * @return XPath transform klass.

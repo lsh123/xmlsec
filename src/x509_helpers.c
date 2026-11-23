@@ -343,7 +343,7 @@ xmlSecKeyDataX509XmlWrite(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoC
     xmlSecAssert2(writeFunc != NULL, -1);
 
     if(((xmlSecKeyDataTypePublic) & keyInfoCtx->keyReq.keyType) == 0) {
-        /* we can only write public key */
+        /* we can only write a public key */
         return(0);
     }
 
@@ -609,7 +609,7 @@ xmlSecKeyX509DataValueXmlReadIssuerSerial(xmlSecKeyX509DataValuePtr x509Value, x
         return(0);
     }
 
-    /* the first is required node X509IssuerName */
+    /* the first node, X509IssuerName, is required */
     if(!xmlSecCheckNodeName(cur, xmlSecNodeX509IssuerName, xmlSecDSigNs)) {
         xmlSecInvalidNodeError(cur, xmlSecNodeX509IssuerName, NULL);
         return(-1);
@@ -630,7 +630,7 @@ xmlSecKeyX509DataValueXmlReadIssuerSerial(xmlSecKeyX509DataValuePtr x509Value, x
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
-    /* next is required node X509SerialNumber */
+    /* the next node, X509SerialNumber, is required */
     if((cur == NULL) || !xmlSecCheckNodeName(cur, xmlSecNodeX509SerialNumber, xmlSecDSigNs)) {
         xmlSecInvalidNodeError(cur, xmlSecNodeX509SerialNumber, NULL);
         return(-1);
@@ -996,7 +996,7 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
             }
             break;
         case XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH1:
-             /* if next char after a backslash is a hex then we expect a \XX escape, otherwise we just remove the backslash */
+             /* if the next char after a backslash is a hex then we expect a \XX escape, otherwise we just remove the backslash */
              if (xmlSecIsHex(inCh)) {
                 inFirstHex = inCh;
                 state = XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH2;
@@ -1043,7 +1043,7 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
                     nonSpaceJJ = jj;
                 }
             } else {
-                xmlSecInvalidDataError("two hex digits expected", NULL);
+                xmlSecInvalidDataError("Expected two hex characters in escape sequence but got only one", NULL);
                 return(-1);
             }
             break;
@@ -1241,6 +1241,34 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReplacements *replacements,
         /* skip spaces after comma */
         while((strSize > 0) && isspace((unsigned char)(*str))) {
             ++str; --strSize;
+        }
+
+        /* reject an unescaped ',' or '+' in the attribute name: per RFC 4514
+         * an unescaped ',' separates the name/value pairs (RDNs) and an
+         * unescaped '+' separates the values of a multi-valued RDN, which is
+         * not supported; a backslash escapes the next character, so an
+         * escaped ',' or '+' is allowed. Without this check a stray ',' would
+         * end up inside the name (eg "CN=a,,OU=b" would yield the name ",OU"
+         * for the second pair) */
+        scan = str;
+        scanSize = strSize;
+        while((scanSize > 0) && (*scan != '=')) {
+            if(*scan == '\\') {
+                /* the backslash escapes the next character, so skip both; if
+                 * it is the last character of the name region the reader
+                 * below will report the incomplete escape sequence */
+                if(scanSize == 1) {
+                    break;
+                }
+                scan += 2;
+                scanSize -= 2;
+            } else if((*scan == ',') || (*scan == '+')) {
+                xmlSecInvalidDataError("an unescaped ',' or '+' is not allowed in the attribute name", NULL);
+                return(-1);
+            } else {
+                ++scan;
+                --scanSize;
+            }
         }
 
         /* read name */
@@ -1465,7 +1493,7 @@ xmlSecX509SerialNumberWrite(const xmlSecByte *data, xmlSecSize dataSize) {
         }
     }
 
-    /* If number was zero */
+    /* If the number was zero */
     if(resLen == 0) {
         resString[resLen++] = '0';
     }

@@ -672,7 +672,7 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
         xmlSecBufferGetMaxSize(buf), &outWritten);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBase64Decode_ex", NULL);
-        /* do not leave the buffer in a partially-decoded, resized state */
+        /* wipe the partially-decoded content; the buffer capacity remains unchanged */
         xmlSecBufferEmpty(buf);
         goto done;
     }
@@ -786,7 +786,7 @@ xmlSecBufferHexRead(xmlSecBufferPtr buf, const xmlChar* hexStr) {
         ch2 = *(hexStr++);
         if(!xmlSecIsHex(ch1) || !xmlSecIsHex(ch2)) {
             xmlSecInvalidDataError("Unexpected character (not hex)", NULL);
-            /* do not leave the buffer in a partially-decoded, resized state */
+            /* wipe the partially-decoded content; the buffer capacity remains unchanged */
             xmlSecBufferEmpty(buf);
             return(-1);
         }

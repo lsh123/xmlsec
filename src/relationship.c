@@ -91,10 +91,10 @@
  *     namespace plus unprefixed or built-in xml:* attributes; MCE attributes/elements and other
  *     foreign-namespaced content are omitted from the canonical output.
  *
- *   * Step 2, point 4 talks about a SourceType value, but given that neither Microsoft Office, nor LibreOffice
- *     writes that theoretical attribute, the implementation doesn't handle it. If there is a real-world situation
- *     when there will be such an input, then it'll be easy to add support for that. But I didn't want to clutter
- *     the current implementation with details that don't seem to be used in practice
+ *   * Step 2, point 4 talks about a SourceType value, but given that neither Microsoft Office nor LibreOffice
+ *     writes that theoretical attribute, the implementation doesn't handle it. If such an input is ever
+ *     encountered in the real world, support for it can be added easily. The current implementation was
+ *     deliberately kept free of details that don't seem to be used in practice.
  *
  * xmlSecTransform + xmlSecRelationshipCtx
  *
@@ -373,8 +373,18 @@ static int
 xmlSecTransformRelationshipIsOutputAttr(xmlAttrPtr attr) {
     xmlSecAssert2(attr != NULL, 0);
 
+    /* Unprefixed attributes and the built-in xml:* attributes (the predefined
+     * "xml" prefix bound to the XML namespace) are serialized as is; an
+     * attribute in the XML namespace bound to any other prefix is dropped,
+     * like other foreign-namespaced content, since the output never declares
+     * such a prefix.
+     *
+     * Note: current version of LibXML2 rejects the non-xml prefixes for the XML namespace
+     * and this check is defensive protection in case LibXML2 behavior changes. */
     return((attr->ns == NULL) ||
-           ((attr->ns->href != NULL) &&
+           ((attr->ns->prefix != NULL) &&
+            (xmlStrcmp(attr->ns->prefix, BAD_CAST "xml") == 0) &&
+            (attr->ns->href != NULL) &&
             (xmlStrcmp(attr->ns->href, xmlSecRelationshipXmlNs) == 0)));
 }
 
@@ -701,9 +711,10 @@ xmlSecTransformRelationshipWriteAttribute(xmlSecTransformPtr transform, xmlOutpu
      * Get the attribute value as raw (unescaped) text. The third argument to
      * xmlNodeListGetString() is the "inLine" flag: when non-zero it returns the
      * unescaped content, which xmlSecTransformRelationshipWriteProp() then
-     * escapes exactly once. An attribute without child nodes has an empty value
-     * (e.g. Target=""), so skip the call and serialize an empty string instead
-     * of failing.
+     * escapes exactly once. A parsed attribute always has a child text node in
+     * libxml2 (even when its value is empty, e.g. Target=""), so the call
+     * normally succeeds and returns the raw value; if the attribute has no
+     * children, an empty string is serialized instead of failing.
      */
     if(attr->children != NULL) {
         value = xmlNodeListGetString(attr->doc, attr->children, 1);
@@ -813,11 +824,11 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
      * Write namespaces.
      *
      * Step 2, point 1: remove all namespace declarations except the Relationships namespace
-    * declaration. Step 1 has already filtered out versioning instructions and
-    * foreign-namespaced content from the serialized output, so we emit only the
-    * namespace binding for Relationships itself here. Foreign namespace
-    * declarations (e.g. xmlns:foo="...") are dropped so they do not leak into
-    * the canonical output.
+     * declaration. Step 1 has already filtered out versioning instructions and
+     * foreign-namespaced content from the serialized output, so we emit only the
+     * namespace binding for Relationships itself here. Foreign namespace
+     * declarations (e.g. xmlns:foo="...") are dropped so they do not leak into
+     * the canonical output.
      *
      * Step 2, point 2: remove the Relationships namespace prefix, if it is present. Element
      * names are written bare, so the Relationships namespace is bound as the default

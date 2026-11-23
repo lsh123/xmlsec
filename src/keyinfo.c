@@ -499,6 +499,7 @@ xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
     dst->keysMngr       = src->keysMngr;
     dst->base64LineSize = src->base64LineSize;
 
+    xmlSecPtrListEmpty(&(dst->enabledKeyData));
     ret = xmlSecPtrListCopy(&(dst->enabledKeyData), &(src->enabledKeyData));
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListCopy(enabledKeyData)", NULL);

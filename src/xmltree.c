@@ -1396,7 +1396,7 @@ xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
     xmlSecAssert2(node != NULL, NULL);
     xmlSecAssert2(local != NULL, NULL);
 
-    /* we don't want to create namespace node ourselves because
+    /* we don't want to create a namespace node ourselves because
      * it might cause collisions */
     ns = xmlSearchNsByHref(node->doc, node, href);
     if((ns == NULL) && (href != NULL)) {

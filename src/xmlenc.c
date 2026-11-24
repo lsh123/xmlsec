@@ -104,7 +104,7 @@ xmlSecEncCtxSetDefaults(xmlSecEncCtxPtr encCtx) {
 
     encCtx->keyInfoReadCtx.mode = xmlSecKeyInfoModeRead;
 
-    /* it's not wise to write private key :) */
+    /* it's not wise to write a private key :) */
     encCtx->keyInfoWriteCtx.mode = xmlSecKeyInfoModeWrite;
     encCtx->keyInfoWriteCtx.keyReq.keyType = xmlSecKeyDataTypePublic;
 }
@@ -836,7 +836,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node, int addBase
         return(-1);
     }
 
-    /* if we need to write result to xml node then we need base64 encode it */
+    /* if we need to write the result to an xml node then we need to base64 encode it */
     if((addBase64IfNeeded == 1) && (encCtx->operation == xmlSecTransformOperationEncrypt) && (encCtx->cipherValueNode != NULL)) {
         xmlSecTransformPtr base64Encode;
 

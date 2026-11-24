@@ -120,7 +120,7 @@ static xmlSecTransformKlass xmlSecGCryptKWDes3Klass = {
 
     xmlSecNameKWDes3,                           /* const xmlChar* name; */
     xmlSecHrefKWDes3,                           /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */
 
     xmlSecGCryptKWDes3Initialize,               /* xmlSecTransformInitializeMethod initialize; */
     xmlSecGCryptKWDes3Finalize,                 /* xmlSecTransformFinalizeMethod finalize; */

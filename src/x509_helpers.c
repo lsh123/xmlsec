@@ -1043,7 +1043,7 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
                     nonSpaceJJ = jj;
                 }
             } else {
-                xmlSecInvalidDataError("Expected two hex characters in escape sequence but got only one", NULL);
+                xmlSecInvalidDataError("Expected two hex characters in escape sequence but the second character is not a hex digit", NULL);
                 return(-1);
             }
             break;
@@ -1079,7 +1079,7 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
  * three types:
  *   - string (eg 'abc')
  *   - quoted string (eg '"abc"')
- *   - hexstring (eg '\#A0B0')
+ *   - hexstring (eg '#A0B0')
  * The function parses the string in the @p in parameter until end of string or @p delim is encountered.
  * The @p in and @p inSize parameters are moved to the next character (e.g. delimiter if it was encountered
  * during parsing).
@@ -1426,7 +1426,8 @@ xmlSecX509SerialNumberWrite(const xmlSecByte *data, xmlSecSize dataSize) {
     xmlSecAssert2(dataSize > 0, NULL);
 
     /* Skip leading 0x00 bytes: DER INTEGER encoding of positive values with MSB=1
-     * requires a leading 0x00, so cert->serialNumber.len may be 21 for a 20-byte value. */
+     * requires a leading 0x00, so dataSize may be one byte greater than the actual
+     * value size (e.g. 21 for a 20-byte value). */
     while((dataSize > 1U) && (data[0] == 0x00U)) {
         ++data;
         --dataSize;

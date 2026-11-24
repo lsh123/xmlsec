@@ -401,7 +401,7 @@ static xmlSecTransformKlass xmlSecTransformInclC14NKlass = {
     xmlSecNameC14N,                             /* const xmlChar* name; */
     xmlSecHrefC14N,                             /* const xmlChar* href; */
     xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,
-                                                /* xmlSecAlgorithmUsage usage; */
+                                                /* xmlSecTransformUsage usage; */
 
     xmlSecTransformC14NInitialize,              /* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformC14NFinalize,                /* xmlSecTransformFinalizeMethod finalize; */
@@ -446,7 +446,7 @@ static xmlSecTransformKlass xmlSecTransformInclC14NWithCommentsKlass = {
     xmlSecNameC14NWithComments,                 /* const xmlChar* name; */
     xmlSecHrefC14NWithComments,                 /* const xmlChar* href; */
     xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,
-                                                /* xmlSecAlgorithmUsage usage; */
+                                                /* xmlSecTransformUsage usage; */
 
     xmlSecTransformC14NInitialize,              /* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformC14NFinalize,                /* xmlSecTransformFinalizeMethod finalize; */
@@ -491,7 +491,7 @@ static xmlSecTransformKlass xmlSecTransformInclC14N11Klass = {
     xmlSecNameC14N11,                           /* const xmlChar* name; */
     xmlSecHrefC14N11,                           /* const xmlChar* href; */
     xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,
-                                                /* xmlSecAlgorithmUsage usage; */
+                                                /* xmlSecTransformUsage usage; */
 
     xmlSecTransformC14NInitialize,              /* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformC14NFinalize,                /* xmlSecTransformFinalizeMethod finalize; */
@@ -534,7 +534,7 @@ static xmlSecTransformKlass xmlSecTransformInclC14N11WithCommentsKlass = {
     xmlSecNameC14N11WithComments,               /* const xmlChar* name; */
     xmlSecHrefC14N11WithComments,               /* const xmlChar* href; */
     xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,
-                                                /* xmlSecAlgorithmUsage usage; */
+                                                /* xmlSecTransformUsage usage; */
 
     xmlSecTransformC14NInitialize,              /* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformC14NFinalize,                /* xmlSecTransformFinalizeMethod finalize; */
@@ -578,7 +578,7 @@ static xmlSecTransformKlass xmlSecTransformExclC14NKlass = {
     xmlSecNameExcC14N,                          /* const xmlChar* name; */
     xmlSecHrefExcC14N,                          /* const xmlChar* href; */
     xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,
-                                                /* xmlSecAlgorithmUsage usage; */
+                                                /* xmlSecTransformUsage usage; */
 
     xmlSecTransformC14NInitialize,              /* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformC14NFinalize,                /* xmlSecTransformFinalizeMethod finalize; */
@@ -622,7 +622,7 @@ static xmlSecTransformKlass xmlSecTransformExclC14NWithCommentsKlass = {
     xmlSecNameExcC14NWithComments,              /* const xmlChar* name; */
     xmlSecHrefExcC14NWithComments,              /* const xmlChar* href; */
     xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,
-                                                /* xmlSecAlgorithmUsage usage; */
+                                                /* xmlSecTransformUsage usage; */
 
     xmlSecTransformC14NInitialize,              /* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformC14NFinalize,                /* xmlSecTransformFinalizeMethod finalize; */
@@ -666,7 +666,7 @@ static xmlSecTransformKlass xmlSecTransformRemoveXmlTagsC14NKlass = {
     BAD_CAST "remove-xml-tags-transform",       /* const xmlChar* name; */
     NULL,                                       /* const xmlChar* href; */
     xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,
-                                                /* xmlSecAlgorithmUsage usage; */
+                                                /* xmlSecTransformUsage usage; */
 
     xmlSecTransformC14NInitialize,              /* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformC14NFinalize,                /* xmlSecTransformFinalizeMethod finalize; */

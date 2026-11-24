@@ -98,7 +98,7 @@ static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                   
     xmlSecGnuTLSKWRfc3394Size,                  /* xmlSecSize objSize */                                              \
     xmlSecName ## name,                         /* const xmlChar* name; */                                            \
     xmlSecHref ## name,                         /* const xmlChar* href; */                                            \
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                                     \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */                                     \
     xmlSecGnuTLSKWRfc3394Initialize,            /* xmlSecTransformInitializeMethod initialize; */                     \
     xmlSecGnuTLSKWRfc3394Finalize,              /* xmlSecTransformFinalizeMethod finalize; */                         \
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */                         \

@@ -384,7 +384,6 @@ xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, xmlSecSize size) {
 
     /* zero out the newly allocated area */
     if(buf->size < buf->maxSize) {
-        xmlSecAssert2(buf->data != NULL, -1);
         memset(buf->data + buf->size, 0, buf->maxSize - buf->size);
     }
 

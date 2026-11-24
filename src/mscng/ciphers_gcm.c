@@ -56,7 +56,7 @@ static xmlSecTransformKlass xmlSecMSCng ## name  ## Klass = {                   
     xmlSecMSCngGcmBlockCipherSize,              /* xmlSecSize objSize */                                          \
     xmlSecName ## name,                         /* const xmlChar* name; */                                        \
     xmlSecHref ## name,                         /* const xmlChar* href; */                                        \
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                                 \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */                                 \
     xmlSecMSCngGcmBlockCipherInitialize,        /* xmlSecTransformInitializeMethod initialize; */                 \
     xmlSecMSCngGcmBlockCipherFinalize,          /* xmlSecTransformFinalizeMethod finalize; */                     \
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */                     \

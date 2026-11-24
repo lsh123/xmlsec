@@ -128,7 +128,7 @@ static xmlSecTransformKlass xmlSecOpenSSLKWDes3Klass = {
 
     xmlSecNameKWDes3,                           /* const xmlChar* name; */
     xmlSecHrefKWDes3,                           /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */
 
     xmlSecOpenSSLKWDes3Initialize,              /* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLKWDes3Finalize,                /* xmlSecTransformFinalizeMethod finalize; */

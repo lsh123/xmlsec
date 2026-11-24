@@ -99,7 +99,7 @@ static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                   
     xmlSecGnuTLSAeadCipherSize,                 /* xmlSecSize objSize */                                              \
     xmlSecName ## name,                         /* const xmlChar* name; */                                             \
     xmlSecHref ## name,                         /* const xmlChar* href; */                                             \
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                                      \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */                                      \
     xmlSecGnuTLSAeadCipherInitialize,           /* xmlSecTransformInitializeMethod initialize; */                     \
     xmlSecGnuTLSAeadCipherFinalize,             /* xmlSecTransformFinalizeMethod finalize; */                         \
     (readNodeFn),                               /* xmlSecTransformNodeReadMethod readNode; */                          \

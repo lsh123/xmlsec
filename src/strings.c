@@ -806,7 +806,7 @@ const xmlChar xmlSecNameSha256[]                = "sha256";
 const xmlChar xmlSecHrefSha256[]                = "http://www.w3.org/2001/04/xmlenc#sha256";
 
 const xmlChar xmlSecNameSha384[]                = "sha384";
-const xmlChar xmlSecHrefSha384[]                = "http://www.w3.org/2001/04/xmldsig-more#sha384";
+const xmlChar xmlSecHrefSha384[]                = "http://www.w3.org/2001/04/xmldsig-more#sha384"; /* follows RFC 9231, not XML Encryption 1.1 spec */
 
 const xmlChar xmlSecNameSha512[]                = "sha512";
 const xmlChar xmlSecHrefSha512[]                = "http://www.w3.org/2001/04/xmlenc#sha512";

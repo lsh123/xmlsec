@@ -183,7 +183,11 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
      * klasses are not copyable.
      */
     if((dst->id->duplicateItem == NULL) && (dst->id->destroyItem != NULL)) {
-        xmlSecInternalError("list klass is not copyable (destroyItem set without duplicateItem)", xmlSecPtrListGetName(dst));
+        xmlSecError(XMLSEC_ERRORS_HERE,
+            (const char*)xmlSecPtrListGetName(dst),
+            "xmlSecPtrListCopy",
+            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+            "list klass is not copyable (destroyItem set without duplicateItem)");
         return(-1);
     }
     /*
@@ -193,7 +197,11 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
      * destroyItem when duplicateItem is set).
      */
     if((dst->id->duplicateItem != NULL) && (dst->id->destroyItem == NULL)) {
-        xmlSecInternalError("list klass is not copyable (duplicateItem set without destroyItem)", xmlSecPtrListGetName(dst));
+        xmlSecError(XMLSEC_ERRORS_HERE,
+            (const char*)xmlSecPtrListGetName(dst),
+            "xmlSecPtrListCopy",
+            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+            "list klass is not copyable (duplicateItem set without destroyItem)");
         return(-1);
     }
     if(dst->use > (XMLSEC_SIZE_MAX - src->use)) {

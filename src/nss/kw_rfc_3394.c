@@ -121,7 +121,7 @@ static xmlSecTransformKlass xmlSecNssKW ## name ## Klass = {                    
     xmlSecNssKWRfc3394Size,                     /* xmlSecSize objSize */                                               \
     xmlSecNameKW ## name,                       /* const xmlChar* name; */                                             \
     xmlSecHrefKW ## name,                       /* const xmlChar* href; */                                             \
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                                      \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */                                      \
     xmlSecNssKWRfc3394Initialize,               /* xmlSecTransformInitializeMethod initialize; */                      \
     xmlSecNssKWRfc3394Finalize,                 /* xmlSecTransformFinalizeMethod finalize; */                          \
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */                          \

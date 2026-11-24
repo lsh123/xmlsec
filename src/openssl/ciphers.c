@@ -1084,7 +1084,7 @@ static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                  
     xmlSecOpenSSLEvpBlockCipherSize,            /* xmlSecSize objSize */                                             \
     xmlSecName ## name,                         /* const xmlChar* name; */                                           \
     xmlSecHref ## name,                         /* const xmlChar* href; */                                           \
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                                    \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */                                    \
     xmlSecOpenSSLEvpBlockCipherInitialize,      /* xmlSecTransformInitializeMethod initialize; */                    \
     xmlSecOpenSSLEvpBlockCipherFinalize,        /* xmlSecTransformFinalizeMethod finalize; */                        \
     readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */                        \

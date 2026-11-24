@@ -98,7 +98,7 @@ static const xmlSecErrorDescription xmlSecErrorsTable[] = {
  * NOTE: The global state below (the callbacks, xmlSecErrorsClbkIsSetByUser,
  * xmlSecPrintErrorMessages and gXmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled) is plain
  * mutable state that is read and written without any synchronization. These functions are therefore NOT thread-safe:
- * a concurrent setter while another thread reports an error is a data race. Applications
+ * calling a setter concurrently while another thread reports an error is a data race. Applications
  * must serialize access to the setters (e.g. configure them before spawning threads). */
 static xmlSecErrorsCallback xmlSecErrorsSystemClbk = xmlSecErrorsDefaultCallback;
 static xmlSecErrorsCallback xmlSecErrorsUserClbk   = NULL;
@@ -172,7 +172,7 @@ xmlSecErrorsSetSystemCallback(xmlSecErrorsCallback callback) {
  * error reporting xmlGenericError function.
  * @param file the error location file name (__FILE__ macro).
  * @param line the error location line number (__LINE__ macro).
- * @param func the error location function name (__FUNCTION__ macro).
+ * @param func the error location function name (XMLSEC_FUNCTION macro).
  * @param errorObject the specific error object
  * @param errorSubject the specific error subject.
  * @param reason the error code.

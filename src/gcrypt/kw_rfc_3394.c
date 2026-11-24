@@ -262,7 +262,7 @@ static xmlSecTransformKlass xmlSecGCryptKWAes128Klass = {
 
     xmlSecNameKWAes128,                         /* const xmlChar* name; */
     xmlSecHrefKWAes128,                         /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */
 
     xmlSecGCryptKWAesInitialize,                /* xmlSecTransformInitializeMethod initialize; */
     xmlSecGCryptKWAesFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
@@ -298,7 +298,7 @@ static xmlSecTransformKlass xmlSecGCryptKWAes192Klass = {
 
     xmlSecNameKWAes192,                         /* const xmlChar* name; */
     xmlSecHrefKWAes192,                         /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */
 
     xmlSecGCryptKWAesInitialize,                /* xmlSecTransformInitializeMethod initialize; */
     xmlSecGCryptKWAesFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
@@ -335,7 +335,7 @@ static xmlSecTransformKlass xmlSecGCryptKWAes256Klass = {
 
     xmlSecNameKWAes256,                         /* const xmlChar* name; */
     xmlSecHrefKWAes256,                         /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */
 
     xmlSecGCryptKWAesInitialize,                /* xmlSecTransformInitializeMethod initialize; */
     xmlSecGCryptKWAesFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */

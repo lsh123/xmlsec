@@ -758,7 +758,7 @@ static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                   
     xmlSecGnuTLSBlockCipherSize,                  /* xmlSecSize objSize */                                           \
     xmlSecName ## name,                         /* const xmlChar* name; */                                           \
     xmlSecHref ## name,                         /* const xmlChar* href; */                                           \
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                                    \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */                                    \
     xmlSecGnuTLSBlockCipherInitialize,            /* xmlSecTransformInitializeMethod initialize; */                  \
     xmlSecGnuTLSBlockCipherFinalize,              /* xmlSecTransformFinalizeMethod finalize; */                      \
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */                        \
@@ -783,7 +783,7 @@ static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                   
     xmlSecGnuTLSBlockCipherSize,                  /* xmlSecSize objSize */                                           \
     xmlSecName ## name,                         /* const xmlChar* name; */                                           \
     xmlSecHref ## name,                         /* const xmlChar* href; */                                           \
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                                    \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */                                    \
     xmlSecGnuTLSBlockCipherInitialize,            /* xmlSecTransformInitializeMethod initialize; */                  \
     xmlSecGnuTLSBlockCipherFinalize,              /* xmlSecTransformFinalizeMethod finalize; */                      \
     (readNodeFn),                               /* xmlSecTransformNodeReadMethod readNode; */                        \

@@ -103,7 +103,7 @@ xmlSecSetExternalEntityLoader(xmlExternalEntityLoader entityLoader) {
  * more than once per process. Re-initialization is not supported: a second
  * call re-runs the sub-initialization routines, which re-initialize the
  * global lists (IO callbacks, key data, transforms) and orphan the
- * first-generation data (the dynamically allocated xmlSecIOCallbacks
+ * first-generation data (the dynamically allocated xmlSecIOCallback
  * structs are never freed), resulting in a bounded one-time memory leak.
  *
  * Note: in case of failure the library is left partially

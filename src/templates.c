@@ -1742,7 +1742,7 @@ xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bits
 
 #if LIBXML_VERSION >= 21300
     if(xmlNodeSetContent(cur, BAD_CAST buf) < 0) {
-        xmlSecXmlError("xmlNodeSetContent", cur);
+        xmlSecXmlError("xmlNodeSetContent", xmlSecNodeGetName(cur));
         return(-1);
     }
 #else /* LIBXML_VERSION >= 21300 */
@@ -1799,7 +1799,7 @@ xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode, const xmlSecByte *b
 
 #if LIBXML_VERSION >= 21300
     if(xmlNodeSetContent(oaepParamNode, base64) < 0) {
-        xmlSecXmlError("xmlNodeSetContent", oaepParamNode);
+        xmlSecXmlError("xmlNodeSetContent", xmlSecNodeGetName(oaepParamNode));
         xmlFree(base64);
         return(-1);
     }

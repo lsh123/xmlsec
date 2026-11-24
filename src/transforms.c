@@ -60,6 +60,7 @@
 #include <xmlsec/membuf.h>
 #include <xmlsec/parser.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 
 #include "cast_helpers.h"
 #include "transform_helpers.h"
@@ -271,32 +272,6 @@ xmlSecTransformUriTypeCheck(xmlSecTransformUriType type, const xmlChar* uri) {
  *
  *****************************************************************************/
 
-/**
- * The default binary chunk size is 64 KB but it can be changed at compile time
- * with -DXMLSEC_TRANSFORM_CTX_DEFAULT_BINARY_CHUNK_SIZE=<size> or at runtime
- * using xmlSecTransformCtxSetDefaultBinaryChunkSize().
- */
-#if !defined(XMLSEC_TRANSFORM_CTX_DEFAULT_BINARY_CHUNK_SIZE)
-#define XMLSEC_TRANSFORM_CTX_DEFAULT_BINARY_CHUNK_SIZE          ((xmlSecSize)64*1024)
-#endif /* !defined(XMLSEC_TRANSFORM_CTX_DEFAULT_BINARY_CHUNK_SIZE) */
-
-/**
- * The default max depth is 16 levels but it can be changed at compile time
- * with -DXMLSEC_TRANSFORM_CTX_DEFAULT_MAX_DEPTH=<max-depth> or at runtime
- * using xmlSecTransformCtxSetDefaultMaxDepth().
- */
-#if !defined(XMLSEC_TRANSFORM_CTX_DEFAULT_MAX_DEPTH)
-#define XMLSEC_TRANSFORM_CTX_DEFAULT_MAX_DEPTH                  16u
-#endif /* !defined(XMLSEC_TRANSFORM_CTX_DEFAULT_MAX_DEPTH) */
-
-/**
- * The default XPath operations limit is 1000000 but it can be changed at compile time
- * with -DXMLSEC_TRANSFORM_CTX_DEFAULT_XPATH_OPS_LIMIT=<limit> or at runtime
- * using xmlSecTransformCtxSetDefaultXpathOpsLimit(). Note: 0 means unlimited.
- */
-#if !defined(XMLSEC_TRANSFORM_CTX_DEFAULT_XPATH_OPS_LIMIT)
-#define XMLSEC_TRANSFORM_CTX_DEFAULT_XPATH_OPS_LIMIT            ((xmlSecSize)1000000)
-#endif /* !defined(XMLSEC_TRANSFORM_CTX_DEFAULT_XPATH_OPS_LIMIT) */
 
 static xmlSecSize g_xmlSecTransformCtxDefaultBinaryChunkSize = XMLSEC_TRANSFORM_CTX_DEFAULT_BINARY_CHUNK_SIZE;
 static unsigned int g_xmlSecTransformCtxDefaultMaxDepth = XMLSEC_TRANSFORM_CTX_DEFAULT_MAX_DEPTH;
@@ -1159,7 +1134,17 @@ xmlSecTransformCtxPrepare(xmlSecTransformCtxPtr ctx, xmlSecTransformDataType inp
     ctx->result = xmlSecTransformMemBufGetBuffer(transform);
     if(ctx->result == NULL) {
         xmlSecInternalError("xmlSecTransformMemBufGetBuffer(xmlSecTransformMemBufId)",
-                            xmlSecTransformGetName(transform));
+            xmlSecTransformGetName(transform));
+        /* roll back the appended transform so that a retry of this function
+         * starts from the same chain state (without the membuf transform) */
+        if(transform->prev != NULL) {
+            transform->prev->next = NULL;
+            ctx->last = transform->prev;
+        } else {
+            ctx->first = NULL;
+            ctx->last = NULL;
+        }
+        xmlSecTransformDestroy(transform);
         return(-1);
     }
 

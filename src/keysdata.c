@@ -651,25 +651,40 @@ xmlSecKeyDataIdListFindByHref(xmlSecPtrListPtr list, const xmlChar* href,
  * @return the key data klass if found and xmlSecKeyDataIdUnknown otherwise.
  */
 xmlSecKeyDataId
-xmlSecKeyDataIdListFindByName(xmlSecPtrListPtr list, const xmlChar* name,
-                            xmlSecKeyDataUsage usage) {
+xmlSecKeyDataIdListFindByName(
+    xmlSecPtrListPtr list,
+    const xmlChar* name,
+    xmlSecKeyDataUsage usage
+) {
     xmlSecKeyDataId dataId;
-    xmlSecSize i, size;
+    xmlSecSize ii, size;
 
     xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyDataIdListId), xmlSecKeyDataIdUnknown);
     xmlSecAssert2(name != NULL, xmlSecKeyDataIdUnknown);
 
     size = xmlSecPtrListGetSize(list);
-    for(i = 0; i < size; ++i) {
-        dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(list, i);
+    for(ii = 0; ii < size; ++ii) {
+        dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(list, ii);
         xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, xmlSecKeyDataIdUnknown);
 
-        if(((usage & dataId->usage) != 0) && (dataId->name != NULL) &&
-           xmlStrEqual(name, BAD_CAST dataId->name)) {
-
-           return(dataId);
+        /* check usage */
+        if((usage & dataId->usage) == 0) {
+            continue;
         }
+
+        /* check name */
+        if(dataId->name == NULL) {
+            continue;
+        }
+        if(!xmlStrEqual(name, dataId->name)) {
+            continue;
+        }
+
+        /* found it! */
+        return(dataId);
     }
+
+    /* no luck */
     return(xmlSecKeyDataIdUnknown);
 }
 

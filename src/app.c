@@ -72,8 +72,8 @@ xmlSecCryptoShutdown(void) {
 }
 
 /**
- * @brief Adds crypto key data stores to the keys manager.
- * @details Adds crypto specific key data stores to the keys manager.
+ * @brief Initializes the keys manager with xmlsec-crypto library data.
+ * @details Initializes @p mngr with xmlsec-crypto library specific data.
  * @param mngr the pointer to keys manager.
  * @return 0 on success or a negative value otherwise.
  */

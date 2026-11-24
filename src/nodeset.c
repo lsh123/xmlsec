@@ -558,7 +558,11 @@ xmlSecNodeSetWalkSlow(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc,
  * element in which they are in scope (the walk revisits the namespace
  * declarations along each element's ancestor chain), so a namespace declared
  * on a common ancestor may be reported more than once; for Normal sets the
- * namespace copies are reported at most once each. Namespace nodes are
+ * namespace copies are reported at most once each. Note that the per-descendant
+ * reporting applies to the original namespace nodes from the document; a
+ * namespace-node copy (the normal result of an XPath namespace:: expression)
+ * matches only the element that declared the namespace, so such a copy is
+ * reported at most once, regardless of the node set type. Namespace nodes are
  * enumerated via xmlGetNsList()/xmlGetNsListSafe(), which do not include the
  * implicit "xml" namespace, so implicit "xml"-namespace entries present in the
  * set (e.g. the copies created by the XPath engine for namespace::* results)
@@ -908,6 +912,7 @@ xmlSecNodeSetDumpTextNodes(xmlSecNodeSetPtr nset, xmlOutputBufferPtr out) {
     int ret;
 
     xmlSecAssert2(nset != NULL, -1);
+    xmlSecAssert2(nset->doc != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
 
     ctx.out = out;

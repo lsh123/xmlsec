@@ -859,7 +859,7 @@ xmlSecTransformBase64SetLineSize(xmlSecTransformPtr transform, xmlSecSize lineSi
 
     xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecTransformBase64Id));
 
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(lineSize, lineSizeInt, return, transform);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(lineSize, lineSizeInt, return, xmlSecTransformGetName(transform));
     xmlSecAssert(xmlSecBase64IsValidColumns(lineSizeInt));
 
     ctx = xmlSecBase64GetCtx(transform);

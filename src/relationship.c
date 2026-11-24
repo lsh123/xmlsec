@@ -388,6 +388,22 @@ xmlSecTransformRelationshipIsOutputAttr(xmlAttrPtr attr) {
             (xmlStrcmp(attr->ns->href, xmlSecRelationshipXmlNs) == 0)));
 }
 
+static int
+xmlSecTransformRelationshipHasUnprefixedAttr(xmlNodePtr cur, const xmlChar* name) {
+    xmlAttrPtr attr;
+
+    xmlSecAssert2(cur != NULL, 0);
+    xmlSecAssert2(name != NULL, 0);
+
+    for(attr = cur->properties; attr != NULL; attr = attr->next) {
+        if((attr->ns == NULL) && (xmlStrcmp(attr->name, name) == 0)) {
+            return(1);
+        }
+    }
+
+    return(0);
+}
+
 
 /*
  * Step 1 processes versioning instructions with only the Relationships namespace
@@ -424,11 +440,6 @@ xmlSecTransformRelationshipProcessNode(xmlSecTransformPtr transform, xmlOutputBu
         }
 
         ret = xmlSecRelationshipCtxFindSourceId(ctx, id);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecRelationshipCtxFindSourceId", xmlSecTransformGetName(transform));
-            xmlFree(id);
-            return(-1);
-        }
         xmlFree(id);
 
         if(ret == 0) {
@@ -795,6 +806,8 @@ static int
 xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlOutputBufferPtr buf, xmlNodePtr cur, unsigned int depth, xmlSecTransformCtxPtr transformCtx) {
     xmlAttrPtr attr;
     xmlNsPtr ns;
+    xmlChar* targetModeValue = NULL;
+    xmlChar* attrValue = NULL;
     int foundTargetMode = 0;
     int haveUnprefixedTargetMode = 0;
     int relNsWritten = 0;
@@ -871,12 +884,14 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
     /*
      * Write attributes.
      *
-     * A TargetMode attribute bound to the Relationships namespace (with a prefix,
-     * e.g. <rel:TargetMode/>) is the same attribute as the unprefixed one, so both
-     * forms count as present and suppress the default value (step 3, point 6). The
-     * prefixed form is serialized unprefixed so that the output stays well formed
-     * in both legacy and non-legacy modes; when both forms are present the
-     * unprefixed one takes precedence.
+     * Step 2, point 2: attributes bound to the Relationships namespace with a
+     * prefix (e.g. <rel:Id/>) are the same attributes as the unprefixed ones, so
+     * in non-legacy mode they are serialized unprefixed to keep the output well
+     * formed; when both forms are present the unprefixed one takes precedence.
+     * (In legacy mode a prefixed TargetMode is also serialized unprefixed to
+     * preserve the historical output, while other prefixed attributes are kept
+     * as is.) A prefixed or unprefixed TargetMode counts as present and
+     * suppresses the default value (step 3, point 6).
      */
     for(attr = cur->properties; attr != NULL; attr = attr->next) {
         if(xmlStrcmp(attr->name, xmlSecRelationshipAttrTargetMode) != 0) {
@@ -902,13 +917,66 @@ xmlSecTransformRelationshipProcessElementNode(xmlSecTransformPtr transform, xmlO
                  * would duplicate the attribute */
                 continue;
             }
+            targetModeValue = NULL;
+            /* read the value the same way as the generic attribute path below:
+             * xmlNodeListGetString() handles entity references (and any other
+             * non-text child) that would leave attr->children->content NULL */
+            if(attr->children != NULL) {
+                targetModeValue = xmlNodeListGetString(attr->doc, attr->children, 1);
+                if(targetModeValue == NULL) {
+                    xmlSecXmlError("xmlNodeListGetString", xmlSecTransformGetName(transform));
+                    return(-1);
+                }
+            }
             ret = xmlSecTransformRelationshipWriteProp(buf, xmlSecRelationshipAttrTargetMode,
-                        (attr->children != NULL) ? attr->children->content : BAD_CAST "");
+                        (targetModeValue != NULL) ? targetModeValue : BAD_CAST "");
             if(ret < 0) {
                 xmlSecInternalError("xmlSecTransformRelationshipWriteProp(TargetMode)",
                                     xmlSecTransformGetName(transform));
+                xmlFree(targetModeValue);
+                targetModeValue = NULL;
                 return(-1);
             }
+            xmlFree(targetModeValue);
+            targetModeValue = NULL;
+            continue;
+        }
+
+        /* any other attribute bound to the Relationships namespace (with a
+         * prefix) is the same attribute as the unprefixed one, so step 2,
+         * point 2 removes the prefix and it is serialized unprefixed; when
+         * both forms are present the unprefixed one takes precedence */
+        if(((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY) == 0) &&
+           (attr->ns != NULL) &&
+           (attr->ns->prefix != NULL) &&
+           ((attr->ns->href != NULL) && (xmlStrcmp(attr->ns->href, xmlSecRelationshipsNs) == 0))) {
+            if(xmlSecTransformRelationshipHasUnprefixedAttr(cur, attr->name) != 0) {
+                /* the unprefixed attribute is the authoritative one; writing both
+                 * would duplicate the attribute */
+                continue;
+            }
+            attrValue = NULL;
+            /* read the value the same way as the generic attribute path below:
+             * xmlNodeListGetString() handles entity references (and any other
+             * non-text child) that would leave attr->children->content NULL */
+            if(attr->children != NULL) {
+                attrValue = xmlNodeListGetString(attr->doc, attr->children, 1);
+                if(attrValue == NULL) {
+                    xmlSecXmlError("xmlNodeListGetString", xmlSecTransformGetName(transform));
+                    return(-1);
+                }
+            }
+            ret = xmlSecTransformRelationshipWriteProp(buf, attr->name,
+                        (attrValue != NULL) ? attrValue : BAD_CAST "");
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecTransformRelationshipWriteProp",
+                                    xmlSecTransformGetName(transform));
+                xmlFree(attrValue);
+                attrValue = NULL;
+                return(-1);
+            }
+            xmlFree(attrValue);
+            attrValue = NULL;
             continue;
         }
 
@@ -990,17 +1058,26 @@ xmlSecTransformRelationshipExecute(xmlSecTransformPtr transform, xmlOutputBuffer
      */
     if((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY) == 0) {
         xmlNodePtr top;
+        int foundOutputElement = 0;
 
         for(top = doc->children; top != NULL; top = top->next) {
             if(top->type != XML_ELEMENT_NODE) {
                 continue;
             }
+            foundOutputElement = 1;
             ret = xmlSecTransformRelationshipIsOutputElement(top);
             if(ret != 1) {
                 xmlSecInvalidNodeContentError(top, xmlSecTransformGetName(transform),
                     "top-level node is not in the Relationships namespace");
                 return(-1);
             }
+        }
+        if(foundOutputElement == 0) {
+            /* no element nodes at all (e.g. an empty document); fail explicitly
+             * instead of producing empty output */
+            xmlSecInvalidNodeContentError((xmlNodePtr)NULL, xmlSecTransformGetName(transform),
+                "no top-level element nodes in the Relationships namespace");
+            return(-1);
         }
     }
 

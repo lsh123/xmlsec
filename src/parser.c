@@ -179,7 +179,9 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
     /* push data to the input buffer */
     if((data != NULL) && (dataSize > 0)) {
         int dataLen;
-        XMLSEC_SAFE_CAST_SIZE_TO_INT(dataSize, dataLen, return(-1), xmlSecTransformGetName(transform));
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(dataSize, dataLen,
+            { transform->status = xmlSecTransformStatusFail; return(-1); },
+            xmlSecTransformGetName(transform));
         ret = xmlParseChunk(ctx->parserCtx, (const char*)data, dataLen, 0);
         if(ret != 0) {
             xmlSecXmlParserError2("xmlParseChunk", ctx->parserCtx,
@@ -280,12 +282,14 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes, xmlSec
     if(transform->prev == NULL) {
         /* report status for debugging */
         xmlSecInvalidTransformError2(transform, "transform has no previous transform: status=%d", (int)origStatus);
+        transform->status = xmlSecTransformStatusFail;
         return(-1);
     }
 
     buf = xmlSecTransformCreateInputBuffer(transform->prev, transformCtx);
     if(buf == NULL) {
         xmlSecInternalError("xmlSecTransformCreateInputBuffer", xmlSecTransformGetName(transform));
+        transform->status = xmlSecTransformStatusFail;
         return(-1);
     }
 
@@ -293,6 +297,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes, xmlSec
     if (ctxt == NULL) {
         xmlSecXmlError("xmlNewParserCtxt", xmlSecTransformGetName(transform));
         xmlFreeParserInputBuffer(buf);
+        transform->status = xmlSecTransformStatusFail;
         return(-1);
     }
     xmlSecParsePrepareCtxt(ctxt);
@@ -305,6 +310,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes, xmlSec
         /* libxml2 >= 2.13 frees the buffer itself on failure */
         xmlFreeParserInputBuffer(buf);
 #endif /* (LIBXML_VERSION < 21300) */
+        transform->status = xmlSecTransformStatusFail;
         return(-1);
     }
 
@@ -326,6 +332,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes, xmlSec
             ctxt->myDoc = NULL;
         }
         xmlFreeParserCtxt(ctxt);
+        transform->status = xmlSecTransformStatusFail;
         return(-1);
     }
 
@@ -338,6 +345,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes, xmlSec
             ctxt->myDoc = NULL;
         }
         xmlFreeParserCtxt(ctxt);
+        transform->status = xmlSecTransformStatusFail;
         return(-1);
     }
 
@@ -351,6 +359,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes, xmlSec
     if((*nodes) == NULL) {
         xmlSecInternalError("xmlSecNodeSetCreate", xmlSecTransformGetName(transform));
         xmlFreeDoc(doc);
+        transform->status = xmlSecTransformStatusFail;
         return(-1);
     }
     xmlSecNodeSetDocDestroy((*nodes)); /* this node set "owns" the doc pointer */

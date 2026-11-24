@@ -55,72 +55,12 @@
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 
 #include "cast_helpers.h"
 #include "keysdata_helpers.h"
 #include "xmlenc_helpers.h"
 
-/******************************************************************************
- *
- * Default limits
- *
- *****************************************************************************/
-
-/**
- * The default max number of <dsig:KeyInfo /> child elements processed when reading
- * is 10 but it can be changed at compile time with
- * -DXMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_CHILDREN=<count> or at runtime by setting
- * the maxKeyInfoChildren field of the xmlSecKeyInfoCtx struct. Note: 0 disables
- * the limit.
- */
-#if !defined(XMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_CHILDREN)
-#define XMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_CHILDREN         10
-#endif /* !defined(XMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_CHILDREN) */
-
-/**
- * The default max recursion level when processing <dsig11:KeyInfoReference /> element
- * is 1 but it can be changed at compile time with
- * -DXMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_REFERENCE_LEVEL=<level> or at runtime by
- * setting the maxKeyInfoReferenceLevel field of the xmlSecKeyInfoCtx struct.
- */
-#if !defined(XMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_REFERENCE_LEVEL)
-#define XMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_REFERENCE_LEVEL  1
-#endif /* !defined(XMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_REFERENCE_LEVEL) */
-
-/**
- * The default max recursion level when processing <dsig:RetrievalMethod /> element
- * is 1 but it can be changed at compile time with
- * -DXMLSEC_KEYINFO_DEFAULT_MAX_RETRIEVAL_METHOD_LEVEL=<level> or at runtime by
- * setting the maxRetrievalMethodLevel field of the xmlSecKeyInfoCtx struct.
- */
-#if !defined(XMLSEC_KEYINFO_DEFAULT_MAX_RETRIEVAL_METHOD_LEVEL)
-#define XMLSEC_KEYINFO_DEFAULT_MAX_RETRIEVAL_METHOD_LEVEL   1
-#endif /* !defined(XMLSEC_KEYINFO_DEFAULT_MAX_RETRIEVAL_METHOD_LEVEL) */
-
-#ifndef XMLSEC_NO_XMLENC
-/**
- * The default max recursion level when processing <enc:EncryptedKey />,
- * <enc11:DerivedKey /> or <enc:AgreementMethod /> elements is 1 but it can be
- * changed at compile time with
- * -DXMLSEC_KEYINFO_DEFAULT_MAX_ENCRYPTED_KEY_LEVEL=<level> or at runtime by
- * setting the maxEncryptedKeyLevel field of the xmlSecKeyInfoCtx struct.
- */
-#if !defined(XMLSEC_KEYINFO_DEFAULT_MAX_ENCRYPTED_KEY_LEVEL)
-#define XMLSEC_KEYINFO_DEFAULT_MAX_ENCRYPTED_KEY_LEVEL      1
-#endif /* !defined(XMLSEC_KEYINFO_DEFAULT_MAX_ENCRYPTED_KEY_LEVEL) */
-#endif /* XMLSEC_NO_XMLENC */
-
-#ifndef XMLSEC_NO_X509
-/**
- * The default max certificate chain length is 9 but it can be changed at compile
- * time with -DXMLSEC_KEYINFO_DEFAULT_MAX_CERT_VERIFICATION_DEPTH=<depth> or at
- * runtime by setting the certsVerificationDepth field of the xmlSecKeyInfoCtx
- * struct.
- */
-#if !defined(XMLSEC_KEYINFO_DEFAULT_MAX_CERT_VERIFICATION_DEPTH)
-#define XMLSEC_KEYINFO_DEFAULT_MAX_CERT_VERIFICATION_DEPTH  9
-#endif /* !defined(XMLSEC_KEYINFO_DEFAULT_MAX_CERT_VERIFICATION_DEPTH) */
-#endif /* XMLSEC_NO_X509 */
 
 /******************************************************************************
  *
@@ -201,7 +141,7 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
             }
         } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD) != 0) {
             /* there is a lax schema validation but application may
-             * desire to disable unknown nodes*/
+             * wish to disable unknown nodes*/
             xmlSecUnexpectedNodeError(cur, NULL);
             return(-1);
         } else {
@@ -262,7 +202,7 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCt
                 return(-1);
             }
         } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD) != 0) {
-            /* lax schema validation but application can disable it*/
+            /* lax schema validation but application can disable it */
             xmlSecUnexpectedNodeError(cur, NULL);
             return(-1);
         } else {
@@ -1004,7 +944,7 @@ xmlSecKeyDataValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
         ret = xmlSecKeyDataXmlRead(dataId, key, cur, keyInfoCtx);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecKeyDataXmlRead",
-                                 xmlSecKeyDataKlassGetName(id),
+                                 xmlSecKeyDataKlassGetName(dataId),
                                  "node=%s",
                                  xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
             return(-1);
@@ -1067,7 +1007,7 @@ xmlSecKeyDataValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node
     /* remove all existing key value */
 #if LIBXML_VERSION >= 21300
     if(xmlNodeSetContent(node, NULL) < 0) {
-        xmlSecXmlError("xmlNodeSetContent", node);
+        xmlSecXmlError("xmlNodeSetContent", xmlSecNodeGetName(node));
         return(-1);
     }
 #else /* LIBXML_VERSION >= 21300 */
@@ -1876,6 +1816,13 @@ xmlSecKeyDataDerivedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr 
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
 
+    /* the key value may already be set by an earlier element in the same
+     * <ds:KeyInfo>; skip this element in that case (same behavior as
+     * <enc:EncryptedKey> above) */
+    if(key->value != NULL) {
+        return(0);
+    }
+
     /* check the enc level */
     if(keyInfoCtx->curEncryptedKeyLevel >= keyInfoCtx->maxEncryptedKeyLevel) {
         xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL, xmlSecKeyDataKlassGetName(id),
@@ -2032,6 +1979,13 @@ xmlSecKeyDataAgreementMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
+
+    /* the key value may already be set by an earlier element in the same
+     * <ds:KeyInfo>; skip this element in that case (same behavior as
+     * <enc:EncryptedKey> above) */
+    if(key->value != NULL) {
+        return(0);
+    }
 
     /* check the enc level */
     if(keyInfoCtx->curEncryptedKeyLevel >= keyInfoCtx->maxEncryptedKeyLevel) {

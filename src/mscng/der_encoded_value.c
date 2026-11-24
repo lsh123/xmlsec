@@ -266,7 +266,7 @@ xmlSecMSCngKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr ke
     }
 #if LIBXML_VERSION >= 21300
     if(xmlNodeAddContent(node, content) < 0) {
-        xmlSecXmlError("xmlNodeAddContent", node);
+        xmlSecXmlError("xmlNodeAddContent", xmlSecNodeGetName(node));
         goto done;
     }
 #else /* LIBXML_VERSION >= 21300 */

@@ -282,6 +282,13 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
 
     /* copy bn (treated as an unsigned magnitude) */
     size = xmlSecBufferGetSize(bn);
+    /* bound the input size: the conversion loop below is quadratic in the
+     * number of bytes, so the size is capped to keep the CPU cost bounded
+     * for untrusted input (e.g. document content) */
+    if(size > XMLSEC_BN_TO_STRING_MAX_SIZE) {
+        xmlSecInvalidSizeMoreThanError("size", size, XMLSEC_BN_TO_STRING_MAX_SIZE, NULL);
+        return (NULL);
+    }
     ret = xmlSecBnInitialize(&bn2, size);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBnInitialize", NULL, "size=" XMLSEC_SIZE_FMT, size);
@@ -321,9 +328,18 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
             xmlSecBnFinalize(&bn2);
             return (NULL);
         }
-        xmlSecAssert2(0 <= nn, NULL);
+        xmlSecAssert2(nn >= 0, NULL);
         xmlSecAssert2(nn < XMLSEC_BN_REV_MAX, NULL);
         res[ii] = xmlSecBnRevLookupTable[nn];
+
+        /* xmlSecBnDiv() normalizes a zero quotient to a single 0x00 byte, so
+         * the buffer above only becomes empty if it started empty; stop the
+         * loop as soon as the remaining value reaches zero */
+        if((xmlSecBufferGetSize(&bn2) == 1) &&
+           (xmlSecBufferGetData(&bn2)[0] == 0)) {
+            ii++;
+            break;
+        }
     }
     xmlSecAssert2(ii < len, NULL);
 
@@ -441,7 +457,9 @@ xmlSecBnMul(xmlSecBnPtr bn, int multiplier) {
 /**
  * @brief Divides @p bn by @p divider.
  * @details Divides @p bn by @p divider and places modulus into @p mod.
- * @p divider must be a positive value.
+ * @p divider must be a positive value. A zero quotient is normalized to a
+ * single 0x00 byte (the canonical form of a zero value used by the other
+ * BN APIs, e.g. #xmlSecBnFromString) instead of leaving @p bn empty.
  * @param bn the pointer to BN.
  * @param divider the divider.
  * @param mod the pointer for modulus result.
@@ -453,6 +471,7 @@ xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
     unsigned long long dividerULL;
     xmlSecSize ii, size;
     xmlSecByte* data;
+    xmlSecByte ch;
     int ret;
 
     xmlSecAssert2(bn != NULL, -1);
@@ -489,6 +508,18 @@ xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveHead", NULL,
                 "size=" XMLSEC_SIZE_FMT, ii);
+            return (-1);
+        }
+    }
+
+    /* ensure the buffer is not empty for a zero value (same canonical form
+     * as the other BN APIs, e.g. xmlSecBnFromString) */
+    size = xmlSecBufferGetSize(bn);
+    if(size == 0) {
+        ch = 0;
+        ret = xmlSecBufferPrepend(bn, &ch, 1);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferPrepend(1)", NULL);
             return (-1);
         }
     }
@@ -855,7 +886,7 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
     if(addLineBreaks) {
 #if LIBXML_VERSION >= 21300
         if(xmlNodeSetContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
-            xmlSecXmlError("xmlNodeSetContent", cur);
+            xmlSecXmlError("xmlNodeSetContent", xmlSecNodeGetName(cur));
             return(-1);
         }
 #else /* LIBXML_VERSION >= 21300 */
@@ -865,7 +896,7 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
     } else {
 #if LIBXML_VERSION >= 21300
         if(xmlNodeSetContent(cur, xmlSecStringEmpty) < 0) {
-            xmlSecXmlError("xmlNodeSetContent", cur);
+            xmlSecXmlError("xmlNodeSetContent", xmlSecNodeGetName(cur));
             return(-1);
         }
 #else /* LIBXML_VERSION >= 21300 */
@@ -891,7 +922,7 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
         /* append the value to the content replaced above */
 #if LIBXML_VERSION >= 21300
         if(xmlNodeAddContent(cur, content) < 0) {
-            xmlSecXmlError("xmlNodeAddContent", cur);
+            xmlSecXmlError("xmlNodeAddContent", xmlSecNodeGetName(cur));
             xmlFree(content);
             return(-1);
         }
@@ -910,7 +941,7 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
         /* append the value to the content replaced above */
 #if LIBXML_VERSION >= 21300
         if(xmlNodeAddContent(cur, content) < 0) {
-            xmlSecXmlError("xmlNodeAddContent", cur);
+            xmlSecXmlError("xmlNodeAddContent", xmlSecNodeGetName(cur));
             xmlFree(content);
             return(-1);
         }
@@ -929,7 +960,7 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
     if(addLineBreaks) {
 #if LIBXML_VERSION >= 21300
         if(xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed()) < 0) {
-            xmlSecXmlError("xmlNodeAddContent", cur);
+            xmlSecXmlError("xmlNodeAddContent", xmlSecNodeGetName(cur));
             return(-1);
         }
 #else /* LIBXML_VERSION >= 21300 */

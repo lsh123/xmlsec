@@ -432,6 +432,12 @@ xmlSecCryptoDLLibrariesListFindByName(xmlSecPtrListPtr list, const xmlChar* name
 static xmlSecCryptoDLFunctionsPtr gXmlSecCryptoDLFunctions = NULL;
 static xmlSecPtrList gXmlSecCryptoDLLibraries;
 
+#ifdef XMLSEC_DL_LIBLTDL
+/* the libltdl engine is initialized (lt_dlinit() succeeded); guards the
+ * matching lt_dlexit() call in xmlSecCryptoDLShutdown() */
+static int gXmlSecCryptoDLEngineInitialized = 0;
+#endif /* XMLSEC_DL_LIBLTDL */
+
 /**
  * @brief Initializes the dynamic library loading engine.
  * @details Initializes the dynamic library loading engine. This function is
@@ -441,7 +447,9 @@ static xmlSecPtrList gXmlSecCryptoDLLibraries;
  * Note: in case of failure the dynamic library loading engine is left
  * partially initialized. The state is recoverable: call #xmlSecCryptoDLShutdown
  * and then retry #xmlSecCryptoDLInit (the library list is empty at this point,
- * so re-initialization is safe).
+ * so re-initialization is safe). With the libltdl backend the internal
+ * libltdl reference counter is reset on failure, so a direct retry of
+ * #xmlSecCryptoDLInit is safe as well.
  * @return 0 on success or a negative value if an error occurs.
  */
 int
@@ -459,9 +467,18 @@ xmlSecCryptoDLInit(void) {
 #ifdef XMLSEC_DL_LIBLTDL
     ret = lt_dlinit();
     if(ret != 0) {
+        /* lt_dlinit() has already incremented the internal libltdl reference
+         * counter; reset it with lt_dlexit() so that a retry of this function
+         * performs a fresh initialization instead of seeing the counter as
+         * already greater than zero and skipping the initialization */
+        ret = lt_dlexit();
+        if(ret != 0) {
+            xmlSecDLErrorLibLTDL("lt_dlexit", NULL);
+        }
         xmlSecDLErrorLibLTDL("lt_dlinit", NULL);
         return(-1);
     }
+    gXmlSecCryptoDLEngineInitialized = 1;
 #endif /* XMLSEC_DL_LIBLTDL */
 
     return(0);
@@ -492,10 +509,16 @@ xmlSecCryptoDLShutdown(void) {
     gXmlSecCryptoDLFunctions = NULL;
 
 #ifdef XMLSEC_DL_LIBLTDL
-    ret = lt_dlexit();
-    if(ret != 0) {
-        xmlSecDLErrorLibLTDL("lt_dlexit", NULL);
-        res = -1;
+    /* the libltdl engine is shut down only if it was actually initialized:
+     * after a failed xmlSecCryptoDLInit() the reference counter has already
+     * been reset to zero and calling lt_dlexit() would report an error */
+    if(gXmlSecCryptoDLEngineInitialized != 0) {
+        ret = lt_dlexit();
+        if(ret != 0) {
+            xmlSecDLErrorLibLTDL("lt_dlexit", NULL);
+            res = -1;
+        }
+        gXmlSecCryptoDLEngineInitialized = 0;
     }
 #endif /* XMLSEC_DL_LIBLTDL */
 
@@ -555,7 +578,7 @@ xmlSecCryptoDLGetLibraryFunctions(const xmlChar* crypto) {
     xmlSecAssert2(crypto != NULL, NULL);
 
     if(!xmlSecPtrListIsValid(&gXmlSecCryptoDLLibraries)) {
-        xmlSecInternalError("xmlSecCryptoDL is not initialized", NULL);
+        xmlSecInternalError("xmlSecCryptoDLGetLibraryFunctions", "not initialized");
         return(NULL);
     }
 
@@ -605,7 +628,7 @@ xmlSecCryptoDLUnloadLibrary(const xmlChar* crypto) {
     xmlSecAssert2(crypto != NULL, -1);
 
     if(!xmlSecPtrListIsValid(&gXmlSecCryptoDLLibraries)) {
-        xmlSecInternalError("xmlSecCryptoDL is not initialized", NULL);
+        xmlSecInternalError("xmlSecCryptoDLUnloadLibrary", "not initialized");
         return(-1);
     }
 

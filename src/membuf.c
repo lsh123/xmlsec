@@ -11,9 +11,6 @@
  */
 #include "globals.h"
 
-#include <stdlib.h>
-#include <string.h>
-
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>

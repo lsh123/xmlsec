@@ -962,7 +962,13 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
             return(-1);
         }
 
-        /* process */
+        /* note that a digest mismatch only sets dsigRefCtx->status to xmlSecDSigStatusInvalid
+         * (the call above still returns 0), and that status is intentionally not used to fail
+         * the whole signature here; unlike the SignedInfo references (see
+         * xmlSecDSigCtxProcessReferences), the digests within a Manifest are
+         * checked at the application's discretion (see the function docs and
+         * XML Signature 1.1 REC section 5.1). The application can inspect
+         * the per-reference statuses via dsigCtx->manifestReferences. */
         ret = xmlSecDSigReferenceCtxProcessNode(dsigRefCtx, cur);
         if(ret < 0) {
             xmlSecInternalError("xmlSecDSigReferenceCtxProcessNode", NULL);

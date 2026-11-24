@@ -337,6 +337,7 @@ xmlSecKWDes3Encode(
     if((ret < 0) || (outWritten2 != sizeof(iv))) {
         xmlSecInternalError2("kwDes3Id->generateRandom", xmlSecTransformGetName(transform),
             "outWritten2=" XMLSEC_SIZE_FMT, outWritten2);
+        xmlSecMemCleanse(iv, sizeof(iv));
         xmlSecMemCleanse(out, outSize);
         return(-1);
     }
@@ -348,12 +349,14 @@ xmlSecKWDes3Encode(
         out, outSize, &outWritten2);
     if(ret < 0) {
         xmlSecInternalError("kwDes3Id->encrypt", xmlSecTransformGetName(transform));
+        xmlSecMemCleanse(iv, sizeof(iv));
         xmlSecMemCleanse(out, outSize);
         return(-1);
     }
     if((inSize + XMLSEC_KW_DES3_BLOCK_LENGTH) != outWritten2) {
         xmlSecInvalidSizeError("kwDes3Id->encrypt",
             outWritten2, (inSize + XMLSEC_KW_DES3_BLOCK_LENGTH), xmlSecTransformGetName(transform));
+        xmlSecMemCleanse(iv, sizeof(iv));
         xmlSecMemCleanse(out, outSize);
         return(-1);
     }
@@ -362,6 +365,9 @@ xmlSecKWDes3Encode(
     memmove(out + XMLSEC_KW_DES3_IV_LENGTH, out, outWritten2);
     memcpy(out, iv, XMLSEC_KW_DES3_IV_LENGTH);
     tmpSize = XMLSEC_KW_DES3_IV_LENGTH + outWritten2;
+
+    /* the random IV is not needed anymore; wipe it from the stack */
+    xmlSecMemCleanse(iv, sizeof(iv));
 
     /* step 7: reverse octets order, result is TEMP3 */
     ret = xmlSecKWDes3BufferReverse(out, tmpSize);

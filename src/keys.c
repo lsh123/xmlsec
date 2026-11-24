@@ -922,9 +922,11 @@ xmlSecKeyEnsureData(xmlSecKeyPtr key, xmlSecKeyDataId dataId) {
 }
 
 /**
- * @brief Adds key data to a key object (takes ownership).
- * @details Adds @p data to the @p key. The @p data object will be destroyed
- * by @p key.
+ * @brief Adds key data to a key object (takes ownership on success).
+ * @details Adds @p data to the @p key. On success the @p data object will be
+ * destroyed by @p key. If an error occurs, the ownership of the @p data object
+ * is not transferred and the caller must destroy it with
+ * xmlSecKeyDataDestroy().
  * @param key the pointer to key.
  * @param data the pointer to key data.
  *

@@ -315,13 +315,11 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes, xmlSec
         /*
          * libxml2 >= 2.10 does not take ownership of the input
          * buffer on failure, so we must free it here.
-         */
-        xmlFreeInputStream(input);
-#else /* LIBXML_VERSION >= 21000 */
-        /*
+         *
          * libxml2 < 2.10 frees the input buffer itself on realloc
          * failure in inputPush(); do not double-free it here.
          */
+        xmlFreeInputStream(input);
 #endif /* LIBXML_VERSION >= 21000 */
         if(ctxt->myDoc != NULL) {
             xmlFreeDoc(ctxt->myDoc);

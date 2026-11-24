@@ -930,6 +930,8 @@ xmlSecKeyX509DataValueXmlWrite(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr n
 
         if(xmlSetProp(child, xmlSecAttrAlgorithm, x509Value->digestAlgorithm) == NULL) {
             xmlSecXmlError2("xmlSetProp", NULL, "name=%s", xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
+            xmlUnlinkNode(child);
+            xmlFreeNode(child);
             return(-1);
         }
     }

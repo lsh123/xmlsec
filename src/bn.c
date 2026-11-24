@@ -830,6 +830,18 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
     xmlSecAssert2(bn != NULL, -1);
     xmlSecAssert2(cur != NULL, -1);
 
+    /* validate the format before performing any side effects; the reversal
+     * and the node content replacement below cannot be undone on error */
+    switch(format) {
+    case xmlSecBnBase64:
+    case xmlSecBnHex:
+    case xmlSecBnDec:
+        break;
+    default:
+        xmlSecInvalidDataError("unsupported BN format", NULL);
+        return(-1);
+    }
+
     if(reverse != 0) {
         ret = xmlSecBnReverse(bn);
         if(ret < 0) {

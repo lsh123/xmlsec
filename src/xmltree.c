@@ -866,9 +866,10 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
  * list and should release it with xmlFreeNodeList().
  * The function returns an error if one node is a descendant of the other.
  *
- * Note: on error, the state of the @p newNode is undefined and the caller
- * should not make any assumptions about it. The recommended way is to
- * release it with xmlUnlinkNode(newNode); xmlFreeNode(newNode); immediately.
+ * Note: on error, the state of the XML tree and the @p newNode is undefined.
+ * and the caller should not make any assumptions about it. The recommended way is to
+ * release it with xmlUnlinkNode(newNode); xmlFreeNode(newNode); immediately and
+ * then release the XML tree with xmlFreeDoc(doc).
  *
  * @param node the current node.
  * @param newNode the new node.
@@ -877,6 +878,8 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
  */
 int
 xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *replaced) {
+    xmlNodePtr cur, next, tail;
+
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(newNode != NULL, -1);
     xmlSecAssert2(node != newNode, -1);
@@ -893,8 +896,6 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
 
     /* return the old nodes if requested */
     if(replaced != NULL) {
-        xmlNodePtr cur, next, tail;
-
         (*replaced) = tail = NULL;
         for(cur = node->children; (cur != NULL); cur = next) {
             next = cur->next;
@@ -927,8 +928,18 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
         newNode->doc->children = newNode->next;
     }
     xmlUnlinkNode(newNode);
+
     if(xmlAddChildList(node, newNode) == NULL) {
         xmlSecXmlError("xmlAddChildList", node);
+        /* don't try to recover the tree if adding the new node fails */
+        if(replaced != NULL) {
+            for(cur = (*replaced); cur != NULL; cur = next) {
+                next = cur->next;
+                xmlUnlinkNode(cur);
+                xmlFreeNode(cur);
+            }
+            (*replaced) = NULL;
+        }
         return(-1);
     }
 

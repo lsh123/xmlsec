@@ -536,6 +536,196 @@ test_xmlSecNodeSetDumpTextNodes_preserves_document_order(void) {
 }
 
 static void
+test_xmlSecNodeSetDumpTextNodes_preserves_document_order_normal_set(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlNodePtr a;
+    xmlNodePtr b;
+    xmlNodePtr textFirst;
+    xmlNodePtr textSecond;
+    xmlNodeSetPtr nodes;
+    xmlSecNodeSetPtr nset;
+    xmlBufferPtr buffer;
+    xmlOutputBufferPtr out;
+    int ret;
+
+    testStart("xmlSecNodeSetDumpTextNodes preserves document order for a Normal set with a non-document-order node list");
+
+    doc = nodesetTestParseDoc("<Root><A>1</A><B>2</B></Root>");
+    if(doc == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    root = xmlDocGetRootElement(doc);
+    a = nodesetTestFindChild(root, BAD_CAST "A");
+    b = nodesetTestFindChild(root, BAD_CAST "B");
+    textFirst = (a != NULL) ? a->children : NULL;
+    textSecond = (b != NULL) ? b->children : NULL;
+    if((root == NULL) || (a == NULL) || (b == NULL) ||
+       (textFirst == NULL) || (textSecond == NULL) ||
+       (textFirst->type != XML_TEXT_NODE) || (textSecond->type != XML_TEXT_NODE)) {
+        testLog("Error: failed to prepare dump text nodes Normal-set test data\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* build a Normal node set whose node list is deliberately not in
+       document order: the text node of the second element comes first */
+    nodes = xmlXPathNodeSetCreate(textSecond);
+    if((nodes == NULL) || (xmlXPathNodeSetAdd(nodes, textFirst) < 0)) {
+        testLog("Error: failed to create XPath node set\n");
+        if(nodes != NULL) {
+            xmlXPathFreeNodeSet(nodes);
+        }
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if((nodes->nodeNr != 2) || (nodes->nodeTab[0] != textSecond) || (nodes->nodeTab[1] != textFirst)) {
+        testLog("Error: XPath node set is not in the expected non-document-order layout\n");
+        xmlXPathFreeNodeSet(nodes);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    nset = xmlSecNodeSetCreate(doc, nodes, xmlSecNodeSetNormal);
+    if(nset == NULL) {
+        testLog("Error: failed to create xmlsec node set\n");
+        xmlXPathFreeNodeSet(nodes);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    buffer = xmlBufferCreate();
+    out = (buffer != NULL) ? xmlOutputBufferCreateBuffer(buffer, NULL) : NULL;
+    if((buffer == NULL) || (out == NULL)) {
+        testLog("Error: failed to allocate output buffer\n");
+        if(buffer != NULL) {
+            xmlBufferFree(buffer);
+        }
+        xmlSecNodeSetDestroy(nset);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecNodeSetDumpTextNodes(nset, out);
+    if((ret < 0) || (xmlOutputBufferFlush(out) < 0) ||
+       !xmlStrEqual(xmlBufferContent(buffer), BAD_CAST "12")) {
+        testLog("Error: dump text nodes output mismatch (ret=%d, text='%s')\n",
+            ret, (xmlBufferContent(buffer) != NULL) ? (const char*)xmlBufferContent(buffer) : "(null)");
+        xmlOutputBufferClose(out);
+        xmlBufferFree(buffer);
+        xmlSecNodeSetDestroy(nset);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlOutputBufferClose(out);
+    xmlBufferFree(buffer);
+    xmlSecNodeSetDestroy(nset);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecNodeSetDumpTextNodes_preserves_document_order_tree_set(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    xmlNodePtr a;
+    xmlNodePtr b;
+    xmlNodeSetPtr nodes;
+    xmlSecNodeSetPtr nset;
+    xmlBufferPtr buffer;
+    xmlOutputBufferPtr out;
+    int ret;
+
+    testStart("xmlSecNodeSetDumpTextNodes preserves document order for a Tree set with a non-document-order node list");
+
+    doc = nodesetTestParseDoc("<Root><A>1</A><B>2</B></Root>");
+    if(doc == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    root = xmlDocGetRootElement(doc);
+    a = nodesetTestFindChild(root, BAD_CAST "A");
+    b = nodesetTestFindChild(root, BAD_CAST "B");
+    if((root == NULL) || (a == NULL) || (b == NULL)) {
+        testLog("Error: failed to prepare dump text nodes Tree-set test data\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    /* build a Tree node set whose anchor list is deliberately not in
+       document order: the second element comes first */
+    nodes = xmlXPathNodeSetCreate(b);
+    if((nodes == NULL) || (xmlXPathNodeSetAdd(nodes, a) < 0)) {
+        testLog("Error: failed to create XPath node set\n");
+        if(nodes != NULL) {
+            xmlXPathFreeNodeSet(nodes);
+        }
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+    if((nodes->nodeNr != 2) || (nodes->nodeTab[0] != b) || (nodes->nodeTab[1] != a)) {
+        testLog("Error: XPath node set is not in the expected non-document-order layout\n");
+        xmlXPathFreeNodeSet(nodes);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    nset = xmlSecNodeSetCreate(doc, nodes, xmlSecNodeSetTree);
+    if(nset == NULL) {
+        testLog("Error: failed to create xmlsec node set\n");
+        xmlXPathFreeNodeSet(nodes);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    buffer = xmlBufferCreate();
+    out = (buffer != NULL) ? xmlOutputBufferCreateBuffer(buffer, NULL) : NULL;
+    if((buffer == NULL) || (out == NULL)) {
+        testLog("Error: failed to allocate output buffer\n");
+        if(buffer != NULL) {
+            xmlBufferFree(buffer);
+        }
+        xmlSecNodeSetDestroy(nset);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecNodeSetDumpTextNodes(nset, out);
+    if((ret < 0) || (xmlOutputBufferFlush(out) < 0) ||
+       !xmlStrEqual(xmlBufferContent(buffer), BAD_CAST "12")) {
+        testLog("Error: dump text nodes output mismatch (ret=%d, text='%s')\n",
+            ret, (xmlBufferContent(buffer) != NULL) ? (const char*)xmlBufferContent(buffer) : "(null)");
+        xmlOutputBufferClose(out);
+        xmlBufferFree(buffer);
+        xmlSecNodeSetDestroy(nset);
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlOutputBufferClose(out);
+    xmlBufferFree(buffer);
+    xmlSecNodeSetDestroy(nset);
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
 test_xmlSecNodeSetWalk_deduplicates_overlapping_subtrees(void) {
     xmlDocPtr doc;
     xmlNodePtr root;
@@ -1251,6 +1441,8 @@ test_nodeset(void) {
 
     testGroupStart("xmlSecNodeSetDumpTextNodes");
     test_xmlSecNodeSetDumpTextNodes_preserves_document_order();
+    test_xmlSecNodeSetDumpTextNodes_preserves_document_order_normal_set();
+    test_xmlSecNodeSetDumpTextNodes_preserves_document_order_tree_set();
     if(testGroupFinished() != 1) { success = 0; }
 
     return(success);

@@ -471,6 +471,85 @@ xmlSecNodeSetGetFastPathNodes(xmlSecNodeSetPtr nset) {
     return(res);
 }
 
+/* The fast path walks every nodeTab entry independently. If
+ * the same node pointer appears twice in nodeTab (possible only via
+ * a hand-crafted xmlNodeSet; libxml2's xmlXPathNodeSetAdd/Merge
+ * deduplicate entries), the skip guard below checks only strict
+ * ancestors, so the node's subtree is walked twice and the callback
+ * fires twice, while the slow path visits each node exactly once. */
+static int
+xmlSecNodeSetWalkFast(
+    xmlNodeSetPtr fastPathNodes,
+    xmlSecNodeSetPtr nset,
+    xmlSecNodeSetWalkCallback walkFunc,
+    void* data
+) {
+    xmlNodePtr cur;
+    int ii;
+    int ret = 0;
+
+    xmlSecAssert2(fastPathNodes != NULL, -1);
+    xmlSecAssert2(nset != NULL, -1);
+    xmlSecAssert2(nset->doc != NULL, -1);
+    xmlSecAssert2(walkFunc != NULL, -1);
+
+    for(ii = 0; (ret == 0) && (ii < fastPathNodes->nodeNr); ++ii) {
+        cur = fastPathNodes->nodeTab[ii];
+
+        /* skip nodes that are covered by an ancestor walk root: that
+         * ancestor's walk covers this node's entire subtree, so
+         * starting a second walk here would visit the overlapping
+         * nodes more than once. For a combined set the walk roots are
+         * the first eligible member's nodes, which are not all part
+         * of the set, so the check must be against the walk roots
+         * rather than the set itself */
+        if(xmlSecNodeSetWalkRootIsAncestor(fastPathNodes, cur)) {
+            continue;
+        }
+
+        /* the doc node itself is never a match: the slow path starts at
+         * the doc's children, so the fast path must not report the doc
+         * node either (including HTML document nodes); walk all of the
+         * doc's top-level children (mirroring the slow path) */
+        if((cur->type == XML_DOCUMENT_NODE) || (cur->type == XML_HTML_DOCUMENT_NODE)) {
+            xmlNodePtr docChild;
+
+            for(docChild = cur->children; (docChild != NULL) && (ret == 0); docChild = docChild->next) {
+                ret = xmlSecNodeSetWalkRecursive(nset, docChild, walkFunc, data);
+                if(ret < 0) {
+                    xmlSecInternalError("xmlSecNodeSetWalkRecursive", NULL);
+                    return(ret);
+                }
+            }
+        } else {
+            ret = xmlSecNodeSetWalkRecursive(nset, cur, walkFunc, data);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecNodeSetWalkRecursive", NULL);
+                return(ret);
+            }
+        }
+    }
+    return(0);
+}
+
+static int
+xmlSecNodeSetWalkSlow(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, void* data) {
+    xmlNodePtr cur;
+    int ret = 0;
+
+    /* if we can't do fast path, fall back to the slow path iterating through all doc nodes */
+    for(cur = nset->doc->children; (cur != NULL) && (ret == 0); cur = cur->next) {
+        ret = xmlSecNodeSetWalkRecursive(nset, cur, walkFunc, data);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNodeSetWalkRecursive", NULL);
+            return(ret);
+        }
+    }
+
+    /* done */
+    return(0);
+}
+
 /**
  * @brief Walks all nodes in a set calling a callback function.
  * @details Calls the function @p walkFunc for each node in the nodes set @p nset.
@@ -495,7 +574,6 @@ xmlSecNodeSetGetFastPathNodes(xmlSecNodeSetPtr nset) {
 int
 xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, void* data) {
     xmlNodeSetPtr fastPathNodes;
-    xmlNodePtr cur;
     int ret = 0;
 
     xmlSecAssert2(nset != NULL, -1);
@@ -505,60 +583,20 @@ xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, voi
     /* try fast path first if we can iterate through a subset of nodes */
     fastPathNodes = xmlSecNodeSetGetFastPathNodes(nset);
     if(fastPathNodes != NULL) {
-        int ii;
-
-        /* Note: the fast path walks every nodeTab entry independently. If
-         * the same node pointer appears twice in nodeTab (possible only via
-         * a hand-crafted xmlNodeSet; libxml2's xmlXPathNodeSetAdd/Merge
-         * deduplicate entries), the skip guard below checks only strict
-         * ancestors, so the node's subtree is walked twice and the callback
-         * fires twice, while the slow path visits each node exactly once. */
-        for(ii = 0; (ret == 0) && (ii < fastPathNodes->nodeNr); ++ii) {
-            cur = fastPathNodes->nodeTab[ii];
-
-            /* skip nodes that are covered by an ancestor walk root: that
-             * ancestor's walk covers this node's entire subtree, so
-             * starting a second walk here would visit the overlapping
-             * nodes more than once. For a combined set the walk roots are
-             * the first eligible member's nodes, which are not all part
-             * of the set, so the check must be against the walk roots
-             * rather than the set itself */
-            if(xmlSecNodeSetWalkRootIsAncestor(fastPathNodes, cur)) {
-                continue;
-            }
-            /* the doc node itself is never a match: the slow path starts at
-             * the doc's children, so the fast path must not report the doc
-             * node either (including HTML document nodes); walk all of the
-             * doc's top-level children (mirroring the slow path) */
-            if((cur->type == XML_DOCUMENT_NODE) || (cur->type == XML_HTML_DOCUMENT_NODE)) {
-                xmlNodePtr docChild;
-
-                for(docChild = cur->children; (docChild != NULL) && (ret == 0); docChild = docChild->next) {
-                    ret = xmlSecNodeSetWalkRecursive(nset, docChild, walkFunc, data);
-                    if(ret < 0) {
-                        xmlSecInternalError("xmlSecNodeSetWalkRecursive", NULL);
-                        return(ret);
-                    }
-                }
-            } else {
-                ret = xmlSecNodeSetWalkRecursive(nset, cur, walkFunc, data);
-                if(ret < 0) {
-                    xmlSecInternalError("xmlSecNodeSetWalkRecursive", NULL);
-                    return(ret);
-                }
-            }
-        }
-        return(0);
-    }
-
-    /* if we can't do fast path, fall back to the slow path iterating through all doc nodes */
-    for(cur = nset->doc->children; (cur != NULL) && (ret == 0); cur = cur->next) {
-        ret = xmlSecNodeSetWalkRecursive(nset, cur, walkFunc, data);
+        ret = xmlSecNodeSetWalkFast(fastPathNodes, nset, walkFunc, data);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecNodeSetWalkRecursive", NULL);
+            xmlSecInternalError("xmlSecNodeSetWalkFast", NULL);
+            return(ret);
+        }
+    } else {
+        ret = xmlSecNodeSetWalkSlow(nset, walkFunc, data);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNodeSetWalkSlow", NULL);
             return(ret);
         }
     }
+
+    /* done */
     return(0);
 }
 
@@ -616,7 +654,8 @@ xmlSecNodeSetNamespacesWalk(xmlNodePtr cur, xmlSecNodeSetWalkCtx* ctx) {
         return(-1);
     }
 #else /* LIBXML_VERSION >= 21300 */
-    /* can return NULL if there are no namespace declarations or if there is a failure */
+    /* can return NULL if there are no namespace declarations or if there is a failure,
+     * we don't bother to distinguish between the two cases */
     nsList = xmlGetNsList(cur->doc, cur);
 #endif /* LIBXML_VERSION >= 21300 */
 
@@ -708,7 +747,12 @@ xmlSecNodeSetWalkRecursiveCallback(xmlNodePtr cur, void* data) {
  * 1 if the walk was interrupted by the callback, or a negative value
  * if an error occurs */
 static int
-xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlNodePtr startNode, xmlSecNodeSetWalkCallback walkFunc, void* data) {
+xmlSecNodeSetWalkRecursive(
+    xmlSecNodeSetPtr nset,
+    xmlNodePtr startNode,
+    xmlSecNodeSetWalkCallback walkFunc,
+    void* data
+) {
     xmlSecNodeSetWalkCtx ctx;
     int ret;
 
@@ -818,9 +862,12 @@ typedef struct {
 } xmlSecNodeSetDumpTextNodesCtx;
 
 static int
-xmlSecNodeSetDumpTextNodesWalkCallback(xmlSecNodeSetPtr nset, xmlNodePtr cur,
-                                   xmlNodePtr parent XMLSEC_ATTRIBUTE_UNUSED,
-                                   void* data) {
+xmlSecNodeSetDumpTextNodesWalkCallback(
+    xmlSecNodeSetPtr nset,
+    xmlNodePtr cur,
+    xmlNodePtr parent XMLSEC_ATTRIBUTE_UNUSED,
+    void* data
+) {
     xmlSecNodeSetDumpTextNodesCtx* ctx = (xmlSecNodeSetDumpTextNodesCtx*)data;
     int ret;
     xmlSecAssert2(nset != NULL, -1);
@@ -849,6 +896,8 @@ xmlSecNodeSetDumpTextNodesWalkCallback(xmlSecNodeSetPtr nset, xmlNodePtr cur,
 /**
  * @brief Dumps text node content from a nodes set.
  * @details Dumps content of all the text nodes from @p nset to @p out.
+ * The text nodes are dumped in document order, regardless of the order of
+ * the nodes in the set.
  * @param nset the pointer to node set.
  * @param out the output buffer.
  * @return 0 on success or a negative value otherwise.
@@ -864,9 +913,11 @@ xmlSecNodeSetDumpTextNodes(xmlSecNodeSetPtr nset, xmlOutputBufferPtr out) {
     ctx.out = out;
     ctx.error = 0;
 
-    ret = xmlSecNodeSetWalk(nset, xmlSecNodeSetDumpTextNodesWalkCallback, &ctx);
+    /* force slow walk to ensure that nodes ordering in the document is preserved
+     * fast walk can reorder nodes based on XPath results */
+    ret = xmlSecNodeSetWalkSlow(nset, xmlSecNodeSetDumpTextNodesWalkCallback, &ctx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecNodeSetWalk", NULL);
+        xmlSecInternalError("xmlSecNodeSetWalkSlow", NULL);
         return(-1);
     }
     if(ctx.error != 0) {

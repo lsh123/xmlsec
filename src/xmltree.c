@@ -589,7 +589,7 @@ xmlSecEnsureEmptyChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns
     }
     if(cur == NULL) {
         xmlSecInternalError2("xmlSecAddChild or xmlSecAddNextSibling", NULL,
-                             "node=%s", xmlSecErrorsSafeString(name));
+                             "nodeName=%s", xmlSecErrorsSafeString(name));
         return(NULL);
     }
     return(cur);

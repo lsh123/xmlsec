@@ -77,7 +77,7 @@ static xmlSecTransformKlass xmlSecXsltKlass = {
 
     xmlSecNameXslt,                             /* const xmlChar* name; */
     xmlSecHrefXslt,                             /* const xmlChar* href; */
-    xmlSecTransformUsageDSigTransform,          /* xmlSecAlgorithmUsage usage; */
+    xmlSecTransformUsageDSigTransform,          /* xmlSecTransformUsage usage; */
 
     xmlSecXsltInitialize,                       /* xmlSecTransformInitializeMethod initialize; */
     xmlSecXsltFinalize,                         /* xmlSecTransformFinalizeMethod finalize; */

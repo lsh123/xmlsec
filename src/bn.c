@@ -97,8 +97,9 @@ xmlSecBnInitialize(xmlSecBnPtr bn, xmlSecSize size) {
 }
 
 /**
- * @brief Destroys @p bn object.
- * @details Destroys @p bn object created with #xmlSecBnInitialize function.
+ * @brief Frees resources for an initialized BN.
+ * @details Frees allocated resources for a BN initialized with #xmlSecBnInitialize
+ * function.
  * @param bn the pointer to BN.
  */
 void

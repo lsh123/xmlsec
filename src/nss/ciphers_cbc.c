@@ -650,7 +650,7 @@ static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                      
     xmlSecNssCbcCipherSize,                     /* xmlSecSize objSize */                                              \
     xmlSecName ## name,                         /* const xmlChar* name; */                                            \
     xmlSecHref ## name,                         /* const xmlChar* href; */                                            \
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                                     \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */                                     \
     xmlSecNssCbcCipherInitialize,               /* xmlSecTransformInitializeMethod initialize; */                     \
     xmlSecNssCbcCipherFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */                         \
     readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */                         \

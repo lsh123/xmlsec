@@ -428,7 +428,7 @@ xmlSecKeyReqMatchKey(xmlSecKeyReqPtr keyReq, xmlSecKeyPtr key) {
 
 /**
  * @brief Checks whether a key value matches the given requirements.
- * @details Checks whether @p keyValue matches key requirements @p keyReq.
+ * @details Checks whether @p value matches key requirements @p keyReq.
  * @param keyReq the pointer to key requirements.
  * @param value the pointer to key value.
  *

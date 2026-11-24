@@ -119,7 +119,7 @@ static xmlSecTransformKlass xmlSecGnuTLSKWDes3Klass = {
 
     xmlSecNameKWDes3,                           /* const xmlChar* name; */
     xmlSecHrefKWDes3,                           /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */
 
     xmlSecGnuTLSKWDes3Initialize,              /* xmlSecTransformInitializeMethod initialize; */
     xmlSecGnuTLSKWDes3Finalize,                /* xmlSecTransformFinalizeMethod finalize; */

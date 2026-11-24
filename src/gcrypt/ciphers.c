@@ -622,7 +622,7 @@ static xmlSecTransformKlass xmlSecGCryptAes128CbcKlass = {
 
     xmlSecNameAes128Cbc,                        /* const xmlChar* name; */
     xmlSecHrefAes128Cbc,                        /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */
 
     xmlSecGCryptBlockCipherInitialize,          /* xmlSecTransformInitializeMethod initialize; */
     xmlSecGCryptBlockCipherFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
@@ -658,7 +658,7 @@ static xmlSecTransformKlass xmlSecGCryptAes192CbcKlass = {
 
     xmlSecNameAes192Cbc,                        /* const xmlChar* name; */
     xmlSecHrefAes192Cbc,                        /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */
 
     xmlSecGCryptBlockCipherInitialize,          /* xmlSecTransformInitializeMethod initialize; */
     xmlSecGCryptBlockCipherFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
@@ -694,7 +694,7 @@ static xmlSecTransformKlass xmlSecGCryptAes256CbcKlass = {
 
     xmlSecNameAes256Cbc,                        /* const xmlChar* name; */
     xmlSecHrefAes256Cbc,                        /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */
 
     xmlSecGCryptBlockCipherInitialize,          /* xmlSecTransformInitializeMethod initialize; */
     xmlSecGCryptBlockCipherFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
@@ -733,7 +733,7 @@ static xmlSecTransformKlass xmlSecGCryptDes3CbcKlass = {
 
     xmlSecNameDes3Cbc,                          /* const xmlChar* name; */
     xmlSecHrefDes3Cbc,                          /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */
 
     xmlSecGCryptBlockCipherInitialize,          /* xmlSecTransformInitializeMethod initialize; */
     xmlSecGCryptBlockCipherFinalize,            /* xmlSecTransformFinalizeMethod finalize; */

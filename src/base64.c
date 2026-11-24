@@ -540,7 +540,7 @@ xmlSecBase64CtxEncodeFinal(xmlSecBase64CtxPtr ctx, xmlSecByte* outBuf, xmlSecSiz
     }
 
     if(status != xmlSecBase64StatusDone) {
-        xmlSecInvalidSizeOtherError("invalid base64 buffer size", NULL);
+        xmlSecInvalidSizeOtherError("output base64 buffer size is too small", NULL);
         return(-1);
     }
     if(outPos < outBufSize) {
@@ -654,8 +654,8 @@ xmlSecBase64GetDecodeSize(xmlSecSize inSize) {
 /**
  * @brief Encodes data to a base64 string.
  * @details Encodes the data from the input buffer and allocates the string for the result.
- * The caller is responsible for freeing returned buffer using
- * xmlFree() function.
+ * The caller is responsible for freeing the returned buffer using
+ * the xmlFree() function.
  * @param in the input buffer.
  * @param inSize the input buffer size.
  * @param columns the output max line length; use 0 for no line breaks or a value greater than 1.
@@ -812,7 +812,7 @@ static xmlSecTransformKlass xmlSecBase64Klass = {
 
     xmlSecNameBase64,                           /* const xmlChar* name; */
     xmlSecHrefBase64,                           /* const xmlChar* href; */
-    xmlSecTransformUsageDSigTransform,          /* xmlSecAlgorithmUsage usage; */
+    xmlSecTransformUsageDSigTransform,          /* xmlSecTransformUsage usage; */
 
     xmlSecBase64Initialize,                     /* xmlSecTransformInitializeMethod initialize; */
     xmlSecBase64Finalize,                       /* xmlSecTransformFinalizeMethod finalize; */

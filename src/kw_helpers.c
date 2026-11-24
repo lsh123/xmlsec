@@ -318,7 +318,7 @@ xmlSecKWDes3Encode(
     if((ret < 0) || (outWritten2 != sizeof(sha1))) {
         /* the key checksum (sha1) is not needed anymore; wipe it from the stack */
         xmlSecMemCleanse(sha1, sizeof(sha1));
-        xmlSecInternalError2("kwDes3Id->sha1", NULL,
+        xmlSecInternalError2("kwDes3Id->sha1", xmlSecTransformGetName(transform),
             "outWritten2=" XMLSEC_SIZE_FMT, outWritten2);
         return(-1);
     }
@@ -335,7 +335,7 @@ xmlSecKWDes3Encode(
     outWritten2 = 0;
     ret = kwDes3Id->generateRandom(transform, iv, sizeof(iv), &outWritten2);
     if((ret < 0) || (outWritten2 != sizeof(iv))) {
-        xmlSecInternalError2("kwDes3Id->generateRandom", NULL,
+        xmlSecInternalError2("kwDes3Id->generateRandom", xmlSecTransformGetName(transform),
             "outWritten2=" XMLSEC_SIZE_FMT, outWritten2);
         xmlSecMemCleanse(out, outSize);
         return(-1);
@@ -347,13 +347,13 @@ xmlSecKWDes3Encode(
         out, inSize + XMLSEC_KW_DES3_BLOCK_LENGTH,
         out, outSize, &outWritten2);
     if(ret < 0) {
-        xmlSecInternalError("kwDes3Id->encrypt", NULL);
+        xmlSecInternalError("kwDes3Id->encrypt", xmlSecTransformGetName(transform));
         xmlSecMemCleanse(out, outSize);
         return(-1);
     }
     if((inSize + XMLSEC_KW_DES3_BLOCK_LENGTH) != outWritten2) {
         xmlSecInvalidSizeError("kwDes3Id->encrypt",
-            outWritten2, (inSize + XMLSEC_KW_DES3_BLOCK_LENGTH), NULL);
+            outWritten2, (inSize + XMLSEC_KW_DES3_BLOCK_LENGTH), xmlSecTransformGetName(transform));
         xmlSecMemCleanse(out, outSize);
         return(-1);
     }
@@ -366,7 +366,7 @@ xmlSecKWDes3Encode(
     /* step 7: reverse octets order, result is TEMP3 */
     ret = xmlSecKWDes3BufferReverse(out, tmpSize);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKWDes3BufferReverse", NULL);
+        xmlSecInternalError("xmlSecKWDes3BufferReverse", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -375,11 +375,11 @@ xmlSecKWDes3Encode(
     ret = kwDes3Id->encrypt(transform, xmlSecKWDes3Iv, sizeof(xmlSecKWDes3Iv),
         out, tmpSize, out, outSize, &outWritten2);
     if(ret < 0) {
-        xmlSecInternalError("kwDes3Id->encrypt", NULL);
+        xmlSecInternalError("kwDes3Id->encrypt", xmlSecTransformGetName(transform));
         return(-1);
     }
     if(tmpSize != outWritten2) {
-        xmlSecInvalidSizeError("kwDes3Id->encrypt", outWritten2, tmpSize, NULL);
+        xmlSecInvalidSizeError("kwDes3Id->encrypt", outWritten2, tmpSize, xmlSecTransformGetName(transform));
         return(-1);
     }
     (*outWritten) = outWritten2;
@@ -413,17 +413,17 @@ xmlSecKWDes3Decode(
 
     /* reject smaller or larger inputs */
     if(inSize < XMLSEC_KW_DES3_MIN_OUTPUT_SIZE) {
-        xmlSecInvalidSizeLessThanError("Input data", inSize, XMLSEC_KW_DES3_MIN_OUTPUT_SIZE, NULL);
+        xmlSecInvalidSizeLessThanError("Input data", inSize, XMLSEC_KW_DES3_MIN_OUTPUT_SIZE, xmlSecTransformGetName(transform));
         return(-1);
     } else if(inSize > XMLSEC_KW_DES3_MAX_OUTPUT_SIZE) {
-        xmlSecInvalidSizeMoreThanError("Input data", inSize, XMLSEC_KW_DES3_MAX_OUTPUT_SIZE, NULL);
+        xmlSecInvalidSizeMoreThanError("Input data", inSize, XMLSEC_KW_DES3_MAX_OUTPUT_SIZE, xmlSecTransformGetName(transform));
         return(-1);
     }
 
     /* step 2: first decryption with static IV, result is TEMP3 */
     tmp = xmlSecBufferCreate(inSize);
     if(tmp == NULL) {
-        xmlSecInternalError2("xmlSecBufferCreate", NULL, "inSize=" XMLSEC_SIZE_FMT, inSize);
+        xmlSecInternalError2("xmlSecBufferCreate", xmlSecTransformGetName(transform), "inSize=" XMLSEC_SIZE_FMT, inSize);
         goto done;
     }
     tmpBuf = xmlSecBufferGetData(tmp);
@@ -433,14 +433,14 @@ xmlSecKWDes3Decode(
     ret = kwDes3Id->decrypt(transform, xmlSecKWDes3Iv, sizeof(xmlSecKWDes3Iv),
         in, inSize, tmpBuf, tmpSize, &outWritten2);
     if(ret < 0) {
-        xmlSecInternalError("kwDes3Id->decrypt", NULL);
+        xmlSecInternalError("kwDes3Id->decrypt", xmlSecTransformGetName(transform));
         goto done;
     }
     if(outWritten2 < XMLSEC_KW_DES3_IV_LENGTH) {
-        xmlSecInvalidSizeLessThanError("kwDes3Id->decrypt(iv)", outWritten2, XMLSEC_KW_DES3_IV_LENGTH, NULL);
+        xmlSecInvalidSizeLessThanError("kwDes3Id->decrypt(iv)", outWritten2, XMLSEC_KW_DES3_IV_LENGTH, xmlSecTransformGetName(transform));
         goto done;
     } else if(outWritten2 > tmpSize) {
-        xmlSecInvalidSizeMoreThanError("kwDes3Id->decrypt", outWritten2, tmpSize, NULL);
+        xmlSecInvalidSizeMoreThanError("kwDes3Id->decrypt", outWritten2, tmpSize, xmlSecTransformGetName(transform));
         goto done;
     }
     tmpSize = outWritten2;
@@ -448,7 +448,7 @@ xmlSecKWDes3Decode(
     /* step 3: reverse octets order in TEMP3, result is TEMP2 */
     ret = xmlSecKWDes3BufferReverse(xmlSecBufferGetData(tmp), tmpSize);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKWDes3BufferReverse", NULL);
+        xmlSecInternalError("xmlSecKWDes3BufferReverse", xmlSecTransformGetName(transform));
         goto done;
     }
 
@@ -460,12 +460,12 @@ xmlSecKWDes3Decode(
         tmpSize - XMLSEC_KW_DES3_IV_LENGTH,
         out, outSize, &outWritten2);
     if(ret < 0) {
-        xmlSecInternalError("kwDes3Id->decrypt", NULL);
+        xmlSecInternalError("kwDes3Id->decrypt", xmlSecTransformGetName(transform));
         goto done;
     }
     if(outWritten2 < XMLSEC_KW_DES3_BLOCK_LENGTH) {
         xmlSecInvalidSizeLessThanError("kwDes3Id->decrypt(block)",
-            outWritten2, XMLSEC_KW_DES3_BLOCK_LENGTH, NULL);
+            outWritten2, XMLSEC_KW_DES3_BLOCK_LENGTH, xmlSecTransformGetName(transform));
         goto done;
     }
     outSz = outWritten2 - XMLSEC_KW_DES3_BLOCK_LENGTH;
@@ -474,7 +474,7 @@ xmlSecKWDes3Decode(
     outWritten2 = 0;
     ret = kwDes3Id->sha1(transform, out, outSz, sha1, sizeof(sha1), &outWritten2);
     if((ret < 0) || (outWritten2 != sizeof(sha1))) {
-        xmlSecInternalError2("kwDes3Id->sha1", NULL, "outWritten2=" XMLSEC_SIZE_FMT, outWritten2);
+        xmlSecInternalError2("kwDes3Id->sha1", xmlSecTransformGetName(transform), "outWritten2=" XMLSEC_SIZE_FMT, outWritten2);
         goto done;
     }
 
@@ -482,11 +482,11 @@ xmlSecKWDes3Decode(
      * key, so the number of matching leading bytes must not leak through timing */
     ret = xmlSecMemEqual(sha1, out + outSz, XMLSEC_KW_DES3_BLOCK_LENGTH);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecMemEqual", NULL);
+        xmlSecInternalError("xmlSecMemEqual", xmlSecTransformGetName(transform));
         goto done;
     }
     if(ret == 0) {
-        xmlSecInvalidDataError("SHA1 does not match", NULL);
+        xmlSecInvalidDataError("SHA1 does not match", xmlSecTransformGetName(transform));
         goto done;
     }
 
@@ -857,14 +857,14 @@ xmlSecKWRfc3394Encode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
         ret = kwRfc3394Id->encrypt(transform, out, inSize + XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE,
             out, outSize, &outWritten2);
         if(ret < 0) {
-            xmlSecInternalError("kwRfc3394Id->encrypt", NULL);
+            xmlSecInternalError("kwRfc3394Id->encrypt", xmlSecTransformGetName(transform));
             /* wipe the plaintext key from the output buffer before returning */
             xmlSecMemCleanse(out, inSize + XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE);
             return(-1);
         }
         if(outWritten2 != XMLSEC_KW_RFC3394_BLOCK_SIZE) {
             xmlSecInvalidSizeError("kwRfc3394Id->encrypt", outWritten2,
-                XMLSEC_KW_RFC3394_BLOCK_SIZE, NULL);
+                XMLSEC_KW_RFC3394_BLOCK_SIZE, xmlSecTransformGetName(transform));
             /* wipe the plaintext key from the output buffer before returning */
             xmlSecMemCleanse(out, inSize + XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE);
             return(-1);
@@ -881,7 +881,7 @@ xmlSecKWRfc3394Encode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
                 outWritten2 = 0;
                 ret = kwRfc3394Id->encrypt(transform, block, sizeof(block), block, sizeof(block), &outWritten2);
                 if(ret < 0) {
-                    xmlSecInternalError("kwRfc3394Id->encrypt", NULL);
+                    xmlSecInternalError("kwRfc3394Id->encrypt", xmlSecTransformGetName(transform));
                     /* wipe the plaintext key from the output buffer before returning */
                     xmlSecMemCleanse(out, inSize + XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE);
                     /* wipe the local temporary block before returning */
@@ -890,7 +890,7 @@ xmlSecKWRfc3394Encode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
                 }
                 if(outWritten2 != XMLSEC_KW_RFC3394_BLOCK_SIZE) {
                     xmlSecInvalidSizeError("kwRfc3394Id->encrypt", outWritten2,
-                        XMLSEC_KW_RFC3394_BLOCK_SIZE, NULL);
+                        XMLSEC_KW_RFC3394_BLOCK_SIZE, xmlSecTransformGetName(transform));
                     /* wipe the plaintext key from the output buffer before returning */
                     xmlSecMemCleanse(out, inSize + XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE);
                     /* wipe the local temporary block before returning */
@@ -930,7 +930,7 @@ xmlSecKWRfc3394Decode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
      * zero-length key without any decryption or integrity check */
     if(inSize < 2 * XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE) {
         xmlSecInvalidSizeLessThanError("Input data", inSize,
-            2 * XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE, NULL);
+            2 * XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE, xmlSecTransformGetName(transform));
         return(-1);
     }
     xmlSecAssert2((inSize % 8) == 0, -1);
@@ -946,14 +946,14 @@ xmlSecKWRfc3394Decode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
         ret = kwRfc3394Id->decrypt(transform, out, inSize,
             out, outSize, &outWritten2);
         if(ret < 0) {
-            xmlSecInternalError("kwRfc3394Id->decrypt", NULL);
+            xmlSecInternalError("kwRfc3394Id->decrypt", xmlSecTransformGetName(transform));
             /* wipe the plaintext key from the output buffer before returning */
             xmlSecMemCleanse(out, inSize);
             return(-1);
         }
         if(outWritten2 != XMLSEC_KW_RFC3394_BLOCK_SIZE) {
             xmlSecInvalidSizeError("kwRfc3394Id->decrypt", outWritten2,
-                XMLSEC_KW_RFC3394_BLOCK_SIZE, NULL);
+                XMLSEC_KW_RFC3394_BLOCK_SIZE, xmlSecTransformGetName(transform));
             /* wipe the plaintext key from the output buffer before returning */
             xmlSecMemCleanse(out, inSize);
             return(-1);
@@ -972,7 +972,7 @@ xmlSecKWRfc3394Decode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
                 ret = kwRfc3394Id->decrypt(transform, block, sizeof(block),
                     block, sizeof(block), &outWritten2);
                 if(ret < 0) {
-                    xmlSecInternalError("kwRfc3394Id->decrypt", NULL);
+                    xmlSecInternalError("kwRfc3394Id->decrypt", xmlSecTransformGetName(transform));
                     /* wipe the plaintext key from the output buffer before returning */
                     xmlSecMemCleanse(out, inSize);
                     /* wipe the local temporary block before returning */
@@ -981,7 +981,7 @@ xmlSecKWRfc3394Decode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
                 }
                 if(outWritten2 != XMLSEC_KW_RFC3394_BLOCK_SIZE) {
                     xmlSecInvalidSizeError("kwRfc3394Id->decrypt", outWritten2,
-                        XMLSEC_KW_RFC3394_BLOCK_SIZE, NULL);
+                        XMLSEC_KW_RFC3394_BLOCK_SIZE, xmlSecTransformGetName(transform));
                     /* wipe the plaintext key from the output buffer before returning */
                     xmlSecMemCleanse(out, inSize);
                     /* wipe the local temporary block before returning */
@@ -1000,13 +1000,13 @@ xmlSecKWRfc3394Decode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
     /* check the output */
     ret = xmlSecMemEqual(xmlSecKWRfc3394MagicBlock, out, XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecMemEqual", NULL);
+        xmlSecInternalError("xmlSecMemEqual", xmlSecTransformGetName(transform));
         /* wipe the unwrapped key from the output buffer before returning */
         xmlSecMemCleanse(out, inSize);
         return(-1);
     }
     if(ret == 0) {
-        xmlSecInvalidDataError("bad magic block", NULL);
+        xmlSecInvalidDataError("bad magic block", xmlSecTransformGetName(transform));
         /* wipe the unwrapped key from the output buffer before returning */
         xmlSecMemCleanse(out, inSize);
         return(-1);

@@ -180,7 +180,7 @@ static xmlSecTransformKlass xmlSecOpenSSLKW ## name ## Klass = {                
     xmlSecOpenSSLKWRfc3394Size,                 /* xmlSecSize objSize */                                                \
     xmlSecNameKW ## name,                       /* const xmlChar* name; */                                              \
     xmlSecHrefKW ## name,                       /* const xmlChar* href; */                                              \
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                                       \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */                                       \
     xmlSecOpenSSLKWRfc3394Initialize,           /* xmlSecTransformInitializeMethod initialize; */                       \
     xmlSecOpenSSLKWRfc3394Finalize,             /* xmlSecTransformFinalizeMethod finalize; */                           \
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */                           \

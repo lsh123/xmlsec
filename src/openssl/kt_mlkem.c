@@ -95,7 +95,7 @@ static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                  
     xmlSecName ## name,                         /* const xmlChar* name; */                                           \
     xmlSecHref ## name,                         /* const xmlChar* href; */                                           \
     xmlSecTransformUsageEncryptionMethod,                                                                            \
-                                                /* xmlSecAlgorithmUsage usage; */                                    \
+                                                /* xmlSecTransformUsage usage; */                                    \
     xmlSecOpenSSLMLKEMInitialize,               /* xmlSecTransformInitializeMethod initialize; */                    \
     xmlSecOpenSSLMLKEMFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */                        \
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */                        \

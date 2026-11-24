@@ -1238,7 +1238,6 @@ xmlSecTransformGostR3411_94GetKlass(void) {
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
-
 xmlSecTransformId
 xmlSecTransformGostR3411_2012_256GetKlass(void) {
     xmlSecCryptoDLFunctionsPtr functions = xmlSecCryptoDLGetFunctions();

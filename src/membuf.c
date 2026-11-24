@@ -46,7 +46,7 @@ static xmlSecTransformKlass xmlSecTransformMemBufKlass = {
 
     xmlSecNameMemBuf,                           /* const xmlChar* name; */
     NULL,                                       /* const xmlChar* href; */
-    0,                                          /* xmlSecAlgorithmUsage usage; */
+    0,                                          /* xmlSecTransformUsage usage; */
 
     xmlSecTransformMemBufInitialize,            /* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformMemBufFinalize,              /* xmlSecTransformFinalizeMethod finalize; */

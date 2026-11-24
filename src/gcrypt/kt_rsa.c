@@ -250,7 +250,7 @@ static xmlSecTransformKlass xmlSecGCryptRsaPkcs1Klass = {
 
     xmlSecNameRsaPkcs1,                         /* const xmlChar* name; */
     xmlSecHrefRsaPkcs1,                         /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */
 
     xmlSecGCryptRsaPkcs1Initialize,             /* xmlSecTransformInitializeMethod initialize; */
     xmlSecGCryptRsaPkcs1Finalize,               /* xmlSecTransformFinalizeMethod finalize; */
@@ -627,7 +627,7 @@ static xmlSecTransformKlass xmlSecGCryptRsaOaepKlass = {
 
     xmlSecNameRsaOaep,                         /* const xmlChar* name; */
     xmlSecHrefRsaOaep,                         /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,      /* xmlSecAlgorithmUsage usage; */
+    xmlSecTransformUsageEncryptionMethod,      /* xmlSecTransformUsage usage; */
 
     xmlSecGCryptRsaOaepInitialize,             /* xmlSecTransformInitializeMethod initialize; */
     xmlSecGCryptRsaOaepFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
@@ -664,7 +664,7 @@ static xmlSecTransformKlass xmlSecGCryptRsaOaepEnc11Klass = {
 
     xmlSecNameRsaOaepEnc11,                     /* const xmlChar* name; */
     xmlSecHrefRsaOaepEnc11,                     /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecTransformUsage usage; */
 
     xmlSecGCryptRsaOaepInitialize,             /* xmlSecTransformInitializeMethod initialize; */
     xmlSecGCryptRsaOaepFinalize,               /* xmlSecTransformFinalizeMethod finalize; */

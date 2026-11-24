@@ -495,7 +495,7 @@ static xmlSecTransformKlass xmlSecTransformInputURIKlass = {
 
     BAD_CAST "input-uri",                       /* const xmlChar* name; */
     NULL,                                       /* const xmlChar* href; */
-    0,                                          /* xmlSecAlgorithmUsage usage; */
+    0,                                          /* xmlSecTransformUsage usage; */
 
     xmlSecTransformInputURIInitialize,          /* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformInputURIFinalize,            /* xmlSecTransformFinalizeMethod finalize; */

@@ -79,7 +79,10 @@ struct _xmlSecNodeSet {
  * @details The callback function called once per node in the node set. For Tree and
  * TreeWithoutComments sets, namespace nodes are reported once per descendant element
  * in which they are in scope; for Normal sets the namespace copies are reported
- * at most once each.
+ * at most once each. Note that the per-descendant reporting applies to the original
+ * namespace nodes from the document; a namespace-node copy (the normal result of
+ * an XPath namespace:: expression) is reported at most once, at the element that
+ * declared the namespace.
  * @param nset the pointer to the xmlSecNodeSet structure.
  * @param cur the pointer to the current XML node.
  * @param parent the pointer to the parent node of @p cur.

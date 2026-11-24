@@ -13,7 +13,6 @@
 
 #if !defined(XMLSEC_NO_DES) || !defined(XMLSEC_NO_AES) || !defined(XMLSEC_NO_CAMELLIA)
 
-#include <stdlib.h>
 #include <string.h>
 
 #include <xmlsec/xmlsec.h>
@@ -446,7 +445,7 @@ xmlSecKWDes3Decode(
         xmlSecInvalidSizeLessThanError("kwDes3Id->decrypt(iv)", outWritten2, XMLSEC_KW_DES3_IV_LENGTH, xmlSecTransformGetName(transform));
         goto done;
     } else if(outWritten2 > tmpSize) {
-        xmlSecInvalidSizeMoreThanError("kwDes3Id->decrypt", outWritten2, tmpSize, xmlSecTransformGetName(transform));
+        xmlSecInvalidSizeMoreThanError("kwDes3Id->decrypt(iv)", outWritten2, tmpSize, xmlSecTransformGetName(transform));
         goto done;
     }
     tmpSize = outWritten2;

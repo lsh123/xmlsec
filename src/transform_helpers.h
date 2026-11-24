@@ -256,11 +256,16 @@ XMLSEC_EXPORT int   xmlSecTransformHkdfParamsRead       (xmlSecTransformHkdfPara
 /* ChaCha20 */
 #ifndef XMLSEC_NO_CHACHA20
 
-#define XMLSEC_CHACHA20_NONCE_SIZE          ((xmlSecSize)12)
-#define XMLSEC_CHACHA20_COUNTER_SIZE        ((xmlSecSize)4)
-#define XMLSEC_CHACHA20_IV_SIZE             (XMLSEC_CHACHA20_NONCE_SIZE + XMLSEC_CHACHA20_COUNTER_SIZE)
-#define XMLSEC_CHACHA20_KEY_SIZE            ((xmlSecSize)32)
-#define XMLSEC_CHACHA20_POLY1305_TAG_SIZE   ((xmlSecSize)16)
+#define XMLSEC_CHACHA20_NONCE_SIZE              ((xmlSecSize)12)
+#define XMLSEC_CHACHA20_COUNTER_SIZE            ((xmlSecSize)4)
+#define XMLSEC_CHACHA20_IV_SIZE                 (XMLSEC_CHACHA20_NONCE_SIZE + XMLSEC_CHACHA20_COUNTER_SIZE)
+#define XMLSEC_CHACHA20_KEY_SIZE                ((xmlSecSize)32)
+#define XMLSEC_CHACHA20_POLY1305_TAG_SIZE       ((xmlSecSize)16)
+
+/* the maximum size of the additional authenticated data (AAD) element
+ * content, in bytes; bounds the memory allocated for attacker-controlled
+ * document content */
+#define XMLSEC_CHACHA20_POLY1305_AAD_MAX_SIZE   ((xmlSecSize)65536)
 
 
 XMLSEC_EXPORT int   xmlSecTransformChaCha20ParamsRead               (xmlNodePtr node,
@@ -289,6 +294,10 @@ XMLSEC_EXPORT int   xmlSecTransformChaCha20Poly1305ParamsWrite      (xmlNodePtr 
 /* RSA */
 #ifndef XMLSEC_NO_RSA
 #ifndef XMLSEC_NO_RSA_OAEP
+
+/* the maximum size of the decoded OAEPparams (L-label) content, in bytes;
+ * bounds the memory allocated for attacker-controlled document content */
+#define XMLSEC_RSA_OAEP_PARAMS_MAX_SIZE         ((xmlSecSize)1024)
 
 /* All OAEP params in one place */
 struct _xmlSecTransformRsaOaepParams {

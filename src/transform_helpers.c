@@ -1075,6 +1075,80 @@ xmlSecTransformReadContextStringFromObjectGetSignatureNode(xmlNodePtr signatureM
     /* success! */
     return(signatureMethodNode->parent->parent);
 }
+
+/*
+ * Returns the total length of all text content under @p node, i.e. the
+ * length of the string that xmlNodeGetContent() would allocate for @p node
+ * (before the trimming performed by xmlSecGetNodeContentAndTrim()). Used to
+ * bound the allocation performed by xmlSecBufferBase64NodeContentRead()
+ * before decoding untrusted content. Note: the content of entity
+ * references (only present in the tree if the caller disables
+ * XML_PARSE_NOENT) is not counted; in that case the allocation remains
+ * bounded by the document/DTD size.
+ */
+static xmlSecSize
+xmlSecTransformGetNodeContentLength(xmlNodePtr node) {
+    xmlNodePtr cur;
+    xmlSecSize len = 0;
+    xmlSecSize curLen;
+
+    xmlSecAssert2(node != NULL, 0);
+
+    for(cur = node->children; cur != NULL; cur = cur->next) {
+        if((cur->type == XML_TEXT_NODE) || (cur->type == XML_CDATA_SECTION_NODE)) {
+            curLen = (xmlSecSize)xmlStrlen(cur->content);
+            if(len > XMLSEC_SIZE_MAX - curLen) {
+                return(XMLSEC_SIZE_MAX);
+            }
+            len += curLen;
+        } else if((cur->type == XML_ELEMENT_NODE) && (cur->children != NULL)) {
+            curLen = xmlSecTransformGetNodeContentLength(cur);
+            if(len > XMLSEC_SIZE_MAX - curLen) {
+                return(XMLSEC_SIZE_MAX);
+            }
+            len += curLen;
+        }
+    }
+
+    return(len);
+}
+
+/*
+ * Returns an upper bound on the length of the base64 content (the raw text
+ * as stored in the node, including any line breaks) that can decode to at
+ * most @p maxSize bytes. A payload of @p maxSize bytes encodes to at most
+ * 4 * ((maxSize + 2) / 3) base64 characters; since the decoder skips
+ * whitespace, line-wrapped content is accepted as well. To keep the bound
+ * finite (and thus bound the allocation performed by
+ * xmlSecBufferBase64NodeContentRead() on untrusted content) we allow at
+ * most two whitespace character (eg \r\n) per base64 character, i.e. the raw content
+ * length is bounded by 3x the encoded length. Content with more
+ * whitespace than that is rejected.
+ */
+static xmlSecSize
+xmlSecTransformBase64MaxEncodedLength(xmlSecSize maxSize) {
+    xmlSecSize blocks;
+    xmlSecSize encodedLen;
+
+    /* ceil(maxSize / 3) with overflow check */
+    if(maxSize > XMLSEC_SIZE_MAX - 2) {
+        return(XMLSEC_SIZE_MAX);
+    }
+    blocks = (maxSize + 2) / 3;
+
+    /* 4 * blocks with overflow check */
+    if(blocks > XMLSEC_SIZE_MAX / 4) {
+        return(XMLSEC_SIZE_MAX);
+    }
+    encodedLen = 4 * blocks;
+
+    /* allow at most 3 chars in raw content for each base64 char */
+    if(encodedLen > XMLSEC_SIZE_MAX / 3) {
+        return(XMLSEC_SIZE_MAX);
+    }
+    return(3 * encodedLen);
+}
+
 /*
  * The context string element may be placed in a <ds:Object> element of
  * the <ds:Signature>:
@@ -1103,6 +1177,8 @@ xmlSecTransformReadContextStringFromObject(
     xmlNodePtr signatureNode;
     xmlNodePtr objectNode;
     xmlNodePtr objNodeChild;
+    xmlSecSize contentLen;
+    xmlSecSize maxEncodedLen;
     int ret;
 
     xmlSecAssert2(signatureMethodNode != NULL, -1);
@@ -1110,6 +1186,12 @@ xmlSecTransformReadContextStringFromObject(
     xmlSecAssert2(ns != NULL, -1);
     xmlSecAssert2(maxSize > 0, -1);
     xmlSecAssert2(res != NULL, -1);
+
+    /* the max encoded (base64) content length that can decode to at most
+     * maxSize bytes; checked before the base64 decode to bound the
+     * allocation performed on untrusted content (the decoded size is
+     * additionally checked after the decode) */
+    maxEncodedLen = xmlSecTransformBase64MaxEncodedLength(maxSize);
 
 
     /* get <ds:Signature> node */
@@ -1139,8 +1221,15 @@ xmlSecTransformReadContextStringFromObject(
                 return(-1);
             }
             contextStringsFound = 1;
+            contentLen = xmlSecTransformGetNodeContentLength(objNodeChild);
+            if(contentLen > maxEncodedLen) {
+                xmlSecInvalidNodeContentError3(objNodeChild, NULL,
+                    "context string content length=" XMLSEC_SIZE_FMT " exceeds max allowed content length=" XMLSEC_SIZE_FMT,
+                    contentLen, maxEncodedLen);
+                return(-1);
+            }
             ret = xmlSecBufferBase64NodeContentRead(res, objNodeChild);
-            if (ret != 0) {
+            if (ret < 0) {
                 xmlSecInternalError("xmlSecBufferBase64NodeContentRead(SignatureContext)", NULL);
                 return(-1);
             }
@@ -1167,6 +1256,8 @@ xmlSecTransformReadContextStringFromSignatureMethodOrObjectNodes(
     xmlSecBufferPtr res
 ) {
     xmlNodePtr cur;
+    xmlSecSize contentLen;
+    xmlSecSize maxEncodedLen;
     int contextStringsFound = 0;
     int ret;
 
@@ -1174,12 +1265,25 @@ xmlSecTransformReadContextStringFromSignatureMethodOrObjectNodes(
     xmlSecAssert2(res != NULL, -1);
     xmlSecAssert2(xmlSecBufferIsEmpty(res), -1);
 
+    /* the max encoded (base64) content length that can decode to at most
+     * maxSize bytes; checked before the base64 decode to bound the
+     * allocation performed on untrusted content (the decoded size is
+     * additionally checked after the decode) */
+    maxEncodedLen = xmlSecTransformBase64MaxEncodedLength(maxSize);
+
     /* try to read the context string from the first child of the SignatureMethod element */
     cur = xmlSecGetNextElementNode(signatureMethodNode->children);
     if ((cur != NULL) && xmlSecCheckNodeName(cur, name, ns)) {
         contextStringsFound = 1;
+        contentLen = xmlSecTransformGetNodeContentLength(cur);
+        if(contentLen > maxEncodedLen) {
+            xmlSecInvalidNodeContentError3(cur, NULL,
+                "context string content length=" XMLSEC_SIZE_FMT " exceeds max allowed content length=" XMLSEC_SIZE_FMT,
+                contentLen, maxEncodedLen);
+            return(-1);
+        }
         ret = xmlSecBufferBase64NodeContentRead(res, cur);
-        if (ret != 0) {
+        if (ret < 0) {
             xmlSecInternalError("xmlSecBufferBase64NodeContentRead(SignatureContext)", NULL);
             return(-1);
         }
@@ -1933,8 +2037,20 @@ xmlSecTransformChaCha20Poly1305ParamsRead(xmlNodePtr node, xmlSecBufferPtr aad,
 
     /* second optional AAD node (plain text string) */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeChaCha20Poly1305AAD, xmlSecDSig2021MoreNs))) {
+        xmlSecSize contentLen;
         int aadContentLen;
         xmlChar* aadContent;
+
+        /* bound the content length before xmlNodeGetContent() allocates the
+         * full content for untrusted input */
+        contentLen = xmlSecTransformGetNodeContentLength(cur);
+        if(contentLen > XMLSEC_CHACHA20_POLY1305_AAD_MAX_SIZE) {
+            xmlSecInvalidNodeContentError3(cur, NULL,
+                "AAD content length=" XMLSEC_SIZE_FMT " exceeds max allowed content length=" XMLSEC_SIZE_FMT,
+                contentLen, XMLSEC_CHACHA20_POLY1305_AAD_MAX_SIZE);
+            xmlSecBufferFinalize(&buf);
+            return(-1);
+        }
 
         /* xmlNodeGetContent returns NULL only on allocation failure
          * (an empty element yields an empty string) */
@@ -1947,6 +2063,16 @@ xmlSecTransformChaCha20Poly1305ParamsRead(xmlNodePtr node, xmlSecBufferPtr aad,
         }
 
         aadContentLen = xmlStrlen(aadContent);
+        if((xmlSecSize)aadContentLen > XMLSEC_CHACHA20_POLY1305_AAD_MAX_SIZE) {
+            /* entity references (only present in the tree if the caller
+             * disables XML_PARSE_NOENT) can grow the content beyond the
+             * pre-check above */
+            xmlSecInvalidSizeMoreThanError("AAD content length", (xmlSecSize)aadContentLen,
+                XMLSEC_CHACHA20_POLY1305_AAD_MAX_SIZE, NULL);
+            xmlFree(aadContent);
+            xmlSecBufferFinalize(&buf);
+            return(-1);
+        }
         if(aadContentLen > 0) {
             ret = xmlSecBufferSetData(aad, aadContent, (xmlSecSize)aadContentLen);
             if(ret < 0) {
@@ -2073,6 +2199,8 @@ xmlSecTransformRsaOaepParamsFinalize(xmlSecTransformRsaOaepParamsPtr oaepParams)
  */
 int
 xmlSecTransformRsaOaepParamsRead(xmlSecTransformRsaOaepParamsPtr oaepParams, xmlNodePtr node) {
+    xmlSecSize contentLen;
+    xmlSecSize maxEncodedLen;
     xmlNodePtr cur;
     int ret;
     int oaepParamsPresent = 0;
@@ -2083,6 +2211,12 @@ xmlSecTransformRsaOaepParamsRead(xmlSecTransformRsaOaepParamsPtr oaepParams, xml
     xmlSecAssert2(oaepParams->mgf1DigestAlgorithm == NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
+    /* the max encoded (base64) content length that can decode to at most
+     * XMLSEC_RSA_OAEP_PARAMS_MAX_SIZE bytes; checked before the base64 decode
+     * to bound the allocation performed on untrusted content (the decoded
+     * size is additionally checked after the decode) */
+    maxEncodedLen = xmlSecTransformBase64MaxEncodedLength(XMLSEC_RSA_OAEP_PARAMS_MAX_SIZE);
+
     /* the optional OAEPparams, MGF and DigestMethod elements are accepted
      * in any order; each of them is allowed at most once */
     cur = xmlSecGetNextElementNode(node->children);
@@ -2092,9 +2226,25 @@ xmlSecTransformRsaOaepParamsRead(xmlSecTransformRsaOaepParamsPtr oaepParams, xml
                 xmlSecNodeAlreadyPresentError(node, xmlSecNodeRsaOAEPparams, NULL);
                 return(-1);
             }
+            contentLen = xmlSecTransformGetNodeContentLength(cur);
+            if(contentLen > maxEncodedLen) {
+                xmlSecInvalidNodeContentError3(cur, NULL,
+                    "OAEPparams content length=" XMLSEC_SIZE_FMT " exceeds max allowed content length=" XMLSEC_SIZE_FMT,
+                    contentLen, maxEncodedLen);
+                return(-1);
+            }
             ret = xmlSecBufferBase64NodeContentRead(&(oaepParams->oaepParams), cur);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecBufferBase64NodeContentRead", NULL);
+                return(-1);
+            }
+            if(xmlSecBufferGetSize(&(oaepParams->oaepParams)) > XMLSEC_RSA_OAEP_PARAMS_MAX_SIZE) {
+                /* entity references (only present in the tree if the caller
+                 * disables XML_PARSE_NOENT) can grow the decoded content
+                 * beyond the pre-check above */
+                xmlSecInvalidSizeMoreThanError("decoded OAEPparams size",
+                    xmlSecBufferGetSize(&(oaepParams->oaepParams)),
+                    XMLSEC_RSA_OAEP_PARAMS_MAX_SIZE, NULL);
                 return(-1);
             }
             /* the decoded value can legitimately be empty, so the buffer size

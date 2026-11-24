@@ -12,7 +12,6 @@
 #include "globals.h"
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
 #include <libxml/tree.h>
@@ -784,7 +783,7 @@ xmlSecSimpleKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSe
         }
         match = xmlSecKeyMatch(key, name, &(keyInfoCtx->keyReq));
         if(match < 0) {
-            xmlSecInternalError("xmlSecKeyMatch", xmlSecKeyGetName(key));
+            xmlSecInternalError("xmlSecKeyMatch", xmlSecKeyStoreGetName(store));
             return(NULL);
         }
         if(match == 1) {

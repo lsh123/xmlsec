@@ -76,7 +76,7 @@ xmlSecBufferWipe(xmlSecBufferPtr buf, xmlSecByte* data, xmlSecSize size) {
 
 /**
  * @brief Sets the default buffer allocation mode.
- * @details Sets new global default allocation mode and minimal initial size.
+ * @details Sets the new global default allocation mode and minimal initial size.
  * @param defAllocMode the new default buffer allocation mode.
  * @param defInitialSize the new default buffer minimal initial size.
  */
@@ -609,6 +609,10 @@ xmlSecBufferReadFile(xmlSecBufferPtr buf, const char* filename) {
             goto done;
         }
     }
+    if(ferror(f)) {
+        xmlSecIOError("fread", filename, NULL);
+        goto done;
+    }
 
     /* success */
     res = 0;
@@ -725,7 +729,7 @@ xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int col
 
 #if LIBXML_VERSION >= 21300
     if(xmlNodeAddContent(node, content) < 0) {
-        xmlSecXmlError("xmlNodeAddContent", node);
+        xmlSecXmlError("xmlNodeAddContent", xmlSecNodeGetName(node));
         xmlFree(content);
         return(-1);
     }

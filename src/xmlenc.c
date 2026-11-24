@@ -308,7 +308,7 @@ xmlSecEncCtxBinaryEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl,
     ret = xmlSecTransformCtxBinaryExecute(&(encCtx->transformCtx), data, dataSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecTransformCtxBinaryExecute", NULL,
-                             "dataSize=" XMLSEC_SIZE_FMT,  dataSize);
+                             "dataSize=" XMLSEC_SIZE_FMT, dataSize);
         return(-1);
     }
 
@@ -889,7 +889,7 @@ xmlSecEncCtxEncDataNodeWrite(xmlSecEncCtxPtr encCtx) {
 
 #if LIBXML_VERSION >= 21300
         if(xmlNodeSetContentLen(encCtx->cipherValueNode, inBuf, inLen) < 0) {
-            xmlSecXmlError("xmlNodeSetContentLen", encCtx->cipherValueNode);
+            xmlSecXmlError("xmlNodeSetContentLen", xmlSecNodeGetName(encCtx->cipherValueNode));
             return(-1);
         }
 #else /* LIBXML_VERSION >= 21300 */

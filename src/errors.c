@@ -188,8 +188,9 @@ xmlSecErrorsDefaultCallback(const char* file, int line, const char* func,
 
         /* find the error message (if any) */
         for(ii = 0; ii < (sizeof(xmlSecErrorsTable) / sizeof(xmlSecErrorsTable[0])); ++ii) {
-            if(xmlSecErrorsGetCode(ii) == reason) {
-                error_msg = xmlSecErrorsGetMsg(ii);
+            const xmlSecErrorDescription * desc = &(xmlSecErrorsTable[ii]);
+            if(desc->errorCode == reason) {
+                error_msg = desc->errorMsg;
                 break;
             }
         }

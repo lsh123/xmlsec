@@ -70,7 +70,8 @@ xmlSecNoXxeExternalEntityLoader(
         return xmlSecDefaultExternalEntityLoader(URL, ID, ctxt);
     }
     xmlSecXmlError2("xmlSecNoXxeExternalEntityLoader", NULL,
-                    "illegal external entity='%s'", xmlSecErrorsSafeString(URL));
+                    "illegal external entity or DTD subset load='%s'",
+                    xmlSecErrorsSafeString(URL));
     return(NULL);
 }
 

@@ -309,7 +309,7 @@ xmlSecDSigCtxSign(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr tmpl) {
     XMLSEC_SAFE_CAST_SIZE_TO_INT(outSize, outLen, return(-1), NULL);
 #if LIBXML_VERSION >= 21300
     if(xmlNodeSetContentLen(dsigCtx->signValueNode, outBuf, outLen) < 0) {
-        xmlSecXmlError("xmlNodeSetContentLen", dsigCtx->signValueNode);
+        xmlSecXmlError("xmlNodeSetContentLen", xmlSecNodeGetName(dsigCtx->signValueNode));
         return(-1);
     }
 #else /* LIBXML_VERSION >= 21300 */
@@ -480,7 +480,16 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
 
     /* read node data */
     xmlSecAssert2(dsigCtx->id == NULL, -1);
-    dsigCtx->id = xmlGetProp(node, xmlSecAttrId);
+    /* xmlGetProp() returns NULL both when the attribute is absent and when
+     * it cannot allocate the return value, so check for presence first to
+     * report the correct error */
+    if(xmlHasProp(node, xmlSecAttrId)) {
+        dsigCtx->id = xmlGetProp(node, xmlSecAttrId);
+        if(dsigCtx->id == NULL) {
+            xmlSecXmlError("xmlGetProp", xmlSecNodeGetName(node));
+            return(-1);
+        }
+    }
 
     /* first node is required SignedInfo */
     cur = xmlSecGetNextElementNode(node->children);
@@ -1370,10 +1379,31 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
 
     transformCtx = &(dsigRefCtx->transformCtx);
 
-    /* read attributes first */
-    dsigRefCtx->uri = xmlGetProp(node, xmlSecAttrURI);
-    dsigRefCtx->id  = xmlGetProp(node, xmlSecAttrId);
-    dsigRefCtx->type = xmlGetProp(node, xmlSecAttrType);
+    /* read attributes first. All three are optional, but xmlGetProp()
+     * returns NULL both when the attribute is absent and when it cannot
+     * allocate the return value, so each is checked for presence first to
+     * report the correct error on allocation failure */
+    if(xmlHasProp(node, xmlSecAttrURI)) {
+        dsigRefCtx->uri = xmlGetProp(node, xmlSecAttrURI);
+        if(dsigRefCtx->uri == NULL) {
+            xmlSecXmlError("xmlGetProp", xmlSecNodeGetName(node));
+            return(-1);
+        }
+    }
+    if(xmlHasProp(node, xmlSecAttrId)) {
+        dsigRefCtx->id = xmlGetProp(node, xmlSecAttrId);
+        if(dsigRefCtx->id == NULL) {
+            xmlSecXmlError("xmlGetProp", xmlSecNodeGetName(node));
+            return(-1);
+        }
+    }
+    if(xmlHasProp(node, xmlSecAttrType)) {
+        dsigRefCtx->type = xmlGetProp(node, xmlSecAttrType);
+        if(dsigRefCtx->type == NULL) {
+            xmlSecXmlError("xmlGetProp", xmlSecNodeGetName(node));
+            return(-1);
+        }
+    }
 
     /* set start URI (and check that it is enabled!) */
     ret = xmlSecTransformCtxSetUri(transformCtx, dsigRefCtx->uri, node);
@@ -1494,7 +1524,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
         XMLSEC_SAFE_CAST_SIZE_TO_INT(outSize, outLen, return(-1), NULL);
 #if LIBXML_VERSION >= 21300
         if(xmlNodeSetContentLen(digestValueNode, outBuf, outLen) < 0) {
-            xmlSecXmlError("xmlNodeSetContentLen", digestValueNode);
+            xmlSecXmlError("xmlNodeSetContentLen", xmlSecNodeGetName(digestValueNode));
             return(-1);
         }
 #else /* LIBXML_VERSION >= 21300 */

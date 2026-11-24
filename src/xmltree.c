@@ -166,7 +166,7 @@ xmlSecSetNodeContentAsHex(xmlNodePtr node, const xmlSecByte* data, xmlSecSize si
 
 #if LIBXML_VERSION >= 21300
     if(xmlNodeSetContent(node, content) < 0) {
-        xmlSecXmlError("xmlNodeSetContent", node);
+        xmlSecXmlError("xmlNodeSetContent", xmlSecNodeGetName(node));
         xmlFree(content);
         return(-1);
     }
@@ -866,7 +866,7 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
  * list and should release it with xmlFreeNodeList().
  * The function returns an error if one node is a descendant of the other.
  *
- * Note: on error, the state of the XML tree and the @p newNode is undefined.
+ * Note: on error, the state of the XML tree and the @p newNode is undefined,
  * and the caller should not make any assumptions about it. The recommended way is to
  * release it with xmlUnlinkNode(newNode); xmlFreeNode(newNode); immediately and
  * then release the XML tree with xmlFreeDoc(doc).
@@ -914,7 +914,7 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
         /* just delete the content */
 #if LIBXML_VERSION >= 21300
         if(xmlNodeSetContent(node, NULL) < 0) {
-            xmlSecXmlError("xmlNodeSetContent", node);
+            xmlSecXmlError("xmlNodeSetContent", xmlSecNodeGetName(node));
             return(-1);
         }
 #else /* LIBXML_VERSION >= 21300 */
@@ -930,7 +930,7 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
     xmlUnlinkNode(newNode);
 
     if(xmlAddChildList(node, newNode) == NULL) {
-        xmlSecXmlError("xmlAddChildList", node);
+        xmlSecXmlError("xmlAddChildList", xmlSecNodeGetName(node));
         /* don't try to recover the tree if adding the new node fails */
         if(replaced != NULL) {
             for(cur = (*replaced); cur != NULL; cur = next) {
@@ -1057,7 +1057,7 @@ xmlSecNodeEncodeAndSetContent(xmlNodePtr node, const xmlChar* buffer) {
         }
 #if LIBXML_VERSION >= 21300
         if(xmlNodeSetContent(node, tmp) < 0) {
-            xmlSecXmlError("xmlNodeSetContent", node);
+            xmlSecXmlError("xmlNodeSetContent", xmlSecNodeGetName(node));
             xmlFree(tmp);
             return(-1);
         }
@@ -1069,7 +1069,7 @@ xmlSecNodeEncodeAndSetContent(xmlNodePtr node, const xmlChar* buffer) {
     } else {
 #if LIBXML_VERSION >= 21300
         if(xmlNodeSetContent(node, NULL) < 0) {
-            xmlSecXmlError("xmlNodeSetContent", node);
+            xmlSecXmlError("xmlNodeSetContent", xmlSecNodeGetName(node));
             return(-1);
         }
 #else /* LIBXML_VERSION >= 21300 */
@@ -1698,7 +1698,7 @@ xmlSecQName2IntegerNodeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr no
 
 #if LIBXML_VERSION >= 21300
     if(xmlNodeSetContent(cur, qname) < 0) {
-        xmlSecXmlError("xmlNodeSetContent", cur);
+        xmlSecXmlError("xmlNodeSetContent", xmlSecNodeGetName(cur));
         xmlFree(qname);
         return(-1);
     }
@@ -2157,7 +2157,7 @@ xmlSecQName2BitMaskNodesWrite(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr n
 
 #if LIBXML_VERSION >= 21300
             if(xmlNodeSetContent(cur, qname) < 0) {
-                xmlSecXmlError("xmlNodeSetContent", cur);
+                xmlSecXmlError("xmlNodeSetContent", xmlSecNodeGetName(cur));
                 xmlFree(qname);
                 return(-1);
             }
@@ -2504,7 +2504,7 @@ xmlSecWin32ConvertTstrToUtf8(LPCTSTR str) {
  * @return a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
  */
 LPTSTR
-xmlSecWin32ConvertUtf8ToTstr(const xmlChar*  str) {
+xmlSecWin32ConvertUtf8ToTstr(const xmlChar* str) {
 #ifdef UNICODE
     return xmlSecWin32ConvertUtf8ToUnicode(str);
 #else  /* UNICODE */

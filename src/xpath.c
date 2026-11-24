@@ -721,11 +721,18 @@ xmlSecTransformXPath2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xml
 
         /* set correct node set type and operation */
         data->nodeSetType = xmlSecNodeSetTree;
+
+        /* the filter attribute is required. xmlGetProp() returns NULL both when the
+         * attribute is absent and when it cannot allocate the return value, so check
+         * for presence first to report the correct error. */
+        if(!xmlHasProp(cur, xmlSecAttrFilter)) {
+            xmlSecInvalidNodeAttributeError(cur, xmlSecAttrFilter,
+                xmlSecTransformGetName(transform), "missing");
+            return(-1);
+        }
         op = xmlGetProp(cur, xmlSecAttrFilter);
         if(op == NULL) {
-            xmlSecInvalidNodeAttributeError(cur, xmlSecAttrFilter,
-                                            xmlSecTransformGetName(transform),
-                                            "empty");
+            xmlSecXmlError("xmlGetProp", xmlSecTransformGetName(transform));
             return(-1);
         }
         if(xmlStrEqual(op, xmlSecXPath2FilterIntersect)) {

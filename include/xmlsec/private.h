@@ -574,9 +574,16 @@ struct _xmlSecCryptoDLFunctions {
 #define XMLSEC_UNREFERENCED(param)   ((void)(param))
 #endif /* XMLSEC_UNREFERENCED */
 
+/******************************************************************************
+ *
+ * Various constants used throughout the XMLSec library. All these constants
+ * are defined with reasonable default values but can be overridden at compile
+ * time using -D&lt;CONSTANT_NAME&gt;=&lt;value&gt; CFLAGS or similar mechanisms.
+ *
+ *****************************************************************************/
 
 /**
- * @brief The maximum length of the input string for #xmlSecBnFromString.
+ * @brief The maximum length of the input string for the #xmlSecBnFromString function.
  * @details The BN string parsing routines process the input digit by digit and
  * the total cost grows with the square of the string length. The actual
  * usage in the XMLSec library is limited to parsing X509 serial numbers,
@@ -584,8 +591,105 @@ struct _xmlSecCryptoDLFunctions {
  * less than 50 dec/hex digits.
  */
 #ifndef XMLSEC_BN_FROM_STRING_MAX_LEN
-#  define XMLSEC_BN_FROM_STRING_MAX_LEN                     ((xmlSecSize)64)
+#define XMLSEC_BN_FROM_STRING_MAX_LEN                            ((xmlSecSize)64)
 #endif /* XMLSEC_BN_FROM_STRING_MAX_LEN */
+
+/**
+ * @brief The maximum size (in bytes) of a BN value converted to a string
+ * for the #xmlSecBnToString function.
+ * @details The BN string conversion routines process the input byte by byte
+ * and the total cost grows with the square of the BN size. The actual usage
+ * in the XMLSec library is limited to writing X509 serial numbers, whose
+ * length is limited to 20 octets (160 bits) by RFC 5280.
+ */
+#ifndef XMLSEC_BN_TO_STRING_MAX_SIZE
+#define XMLSEC_BN_TO_STRING_MAX_SIZE                            ((xmlSecSize)32)
+#endif /* XMLSEC_BN_TO_STRING_MAX_SIZE */
+
+/**
+ * @brief The default max number of &lt;dsig:KeyInfo/&gt; child elements.
+ * @details This limit is applied when reading &lt;dsig:KeyInfo/&gt; elements to prevent
+ * excessive processing of child elements. The default max number of &lt;dsig:KeyInfo/&gt; child
+ * elements processed when reading is 10 but it can be changed at compile time or
+ * at runtime by setting the maxKeyInfoChildren field of the xmlSecKeyInfoCtx struct.
+ * Note: 0 disables the limit.
+ */
+#if !defined(XMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_CHILDREN)
+#define XMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_CHILDREN             10
+#endif /* !defined(XMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_CHILDREN) */
+
+/**
+ * @brief The default max recursion level for &lt;dsig11:KeyInfoReference/&gt; elements.
+ * @details The default max recursion level when processing &lt;dsig11:KeyInfoReference/&gt; element
+ * is 1 but it can be changed at compile time or at runtime by
+ * setting the maxKeyInfoReferenceLevel field of the xmlSecKeyInfoCtx struct.
+ */
+#if !defined(XMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_REFERENCE_LEVEL)
+#define XMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_REFERENCE_LEVEL      1
+#endif /* !defined(XMLSEC_KEYINFO_DEFAULT_MAX_KEYINFO_REFERENCE_LEVEL) */
+
+/**
+ * @brief The default max recursion level for &lt;dsig:RetrievalMethod/&gt; elements.
+ * @details The default max recursion level when processing &lt;dsig:RetrievalMethod/&gt; element
+ * is 1 but it can be changed at compile or at runtime by  setting the maxRetrievalMethodLevel
+ * field of the xmlSecKeyInfoCtx struct.
+ */
+#if !defined(XMLSEC_KEYINFO_DEFAULT_MAX_RETRIEVAL_METHOD_LEVEL)
+#define XMLSEC_KEYINFO_DEFAULT_MAX_RETRIEVAL_METHOD_LEVEL       1
+#endif /* !defined(XMLSEC_KEYINFO_DEFAULT_MAX_RETRIEVAL_METHOD_LEVEL) */
+
+#ifndef XMLSEC_NO_XMLENC
+/**
+ * @brief The default max recursion level for &lt;enc:EncryptedKey/&gt;, &lt;enc11:DerivedKey/&gt;
+ * or &lt;enc:AgreementMethod/&gt; elements.
+ * @details The default max recursion level when processing &lt;enc:EncryptedKey/&gt;,
+ * &lt;enc11:DerivedKey/&gt; or &lt;enc:AgreementMethod/&gt; elements is 1 but it can be
+ * changed at compile or at runtime by setting the maxEncryptedKeyLevel field of
+ * the xmlSecKeyInfoCtx struct.
+ */
+#if !defined(XMLSEC_KEYINFO_DEFAULT_MAX_ENCRYPTED_KEY_LEVEL)
+#define XMLSEC_KEYINFO_DEFAULT_MAX_ENCRYPTED_KEY_LEVEL          1
+#endif /* !defined(XMLSEC_KEYINFO_DEFAULT_MAX_ENCRYPTED_KEY_LEVEL) */
+#endif /* XMLSEC_NO_XMLENC */
+
+#ifndef XMLSEC_NO_X509
+/**
+ * @brief The default max certificate chain length.
+ * @details The default max certificate chain length is 9 but it can be changed at compile
+ * or at runtime by setting the certsVerificationDepth field of the xmlSecKeyInfoCtx struct.
+ */
+#if !defined(XMLSEC_KEYINFO_DEFAULT_MAX_CERT_VERIFICATION_DEPTH)
+#define XMLSEC_KEYINFO_DEFAULT_MAX_CERT_VERIFICATION_DEPTH      9
+#endif /* !defined(XMLSEC_KEYINFO_DEFAULT_MAX_CERT_VERIFICATION_DEPTH) */
+#endif /* XMLSEC_NO_X509 */
+
+/**
+ * @brief The default binary chunk size for transform contexts.
+ * @details The default binary chunk size is 64 KB but it can be changed at compile
+ * time or at runtime using the #xmlSecTransformCtxSetDefaultBinaryChunkSize function.
+ */
+#if !defined(XMLSEC_TRANSFORM_CTX_DEFAULT_BINARY_CHUNK_SIZE)
+#define XMLSEC_TRANSFORM_CTX_DEFAULT_BINARY_CHUNK_SIZE          ((xmlSecSize)64*1024)
+#endif /* !defined(XMLSEC_TRANSFORM_CTX_DEFAULT_BINARY_CHUNK_SIZE) */
+
+/**
+ * @brief The default maximum depth for transform contexts.
+ * @details The default max depth is 16 levels but it can be changed at compile
+ * time or at runtime using the #xmlSecTransformCtxSetDefaultMaxDepth function.
+ */
+#if !defined(XMLSEC_TRANSFORM_CTX_DEFAULT_MAX_DEPTH)
+#define XMLSEC_TRANSFORM_CTX_DEFAULT_MAX_DEPTH                  16u
+#endif /* !defined(XMLSEC_TRANSFORM_CTX_DEFAULT_MAX_DEPTH) */
+
+/**
+ * @brief The default XPath operations limit for transform contexts.
+ * @details The default XPath operations limit is 1000000 but it can be changed at compile
+ * time or at runtime using the #xmlSecTransformCtxSetDefaultXpathOpsLimit function.
+ * Note: 0 means unlimited.
+ */
+#if !defined(XMLSEC_TRANSFORM_CTX_DEFAULT_XPATH_OPS_LIMIT)
+#define XMLSEC_TRANSFORM_CTX_DEFAULT_XPATH_OPS_LIMIT            ((xmlSecSize)1000000)
+#endif /* !defined(XMLSEC_TRANSFORM_CTX_DEFAULT_XPATH_OPS_LIMIT) */
 
 
 /******************************************************************************

@@ -266,7 +266,7 @@ xmlSecOpenSSLKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr 
 #if LIBXML_VERSION >= 21300
     ret = xmlNodeAddContent(node, content);
     if(ret < 0) {
-        xmlSecXmlError("xmlNodeAddContent", node);
+        xmlSecXmlError("xmlNodeAddContent", xmlSecNodeGetName(node));
         goto done;
     }
 #else /* LIBXML_VERSION >= 21300 */

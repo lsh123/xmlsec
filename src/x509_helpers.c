@@ -624,7 +624,8 @@ xmlSecKeyX509DataValueXmlReadIssuerSerial(xmlSecKeyX509DataValuePtr x509Value, x
             xmlSecInvalidNodeContentError(cur, NULL, "empty");
             return(-1);
         }
-        /* intentionally ignored, issuerName stays NULL */
+        /* intentionally ignored: free the trimmed string and leave the
+         * field NULL */
         xmlFree(x509Value->issuerName);
         x509Value->issuerName = NULL;
     }
@@ -645,7 +646,8 @@ xmlSecKeyX509DataValueXmlReadIssuerSerial(xmlSecKeyX509DataValuePtr x509Value, x
             xmlSecInvalidNodeContentError(cur, NULL, "empty");
             return(-1);
         }
-        /* intentionally ignored, issuerSerial stays NULL */
+        /* intentionally ignored: free the trimmed string and leave the
+         * field NULL */
         xmlFree(x509Value->issuerSerial);
         x509Value->issuerSerial = NULL;
     }
@@ -756,7 +758,7 @@ xmlSecKeyX509DataValueXmlWriteBase64Blob(xmlSecBufferPtr buf, xmlNodePtr node,
     if(addLineBreaks) {
 #if LIBXML_VERSION >= 21300
         if(xmlNodeSetContent(child, xmlSecGetDefaultLineFeed()) < 0) {
-            xmlSecXmlError("xmlNodeSetContent", child);
+            xmlSecXmlError("xmlNodeSetContent", xmlSecNodeGetName(child));
             xmlUnlinkNode(child);
             xmlFreeNode(child);
             child = NULL;
@@ -770,7 +772,7 @@ xmlSecKeyX509DataValueXmlWriteBase64Blob(xmlSecBufferPtr buf, xmlNodePtr node,
 
 #if LIBXML_VERSION >= 21300
     if(xmlNodeAddContent(child, content) < 0) {
-        xmlSecXmlError("xmlNodeAddContent", child);
+        xmlSecXmlError("xmlNodeAddContent", xmlSecNodeGetName(child));
         xmlUnlinkNode(child);
         xmlFreeNode(child);
         child = NULL;
@@ -784,7 +786,7 @@ xmlSecKeyX509DataValueXmlWriteBase64Blob(xmlSecBufferPtr buf, xmlNodePtr node,
     if(addLineBreaks) {
 #if LIBXML_VERSION >= 21300
         if(xmlNodeAddContent(child, xmlSecGetDefaultLineFeed()) < 0) {
-            xmlSecXmlError("xmlNodeAddContent", child);
+            xmlSecXmlError("xmlNodeAddContent", xmlSecNodeGetName(child));
             xmlUnlinkNode(child);
             xmlFreeNode(child);
             child = NULL;
@@ -824,7 +826,7 @@ xmlSecKeyX509DataValueXmlWriteString(const xmlChar* content, xmlNodePtr node,
 
 #if LIBXML_VERSION >= 21300
     if(xmlNodeSetContent(cur, content) < 0) {
-        xmlSecXmlError("xmlNodeSetContent", cur);
+        xmlSecXmlError("xmlNodeSetContent", xmlSecNodeGetName(cur));
         xmlUnlinkNode(cur);
         xmlFreeNode(cur);
         return(-1);
@@ -1025,7 +1027,7 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
             break;
         case XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH2:
             /* two XX chars are expected */
-            if ((xmlSecIsHex(inCh)) && (inFirstHex > 0)) {
+            if (xmlSecIsHex(inCh)) {
                 state = XMLSEC_X509_NAME_READ_STATE_NORMAL;
                 inCh = xmlSecFromHex2(inFirstHex, inCh);
                 inFirstHex = 0;
@@ -1081,7 +1083,7 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
  * three types:
  *   - string (eg 'abc')
  *   - quoted string (eg '"abc"')
- *   - hexstring (eg '#A0B0')
+ *   - hexstring (eg '\#A0B0')
  * The function parses the string in the @p in parameter until end of string or @p delim is encountered.
  * The @p in and @p inSize parameters are moved to the next character (e.g. delimiter if it was encountered
  * during parsing).

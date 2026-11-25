@@ -1058,13 +1058,13 @@ xmlSecTransformRelationshipExecute(xmlSecTransformPtr transform, xmlOutputBuffer
      */
     if((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_RELATIONSHIP_LEGACY) == 0) {
         xmlNodePtr top;
-        int foundOutputElement = 0;
+        int foundTopLevelElement = 0;
 
         for(top = doc->children; top != NULL; top = top->next) {
             if(top->type != XML_ELEMENT_NODE) {
                 continue;
             }
-            foundOutputElement = 1;
+            foundTopLevelElement = 1;
             ret = xmlSecTransformRelationshipIsOutputElement(top);
             if(ret != 1) {
                 xmlSecInvalidNodeContentError(top, xmlSecTransformGetName(transform),
@@ -1072,11 +1072,11 @@ xmlSecTransformRelationshipExecute(xmlSecTransformPtr transform, xmlOutputBuffer
                 return(-1);
             }
         }
-        if(foundOutputElement == 0) {
+        if(foundTopLevelElement == 0) {
             /* no element nodes at all (e.g. an empty document); fail explicitly
              * instead of producing empty output */
             xmlSecInvalidNodeContentError((xmlNodePtr)NULL, xmlSecTransformGetName(transform),
-                "no top-level element nodes in the Relationships namespace");
+                "no top-level element nodes in the document");
             return(-1);
         }
     }

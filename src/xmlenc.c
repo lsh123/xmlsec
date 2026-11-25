@@ -1353,7 +1353,7 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
     /* initialize context and add ID attributes to the list of known ids */
     encCtx->operation = xmlSecEncCtxMapOperation(keyInfoCtx->operation);
     if(encCtx->operation == xmlSecTransformOperationNone) {
-        xmlSecInternalError2("invalid operation", NULL, "operation=%u", keyInfoCtx->operation);
+        xmlSecInternalError2("invalid operation", NULL, "operation=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(keyInfoCtx->operation));
         goto done;
     }
     xmlSecAddIDs(node->doc, node, xmlSecEncIds);
@@ -1502,7 +1502,7 @@ xmlSecEncCtxAgreementMethodGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyI
     /* initialize context and add ID attributes to the list of known ids */
     encCtx->operation = xmlSecEncCtxMapOperation(keyInfoCtx->operation);
     if(encCtx->operation == xmlSecTransformOperationNone) {
-        xmlSecInternalError2("invalid operation", NULL, "operation=%u", keyInfoCtx->operation);
+        xmlSecInternalError2("invalid operation", NULL, "operation=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(keyInfoCtx->operation));
         return(NULL);
     }
     xmlSecAddIDs(node->doc, node, xmlSecEncIds);
@@ -1559,7 +1559,7 @@ xmlSecEncCtxAgreementMethodXmlWrite(xmlSecEncCtxPtr encCtx, xmlNodePtr node, xml
     /* initialize context and add ID attributes to the list of known ids */
     encCtx->operation = xmlSecEncCtxMapOperation(keyInfoCtx->operation);
     if(encCtx->operation == xmlSecTransformOperationNone) {
-        xmlSecInternalError2("invalid operation", NULL, "operation=%u", keyInfoCtx->operation);
+        xmlSecInternalError2("invalid operation", NULL, "operation=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(keyInfoCtx->operation));
         return(-1);
     }
     xmlSecAddIDs(node->doc, node, xmlSecEncIds);
@@ -1811,7 +1811,7 @@ xmlSecEncCtxEncryptedKeyXmlWrite(
     /* initialize context and add ID attributes to the list of known ids */
     encCtx->operation = xmlSecEncCtxMapOperation(keyInfoCtx->operation);
     if(encCtx->operation == xmlSecTransformOperationNone) {
-        xmlSecInternalError2("invalid operation", NULL, "operation=%u", keyInfoCtx->operation);
+        xmlSecInternalError2("invalid operation", NULL, "operation=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(keyInfoCtx->operation));
         goto done;
     }
     xmlSecAddIDs(node->doc, node, xmlSecEncIds);

@@ -337,6 +337,7 @@ xmlSecDSigCtxVerify(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     int ret;
 
     xmlSecAssert2(dsigCtx != NULL, -1);
+    xmlSecAssert2(dsigCtx->result == NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(node->doc != NULL, -1);
 

@@ -86,8 +86,8 @@ static const xmlSecErrorDescription xmlSecErrorsTable[] = {
   { XMLSEC_ERRORS_R_CRL_VERIFY_FAILED,          "CRL verification failed" },
   { XMLSEC_ERRORS_R_CRL_NOT_YET_VALID,          "CRL is not yet valid" },
   { XMLSEC_ERRORS_R_CRL_HAS_EXPIRED,            "CRL has expired" },
-  { XMLSEC_ERRORS_R_DSIG_NO_REFERENCES,         "Reference nodes are not found" },
-  { XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE,     "Reference verification failed" },
+  { XMLSEC_ERRORS_R_DSIG_NO_REFERENCES,         "reference nodes are not found" },
+  { XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE,     "reference verification failed" },
   { XMLSEC_ERRORS_R_ASSERTION,                  "assertion" },
   { XMLSEC_ERRORS_R_CAST_IMPOSSIBLE,            "cast from one type to another is impossible" },
 };

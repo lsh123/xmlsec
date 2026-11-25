@@ -107,6 +107,7 @@ xmlSecKeyDataBinaryValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecAssert2(xmlSecKeyDataCheckSize(dst, xmlSecKeyDataBinarySize), -1);
     xmlSecAssert2(xmlSecKeyDataIsValid(src), -1);
     xmlSecAssert2(xmlSecKeyDataCheckSize(src, xmlSecKeyDataBinarySize), -1);
+    xmlSecAssert2(src != dst, -1);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(src);
     xmlSecAssert2(buffer != NULL, -1);
@@ -907,7 +908,11 @@ xmlSecKeyValueEcXmlRead(xmlSecKeyValueEcPtr data, xmlNodePtr node) {
         return(-1);
     }
     data->curve = xmlGetProp(cur, xmlSecAttrURI);
-    if((data->curve == NULL) || (data->curve[0] == '\0')) {
+    if(data->curve == NULL) {
+        xmlSecInvalidNodeAttributeError(cur, xmlSecAttrURI, NULL, "missing");
+        return(-1);
+    }
+    if(data->curve[0] == '\0') {
         xmlSecInvalidNodeAttributeError(cur, xmlSecAttrURI, NULL, "empty");
         return(-1);
     }
@@ -1343,6 +1348,11 @@ xmlSecKeyValueDhFinalize(xmlSecKeyValueDhPtr data) {
 static int
 xmlSecKeyValueDhXmlRead(xmlSecKeyValueDhPtr data, xmlNodePtr node) {
     xmlNodePtr cur;
+    int pPresent = 0;
+    int qPresent = 0;
+    int genPresent = 0;
+    int seedPresent = 0;
+    int pgenCounterPresent = 0;
     int ret;
 
     xmlSecAssert2(data != NULL, -1);
@@ -1357,6 +1367,7 @@ xmlSecKeyValueDhXmlRead(xmlSecKeyValueDhPtr data, xmlNodePtr node) {
             xmlSecInternalError("xmlSecBufferBase64NodeContentRead(p)", NULL);
             return(-1);
         }
+        pPresent = 1;
         cur = xmlSecGetNextElementNode(cur->next);
     }
     /* next is Q node. It is OPTIONAL */
@@ -1366,6 +1377,7 @@ xmlSecKeyValueDhXmlRead(xmlSecKeyValueDhPtr data, xmlNodePtr node) {
             xmlSecInternalError("xmlSecBufferBase64NodeContentRead(q)", NULL);
             return(-1);
         }
+        qPresent = 1;
         cur = xmlSecGetNextElementNode(cur->next);
     }
     /* next is Generator node. It is OPTIONAL */
@@ -1375,6 +1387,7 @@ xmlSecKeyValueDhXmlRead(xmlSecKeyValueDhPtr data, xmlNodePtr node) {
             xmlSecInternalError("xmlSecBufferBase64NodeContentRead(generator)", NULL);
             return(-1);
         }
+        genPresent = 1;
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
@@ -1397,6 +1410,7 @@ xmlSecKeyValueDhXmlRead(xmlSecKeyValueDhPtr data, xmlNodePtr node) {
             xmlSecInternalError("xmlSecBufferBase64NodeContentRead(seed)", NULL);
             return(-1);
         }
+        seedPresent = 1;
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
@@ -1407,12 +1421,26 @@ xmlSecKeyValueDhXmlRead(xmlSecKeyValueDhPtr data, xmlNodePtr node) {
             xmlSecInternalError("xmlSecBufferBase64NodeContentRead(pgenCounter)", NULL);
             return(-1);
         }
+        pgenCounterPresent = 1;
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
     /* nothing else is expected */
     if(cur != NULL) {
         xmlSecUnexpectedNodeError(cur, NULL);
+        return(-1);
+    }
+
+    /* (P, Q, Generator) and (seed, pgenCounter) are all-or-nothing groups
+     * per the schema; a partially present group is invalid */
+    if((pPresent != qPresent) || (pPresent != genPresent)) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_NODE, NULL,
+            "P, Q and Generator must be present or absent together");
+        return(-1);
+    }
+    if(seedPresent != pgenCounterPresent) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_NODE, NULL,
+            "seed and pgenCounter must be present or absent together");
         return(-1);
     }
 
@@ -3074,6 +3102,14 @@ xmlSecKeyDataKEMDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecAssert2(xmlSecKeyDataCheckSize(dst, xmlSecKeyDataKEMSize), -1);
     xmlSecAssert2(xmlSecKeyDataIsValid(src), -1);
     xmlSecAssert2(xmlSecKeyDataCheckSize(src, xmlSecKeyDataKEMSize), -1);
+
+    if(dst == src) {
+        /* a self-duplicate would zero the key material (the destination
+         * buffer is emptied before the copy); reject it explicitly */
+        xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_OPERATION,
+                         xmlSecKeyDataGetName(dst), "self-duplicate is not supported");
+        return(-1);
+    }
 
     dstData = (xmlSecKeyDataKEM*)dst;
     srcData = (xmlSecKeyDataKEM*)src;

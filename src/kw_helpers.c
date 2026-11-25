@@ -306,7 +306,10 @@ xmlSecKWDes3Encode(
     xmlSecAssert2(xmlSecKWDes3CheckId(kwDes3Id), -1);
     xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2(inSize > 0, -1);
+    if(inSize == 0) {
+        xmlSecInvalidSizeOtherError("input data is empty", xmlSecTransformGetName(transform));
+        return(-1);
+    }
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize + XMLSEC_KW_DES3_BLOCK_LENGTH + XMLSEC_KW_DES3_IV_LENGTH, -1);
     xmlSecAssert2(outWritten != NULL, -1);
@@ -494,6 +497,9 @@ xmlSecKWDes3Decode(
         xmlSecInvalidDataError("SHA1 does not match", xmlSecTransformGetName(transform));
         goto done;
     }
+
+    /* wipe the key checksum (CKS) left past the delivered key size */
+    xmlSecMemCleanse(out + outSz, XMLSEC_KW_DES3_BLOCK_LENGTH);
 
     /* success */
     (*outWritten) = outSz;
@@ -1019,6 +1025,9 @@ xmlSecKWRfc3394Decode(xmlSecKWRfc3394Id kwRfc3394Id, xmlSecTransformPtr transfor
 
     /* get rid of magic block */
     memmove(out, out + XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE, inSize - XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE);
+    /* wipe the old key block tail left in place by the memmove above; it sits
+     * past the delivered key size */
+    xmlSecMemCleanse(out + inSize - XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE, XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE);
     (*outWritten) = inSize - XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE;
     return(0);
 }

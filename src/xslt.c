@@ -363,7 +363,9 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
     if((data != NULL) && (dataSize > 0)) {
         int dataLen;
 
-        XMLSEC_SAFE_CAST_SIZE_TO_INT(dataSize, dataLen, return(-1), xmlSecTransformGetName(transform));
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(dataSize, dataLen,
+            { transform->status = xmlSecTransformStatusFail; return(-1); },
+            xmlSecTransformGetName(transform));
         ret = xmlParseChunk(ctx->parserCtx, (const char*)data, dataLen, 0);
         if(ret != 0) {
             xmlSecXmlParserError2("xmlParseChunk", ctx->parserCtx, xmlSecTransformGetName(transform),

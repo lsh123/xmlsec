@@ -1050,31 +1050,7 @@ xmlSecTransformHmacVerify(const xmlSecByte* data, xmlSecSize dataSize,
 #endif /* XMLSEC_NO_HMAC */
 
 
-#if !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA) || !defined(XMLSEC_NO_EDDSA)
-
-
-static xmlNodePtr
-xmlSecTransformReadContextStringFromObjectGetSignatureNode(xmlNodePtr signatureMethodNode) {
-    xmlSecAssert2(signatureMethodNode != NULL, NULL);
-
-    /* Parent of SignatureMethod should be SignedInfo */
-    if (signatureMethodNode->parent == NULL) {
-        return(NULL);
-    }
-    if (xmlSecCheckNodeName(signatureMethodNode->parent, xmlSecNodeSignedInfo, xmlSecDSigNs) == 0) {
-        return(NULL);
-    }
-    /* Parent of SignedInfo should be Signature */
-    if (signatureMethodNode->parent->parent == NULL) {
-        return(NULL);
-    }
-    if (xmlSecCheckNodeName(signatureMethodNode->parent->parent, xmlSecNodeSignature, xmlSecDSigNs) == 0) {
-        return(NULL);
-    }
-
-    /* success! */
-    return(signatureMethodNode->parent->parent);
-}
+#if !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA) || !defined(XMLSEC_NO_EDDSA) || !defined(XMLSEC_NO_CHACHA20) || !defined(XMLSEC_NO_RSA_OAEP)
 
 /*
  * Returns the total length of all text content under @p node, i.e. the
@@ -1121,7 +1097,7 @@ xmlSecTransformGetNodeContentLength(xmlNodePtr node) {
  * whitespace, line-wrapped content is accepted as well. To keep the bound
  * finite (and thus bound the allocation performed by
  * xmlSecBufferBase64NodeContentRead() on untrusted content) we allow at
- * most two whitespace character (eg \r\n) per base64 character, i.e. the raw content
+ * most two whitespace characters (eg \r\n) per base64 character, i.e. the raw content
  * length is bounded by 3x the encoded length. Content with more
  * whitespace than that is rejected.
  */
@@ -1147,6 +1123,35 @@ xmlSecTransformBase64MaxEncodedLength(xmlSecSize maxSize) {
         return(XMLSEC_SIZE_MAX);
     }
     return(3 * encodedLen);
+}
+
+#endif /* !XMLSEC_NO_MLDSA || !XMLSEC_NO_SLHDSA || !XMLSEC_NO_EDDSA || !XMLSEC_NO_CHACHA20 || !XMLSEC_NO_RSA_OAEP */
+
+
+#if !defined(XMLSEC_NO_MLDSA) || !defined(XMLSEC_NO_SLHDSA) || !defined(XMLSEC_NO_EDDSA)
+
+
+static xmlNodePtr
+xmlSecTransformReadContextStringFromObjectGetSignatureNode(xmlNodePtr signatureMethodNode) {
+    xmlSecAssert2(signatureMethodNode != NULL, NULL);
+
+    /* Parent of SignatureMethod should be SignedInfo */
+    if (signatureMethodNode->parent == NULL) {
+        return(NULL);
+    }
+    if (xmlSecCheckNodeName(signatureMethodNode->parent, xmlSecNodeSignedInfo, xmlSecDSigNs) == 0) {
+        return(NULL);
+    }
+    /* Parent of SignedInfo should be Signature */
+    if (signatureMethodNode->parent->parent == NULL) {
+        return(NULL);
+    }
+    if (xmlSecCheckNodeName(signatureMethodNode->parent->parent, xmlSecNodeSignature, xmlSecDSigNs) == 0) {
+        return(NULL);
+    }
+
+    /* success! */
+    return(signatureMethodNode->parent->parent);
 }
 
 /*

@@ -632,7 +632,11 @@ xmlSecKeyX509DataValueXmlReadIssuerSerial(xmlSecKeyX509DataValuePtr x509Value, x
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* the next node, X509SerialNumber, is required */
-    if((cur == NULL) || !xmlSecCheckNodeName(cur, xmlSecNodeX509SerialNumber, xmlSecDSigNs)) {
+    if(cur == NULL) {
+        xmlSecNodeNotFoundError("xmlSecGetNextElementNode", node, xmlSecNodeX509SerialNumber, NULL);
+        return(-1);
+    }
+    if(!xmlSecCheckNodeName(cur, xmlSecNodeX509SerialNumber, xmlSecDSigNs)) {
         xmlSecInvalidNodeError(cur, xmlSecNodeX509SerialNumber, NULL);
         return(-1);
     }

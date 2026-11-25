@@ -1165,8 +1165,14 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     /* reset prev retrieval method context */
     xmlSecTransformCtxReset(&(keyInfoCtx->retrievalMethodCtx));
 
-    /* set start URI and check that it is enabled */
+    /* uri attribute is required */
     uri = xmlGetProp(node, xmlSecAttrURI);
+    if(uri == NULL) {
+        xmlSecInvalidNodeAttributeError(node, xmlSecAttrURI, xmlSecKeyDataKlassGetName(id), "missing");
+        goto done;
+    }
+
+    /* set start URI and check that it is enabled */
     ret = xmlSecTransformCtxSetUri(&(keyInfoCtx->retrievalMethodCtx), uri, node);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecTransformCtxSetUri",

@@ -231,7 +231,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         if(transform->next != NULL) {
             ret = xmlSecTransformPushXml(transform->next, transform->outNodes, transformCtx);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecTransformPushXml", xmlSecTransformGetName(transform));
+                xmlSecInternalError("xmlSecTransformPushXml", xmlSecTransformGetName(transform->next));
                 transform->status = xmlSecTransformStatusFail;
                 return(-1);
             }

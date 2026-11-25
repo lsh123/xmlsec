@@ -924,6 +924,11 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
     }
 
     /* move newNode into node */
+    /*
+     * Keep the document's children list consistent if newNode is the document
+     * element but has no ->parent link (an inconsistent tree); for a
+     * consistent tree xmlUnlinkNode() performs this fixup itself.
+     */
     if((newNode->doc != NULL) && (newNode->doc->children == newNode)) {
         newNode->doc->children = newNode->next;
     }
@@ -1566,11 +1571,10 @@ xmlSecQName2IntegerGetIntegerFromString(xmlSecQName2IntegerInfoConstPtr info,
     /* and finally search for integer */
     ret = xmlSecQName2IntegerGetInteger(info, qnameHref, qnameLocalPart, intValue);
     if(ret < 0) {
-        xmlSecInternalError4("xmlSecQName2IntegerGetInteger", NULL,
-                             "node=%s,qnameLocalPart=%s,qnameHref=%s",
-                             xmlSecErrorsSafeString(node->name),
-                             xmlSecErrorsSafeString(qnameLocalPart),
-                             xmlSecErrorsSafeString(qnameHref));
+        xmlSecInvalidNodeContentError3(node, NULL,
+            "unknown value: qnameLocalPart=%s,qnameHref=%s",
+            xmlSecErrorsSafeString(qnameLocalPart),
+            xmlSecErrorsSafeString(qnameHref));
         if(qnamePrefix != NULL) {
             xmlFree(qnamePrefix);
         }
@@ -1993,11 +1997,10 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
     /* and finally search for mask */
     ret = xmlSecQName2BitMaskGetBitMask(info, qnameLocalPart, qnameHref, mask);
     if(ret < 0) {
-        xmlSecInternalError4("xmlSecQName2BitMaskGetBitMask", NULL,
-                             "node=%s,qnameLocalPart=%s,qnameHref=%s",
-                             xmlSecErrorsSafeString(node->name),
-                             xmlSecErrorsSafeString(qnameLocalPart),
-                             xmlSecErrorsSafeString(qnameHref));
+        xmlSecInvalidNodeContentError3(node, NULL,
+            "unknown value: qnameLocalPart=%s,qnameHref=%s",
+            xmlSecErrorsSafeString(qnameLocalPart),
+            xmlSecErrorsSafeString(qnameHref));
     }
 
     if(qnamePrefix != NULL) {

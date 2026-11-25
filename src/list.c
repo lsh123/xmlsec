@@ -500,8 +500,8 @@ xmlSecPtrListHeapSiftDown(xmlSecPtr* data, xmlSecSize size, xmlSecSize root, xml
     for(;;) {
 
         /* a node without children is already in place; the check also keeps
-         * 2 * root + 1 from overflowing xmlSecSize */
-        if(root > (size - 1) / 2) {
+         * 2 * root + 2 from overflowing xmlSecSize */
+        if(root > (size - 2) / 2) {
             return;
         }
 

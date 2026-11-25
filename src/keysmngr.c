@@ -391,6 +391,9 @@ xmlSecSimpleKeysStoreGetKlass(void) {
 
 /**
  * @brief Adds @p key to the @p store.
+ * @details The function adopts the given key into the simple keys store.
+ * The key becomes owned by the store and should not be freed by the caller.
+ * Do not add the same key to the store more than once.
  * @param store the pointer to simple keys store.
  * @param key the pointer to key.
  *

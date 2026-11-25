@@ -2004,7 +2004,7 @@ xmlSecTmplTransformAddC14NInclNamespaces(xmlNodePtr transformNode,
  *
  * @param transformNode the pointer to the &lt;dsig:Transform/&gt; node.
  * @param expression the XPath expression.
- * @param nsList the NULL terminated list of namespace prefix/href pairs (optional).
+ * @param nsList the NULL terminated list of namespace prefix/href pairs; use the special prefix "#default" to declare the default namespace (optional).
  * @return 0 for success or a negative value otherwise.
  */
 int
@@ -2049,7 +2049,7 @@ xmlSecTmplTransformAddXPath(xmlNodePtr transformNode, const xmlChar *expression,
  * @param transformNode the pointer to the &lt;dsig:Transform/&gt; node.
  * @param type the XPath2 transform type ("union", "intersect" or "subtract").
  * @param expression the XPath expression.
- * @param nsList the NULL terminated list of namespace prefix/href pairs (optional).
+ * @param nsList the NULL terminated list of namespace prefix/href pairs; use the special prefix "#default" to declare the default namespace (optional).
  * @return 0 for success or a negative value otherwise.
  */
 int
@@ -2098,7 +2098,7 @@ xmlSecTmplTransformAddXPath2(xmlNodePtr transformNode, const xmlChar* type,
  *
  * @param transformNode the pointer to the &lt;dsig:Transform/&gt; node.
  * @param expression the XPointer expression.
- * @param nsList the NULL terminated list of namespace prefix/href pairs (optional).
+ * @param nsList the NULL terminated list of namespace prefix/href pairs; use the special prefix "#default" to declare the default namespace (optional).
  * @return 0 for success or a negative value otherwise.
  */
 int

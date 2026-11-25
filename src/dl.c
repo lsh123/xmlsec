@@ -578,7 +578,7 @@ xmlSecCryptoDLGetLibraryFunctions(const xmlChar* crypto) {
     xmlSecAssert2(crypto != NULL, NULL);
 
     if(!xmlSecPtrListIsValid(&gXmlSecCryptoDLLibraries)) {
-        xmlSecInternalError("xmlSecCryptoDLGetLibraryFunctions", "not initialized");
+        xmlSecInternalError("xmlSecCryptoDLGetLibraryFunctions", NULL);
         return(NULL);
     }
 
@@ -628,7 +628,7 @@ xmlSecCryptoDLUnloadLibrary(const xmlChar* crypto) {
     xmlSecAssert2(crypto != NULL, -1);
 
     if(!xmlSecPtrListIsValid(&gXmlSecCryptoDLLibraries)) {
-        xmlSecInternalError("xmlSecCryptoDLUnloadLibrary", "not initialized");
+        xmlSecInternalError("xmlSecCryptoDLUnloadLibrary", NULL);
         return(-1);
     }
 

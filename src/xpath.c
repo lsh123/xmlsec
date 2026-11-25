@@ -198,10 +198,12 @@ xmlSecXPathDataNodeRead(xmlSecXPathDataPtr data, xmlNodePtr node) {
         return(-1);
     }
 
-    /* read node content and set expr */
+    /* xmlNodeGetContent returns NULL only on allocation failure (an element
+     * without content yields an empty string, not NULL) */
     data->expr = xmlNodeGetContent(node);
     if(data->expr == NULL) {
-        xmlSecInvalidNodeContentError(node, NULL, "empty");
+        xmlSecError(XMLSEC_ERRORS_HERE, NULL, "xmlNodeGetContent",
+                    XMLSEC_ERRORS_R_MALLOC_FAILED, NULL);
         return(-1);
     }
 

@@ -117,7 +117,8 @@ typedef unsigned int                            xmlSecTransformUriType;
 #define xmlSecTransformUriTypeSameDocument      0x0002
 
 /**
- * @brief The local URI ("file:///....") type.
+ * @brief The local URI type: a "file:" URI or a URI without a scheme (a relative
+ * reference or a plain path), both of which dereference to a local file.
  */
 #define xmlSecTransformUriTypeLocal             0x0004
 

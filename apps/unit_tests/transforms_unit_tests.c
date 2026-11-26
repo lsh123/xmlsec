@@ -983,6 +983,105 @@ test_xmlSecTransformCtxSetUri_visa3d_hack_transform_disabled(void) {
 
 
 /******************************************************************************
+ * xmlSecTransformUriTypeCheck
+ *****************************************************************************/
+static const char*
+transformsTestUriTypeName(xmlSecTransformUriType type) {
+    switch(type) {
+    case xmlSecTransformUriTypeEmpty:
+        return("empty");
+    case xmlSecTransformUriTypeSameDocument:
+        return("same-document");
+    case xmlSecTransformUriTypeLocal:
+        return("local");
+    case xmlSecTransformUriTypeRemote:
+        return("remote");
+    default:
+        return("unknown");
+    }
+}
+
+static void
+test_xmlSecTransformUriTypeCheck_one(const char* name, const char* uri, xmlSecTransformUriType expectedType) {
+    static const xmlSecTransformUriType allTypes[] = {
+        xmlSecTransformUriTypeEmpty,
+        xmlSecTransformUriTypeSameDocument,
+        xmlSecTransformUriTypeLocal,
+        xmlSecTransformUriTypeRemote
+    };
+    xmlSecSize ii;
+
+    testStart(name);
+
+    /* the uri must match its own type and must not match any of the other types */
+    for(ii = 0; ii < sizeof(allTypes) / sizeof(allTypes[0]); ++ii) {
+        int expected = (allTypes[ii] == expectedType) ? 1 : 0;
+        int ret;
+
+        ret = xmlSecTransformUriTypeCheck(allTypes[ii], BAD_CAST uri);
+        if(ret != expected) {
+            testLog("Error: xmlSecTransformUriTypeCheck(%s, '%s') returned %d (expected: %d)\n",
+                    transformsTestUriTypeName(allTypes[ii]), uri, ret, expected);
+            testFinishedFailure();
+            return;
+        }
+    }
+
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSecTransformUriTypeCheck_local(void) {
+    /* every form of the "file" scheme accepted by the file I/O callback, and a uri
+     * without a scheme, dereference to a local file */
+    test_xmlSecTransformUriTypeCheck_one("UriTypeCheck file:/// uri is local",
+        "file:///tmp/test.xml", xmlSecTransformUriTypeLocal);
+    test_xmlSecTransformUriTypeCheck_one("UriTypeCheck file:// uri is local",
+        "file://tmp/test.xml", xmlSecTransformUriTypeLocal);
+    test_xmlSecTransformUriTypeCheck_one("UriTypeCheck file:/ uri is local",
+        "file:/tmp/test.xml", xmlSecTransformUriTypeLocal);
+    test_xmlSecTransformUriTypeCheck_one("UriTypeCheck file://localhost/ uri is local",
+        "file://localhost/tmp/test.xml", xmlSecTransformUriTypeLocal);
+    test_xmlSecTransformUriTypeCheck_one("UriTypeCheck uppercase file scheme is local",
+        "FILE:///tmp/test.xml", xmlSecTransformUriTypeLocal);
+    test_xmlSecTransformUriTypeCheck_one("UriTypeCheck mixed case file scheme is local",
+        "File://localhost/tmp/test.xml", xmlSecTransformUriTypeLocal);
+    test_xmlSecTransformUriTypeCheck_one("UriTypeCheck absolute path without a scheme is local",
+        "/etc/passwd", xmlSecTransformUriTypeLocal);
+    test_xmlSecTransformUriTypeCheck_one("UriTypeCheck relative path without a scheme is local",
+        "../../etc/passwd", xmlSecTransformUriTypeLocal);
+    test_xmlSecTransformUriTypeCheck_one("UriTypeCheck plain file name is local",
+        "test.xml", xmlSecTransformUriTypeLocal);
+    test_xmlSecTransformUriTypeCheck_one("UriTypeCheck windows drive letter path is local",
+        "C:/tmp/test.xml", xmlSecTransformUriTypeLocal);
+}
+
+static void
+test_xmlSecTransformUriTypeCheck_remote(void) {
+    test_xmlSecTransformUriTypeCheck_one("UriTypeCheck http uri is remote",
+        "http://example.com/test.xml", xmlSecTransformUriTypeRemote);
+    test_xmlSecTransformUriTypeCheck_one("UriTypeCheck https uri is remote",
+        "https://example.com/test.xml", xmlSecTransformUriTypeRemote);
+    test_xmlSecTransformUriTypeCheck_one("UriTypeCheck ftp uri is remote",
+        "ftp://example.com/test.xml", xmlSecTransformUriTypeRemote);
+    test_xmlSecTransformUriTypeCheck_one("UriTypeCheck uri with another scheme is remote",
+        "urn:example:test", xmlSecTransformUriTypeRemote);
+    test_xmlSecTransformUriTypeCheck_one("UriTypeCheck scheme with a file prefix is remote",
+        "filex://example.com/test.xml", xmlSecTransformUriTypeRemote);
+}
+
+static void
+test_xmlSecTransformUriTypeCheck_empty_and_same_document(void) {
+    test_xmlSecTransformUriTypeCheck_one("UriTypeCheck NULL uri is empty",
+        NULL, xmlSecTransformUriTypeEmpty);
+    test_xmlSecTransformUriTypeCheck_one("UriTypeCheck empty uri is empty",
+        "", xmlSecTransformUriTypeEmpty);
+    test_xmlSecTransformUriTypeCheck_one("UriTypeCheck fragment uri is same-document",
+        "#chapter1", xmlSecTransformUriTypeSameDocument);
+}
+
+
+/******************************************************************************
  * exported entry point
  *****************************************************************************/
 int
@@ -1007,6 +1106,12 @@ test_transforms(void) {
     test_xmlSecTransformCtxSetUri_visa3d_hack_bare_fragment();
     test_xmlSecTransformCtxSetUri_visa3d_hack_uri_with_fragment();
     test_xmlSecTransformCtxSetUri_visa3d_hack_transform_disabled();
+    if(testGroupFinished() != 1) { success = 0; }
+
+    testGroupStart("xmlSecTransformUriTypeCheck");
+    test_xmlSecTransformUriTypeCheck_empty_and_same_document();
+    test_xmlSecTransformUriTypeCheck_local();
+    test_xmlSecTransformUriTypeCheck_remote();
     if(testGroupFinished() != 1) { success = 0; }
 
     return(success);

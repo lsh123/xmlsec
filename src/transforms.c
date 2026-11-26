@@ -241,6 +241,37 @@ xmlSecTransformIdsRegisterDefault(void) {
  * utils
  *
  *****************************************************************************/
+/* Returns 1 if @p uri starts with a scheme (RFC 3986: ALPHA *( ALPHA / DIGIT / "+" / "-" / "." ) ":"),
+ * 0 otherwise. A single letter followed by a colon is not reported as a scheme: it is a Windows
+ * drive letter (e.g. "C:/file.xml"), which the file I/O callback opens as a local file name. */
+static int
+xmlSecTransformUriHasScheme(const xmlChar* uri) {
+    xmlSecSize ii;
+
+    xmlSecAssert2(uri != NULL, 0);
+
+    /* a scheme always starts with a letter */
+    if(((uri[0] < 'a') || (uri[0] > 'z')) && ((uri[0] < 'A') || (uri[0] > 'Z'))) {
+        return(0);
+    }
+
+    for(ii = 1; uri[ii] != '\0'; ++ii) {
+        xmlChar ch = uri[ii];
+
+        if(ch == ':') {
+            return((ii > 1) ? 1 : 0);
+        }
+        if(((ch < 'a') || (ch > 'z')) && ((ch < 'A') || (ch > 'Z')) &&
+           ((ch < '0') || (ch > '9')) && (ch != '+') && (ch != '-') && (ch != '.')) {
+            /* not a scheme character: there is no scheme */
+            return(0);
+        }
+    }
+
+    /* no colon at all */
+    return(0);
+}
+
 /**
  * @brief Checks if @p uri matches expected type @p type.
  * @param type the expected URI type.
@@ -256,7 +287,15 @@ xmlSecTransformUriTypeCheck(xmlSecTransformUriType type, const xmlChar* uri) {
         uriType = xmlSecTransformUriTypeEmpty;
     } else if(uri[0] == '#') {
         uriType = xmlSecTransformUriTypeSameDocument;
-    } else if(xmlStrncmp(uri, BAD_CAST "file://", 7) == 0) {
+    } else if(xmlStrncasecmp(uri, BAD_CAST "file:", 5) == 0) {
+        /* the "file" scheme is matched case-insensitively and without the authority
+         * slashes, the same way xmlSecIOFileExtractFilename() strips it before opening
+         * the file ("file:/path", "file://path", "file:///path", "FILE://localhost/path") */
+        uriType = xmlSecTransformUriTypeLocal;
+    } else if(xmlSecTransformUriHasScheme(uri) == 0) {
+        /* a uri without a scheme (a relative reference or a plain path such as
+         * "../secret.xml" or "/etc/passwd") is handed to the file I/O callback as-is
+         * and opened with fopen(), so it dereferences to a local file as well */
         uriType = xmlSecTransformUriTypeLocal;
     } else {
         uriType = xmlSecTransformUriTypeRemote;
